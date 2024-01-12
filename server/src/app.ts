@@ -3,8 +3,7 @@ env.config();
 import express, { Express } from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import studentRoute from "./routes/student_route";
-import studentPostRoute from "./routes/student_post_route";
+import reportsRoute from "./routes/reports.route";
 import authRoute from "./routes/auth_route";
 
 const initApp = (): Promise<Express> => {
@@ -17,8 +16,7 @@ const initApp = (): Promise<Express> => {
       const app = express();
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
-      app.use("/student", studentRoute);
-      app.use("/studentpost", studentPostRoute);
+      app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
       resolve(app);
     });
