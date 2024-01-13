@@ -1,7 +1,8 @@
 import { styleType } from "../../models";
 
 export const style: styleType = {
-    boxContainer: {
+    container: {
+        maxWidth:'500px',
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

@@ -1,8 +1,9 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { ListItem, List } from "@mui/material";
+import { ListItem, List, Box } from "@mui/material";
 import { IReport } from "../../models";
 import { fakeData } from "./fakeData";
 import { ReportDisplay } from "../reportDisplay";
+import { style } from "./style";
 
 export const ReportList: FC = () => {
   const [reportList, setReportList] = useState<IReport[]>();
@@ -20,5 +21,9 @@ export const ReportList: FC = () => {
       )) ?? [],
     [reportList]
   );
-  return <List>{reportDisplayListItems}</List>;
+  return (
+    <Box>
+      <List sx={style.listContainer}>{reportDisplayListItems}</List>
+    </Box>
+  );
 };

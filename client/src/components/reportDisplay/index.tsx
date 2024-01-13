@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import {
   Avatar,
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -10,15 +11,38 @@ import {
 } from "@mui/material";
 import { IReport } from "../../models";
 import { red } from "@mui/material/colors";
-import { Favorite } from "@mui/icons-material";
-
+import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
+import { style } from "./style";
 interface IReportDisplayProps {
   report: IReport;
+  isEditable?: boolean;
 }
-export const ReportDisplay: FC<IReportDisplayProps> = ({ report }) => {
+
+export const ReportDisplay: FC<IReportDisplayProps> = ({
+  report,
+  isEditable = true,
+}) => {
+  const HeadersAction: JSX.Element = useMemo(
+    () =>
+      isEditable ? (
+        <>
+          <IconButton>
+            <Delete />
+          </IconButton>
+          <IconButton>
+            <ModeEditOutline />
+          </IconButton>
+        </>
+      ) : (
+        <></>
+      ),
+    [isEditable]
+  );
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={style.cardContainer}>
       <CardHeader
+        sx={style.cardHeader}
+        action={HeadersAction}
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
             R
@@ -38,10 +62,12 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({ report }) => {
           {report.data}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <Favorite />
-        </IconButton>
+      <CardActions disableSpacing dir="ltr">
+        <Button variant="contained" dir="ltr" startIcon={<Update />}>
+          {report.updates.length
+            ? `${report.updates.length} עדכונים`
+            : "אין עדכונים"}
+        </Button>
       </CardActions>
     </Card>
   );
