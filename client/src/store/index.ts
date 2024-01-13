@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './user'
 import reportsReducer from './reports'
+import addReportsReducer from './addReport'
 // ...
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    reports: reportsReducer
+    reports: reportsReducer,
+    reportDialog: addReportsReducer
   },
 })
 

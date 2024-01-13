@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { api } from "../../api"
 import { setReports } from "../../store/reports"
 import { useDispatch } from "react-redux"

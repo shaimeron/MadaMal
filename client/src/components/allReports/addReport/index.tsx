@@ -5,16 +5,23 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useCallback } from "react";
+import { openAdd } from "../../../store/addReport";
+import { useDispatch } from "react-redux";
 
 export const AddReport: FC = () => {
+  const dispatch = useDispatch();
+
+  const openAddDialog = useCallback(() => {
+    dispatch(openAdd());
+  }, [dispatch]);
+
   return (
     <Card>
-      <CardContent>
-        <Typography>fdwsgvd</Typography>
-      </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small" onClick={openAddDialog}>
+          הוסף דיווח
+        </Button>
       </CardActions>
     </Card>
   );

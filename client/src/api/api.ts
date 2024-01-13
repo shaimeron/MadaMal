@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IReport } from "../models";
+import { IReport, IReportDTO } from "../models";
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:3000/',
@@ -12,6 +12,7 @@ const axiosInstance = axios.create({
 export const api = {
     report: {
         getAll: async (): Promise<IReport[]> => (await axiosInstance.get('/reports/all')).data,
-        deleteReport: async (reportId: string): Promise<void> => (await axiosInstance.delete(`/reports/${reportId}`))
+        deleteReport: async (reportId: string): Promise<void> => (await axiosInstance.delete(`/reports/${reportId}`)),
+        addReport: async (reportDTO: IReportDTO): Promise<void> => (await axiosInstance.post(`/reports`, reportDTO))
     }
 }
