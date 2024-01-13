@@ -12,7 +12,9 @@ const axiosInstance = axios.create({
 export const api = {
     report: {
         getAll: async (): Promise<IReport[]> => (await axiosInstance.get('/reports/all')).data,
+        getById: async (reportId: string): Promise<IReport> => (await axiosInstance.get(`/reports/${reportId}`)).data,
         deleteReport: async (reportId: string): Promise<void> => (await axiosInstance.delete(`/reports/${reportId}`)),
-        addReport: async (reportDTO: IReportDTO): Promise<void> => (await axiosInstance.post(`/reports`, reportDTO))
+        addReport: async (reportDTO: IReportDTO): Promise<void> => (await axiosInstance.post(`/reports`, reportDTO)),
+        updateReport: async (reportDTO: IReportDTO): Promise<void> => (await axiosInstance.put(`/reports`, reportDTO))
     }
 }

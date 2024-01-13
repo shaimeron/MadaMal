@@ -12,6 +12,7 @@ export const App: FC = () => {
   return (
     <>
       <BrowserRouter>
+        <AddReportDialog />
         <Routes>
           <Route path="/" element={<Navbar />}>
             <Route index element={<AllReporsPage />} />
@@ -19,7 +20,6 @@ export const App: FC = () => {
           </Route>
         </Routes>
       </BrowserRouter>
-      <AddReportDialog />
     </>
   );
 };
