@@ -1,23 +1,20 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { ListItem, List, Box } from "@mui/material";
-import { IReport } from "../../models";
-import { fakeData } from "./fakeData";
+import { IReport } from "../../../../models";
 import { ReportDisplay } from "../reportDisplay";
 import { style } from "./style";
-import { useAppSelector } from "../../hooks/store";
-import { selectUserId } from "../../store/user";
+import { useAppSelector } from "../../../../hooks/store";
+import { selectUserId } from "../../../../store/user";
 
-export const ReportList: FC = () => {
-  const [reportList, setReportList] = useState<IReport[]>();
+interface IReportsListProps {
+  reports: IReport[];
+}
+export const ReportsList: FC<IReportsListProps> = ({ reports }) => {
   const userId: string = useAppSelector(selectUserId);
-
-  useEffect(() => {
-    setReportList(fakeData);
-  }, []);
 
   const reportDisplayListItems = useMemo(
     () =>
-      reportList?.map((report) => (
+      reports?.map((report) => (
         <ListItem key={report._id}>
           <ReportDisplay
             report={report}
@@ -25,7 +22,7 @@ export const ReportList: FC = () => {
           />
         </ListItem>
       )) ?? [],
-    [reportList, userId]
+    [reports, userId]
   );
   return (
     <Box>

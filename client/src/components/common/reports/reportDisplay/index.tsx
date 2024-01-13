@@ -9,7 +9,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { IReport } from "../../models";
+import { IReport } from "../../../../models";
 import { red } from "@mui/material/colors";
 import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
 import { style } from "./style";
