@@ -1,7 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '..'
 import { IReport } from '../../models'
-import { fakeData } from './fakeData'
 import { selectUserId } from '../user'
 
 // Define a type for the slice state
@@ -11,7 +10,7 @@ interface ReportsState {
 
 // Define the initial state using that type
 const initialState: ReportsState = {
-   reports : fakeData,
+   reports : [],
 }
 
 export const reportsSlice = createSlice({
@@ -19,7 +18,7 @@ export const reportsSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setReports: (state,action: PayloadAction<IReport[]> ) => ({
+    setReports: (state, action: PayloadAction<IReport[]> ) => ({
      ...state,
      reports: action.payload
     }),

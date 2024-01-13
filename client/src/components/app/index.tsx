@@ -3,8 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "../navbar";
 import { AllReporsPage } from "../allReports";
 import { UserPage } from "../userPage/userPage";
+import { useGetAllReports } from "../../hooks/report";
 
 export const App: FC = () => {
+  useGetAllReports();
+
   return (
     <BrowserRouter>
       <Routes>
