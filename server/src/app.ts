@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import reportsRoute from "./routes/reports.route";
 import authRoute from "./routes/auth_route";
+import cors from "cors";
 
 const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
@@ -14,6 +15,7 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DB_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
+      app.use(cors())
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use("/reports", reportsRoute);
@@ -25,3 +27,5 @@ const initApp = (): Promise<Express> => {
 };
 
 export default initApp;
+
+

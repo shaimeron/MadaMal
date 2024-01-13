@@ -8,3 +8,9 @@ export interface IReportItem {
 export interface IReport extends IReportItem {
   updates: IReportItem[]
 }
+
+export interface IReportDTO {
+  _id?: string
+  ownerId?: string,
+  data?: string
+}

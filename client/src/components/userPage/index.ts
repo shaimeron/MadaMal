@@ -1,0 +1,1 @@
+export {UserPage as AllReporsPage} from './userPage'
