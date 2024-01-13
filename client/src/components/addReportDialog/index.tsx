@@ -6,37 +6,64 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { FC } from "react";
 import { selectUserId } from "../../store/user";
 import { useAppSelector } from "../../hooks/store";
 import { api } from "../../api";
 import { closeDialog, selectReportDialog } from "../../store/addReport";
 import { useDispatch } from "react-redux";
+import { IReport } from "../../models";
 
 export const AddReportDialog: FC = () => {
-  const { isOpen } = useAppSelector(selectReportDialog);
+  const { isOpen, selectedReportId } = useAppSelector(selectReportDialog);
   const userId: string = useAppSelector(selectUserId);
   const dispatch = useDispatch();
+  const valueRef: React.Ref<any> = useRef(""); //creating a refernce for TextField Component
 
+  const getReportData = useCallback(async () => {
+    if (selectedReportId) {
+      const currReport: IReport = await api.report.getById(selectedReportId);
+      valueRef.current.value = currReport.data;
+    } else {
+      valueRef.current.value = "";
+    }
+  }, [selectedReportId]);
+
+  useEffect(() => {
+    const func = async () => {
+      if (isOpen) await getReportData();
+      else valueRef.current.value = "";
+    };
+
+    func();
+  }, [getReportData, isOpen]);
   const handleClose = useCallback(() => {
     dispatch(closeDialog());
   }, [dispatch]);
 
-  const handeSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-      event.preventDefault();
-      const formData = new FormData(event.currentTarget);
-      const formJson = Object.fromEntries((formData as any).entries());
-      const reportData = formJson.reportData;
+  const addNewReport = useCallback(
+    async (): Promise<void> =>
       await api.report.addReport({
-        data: reportData,
+        data: valueRef.current.value,
         ownerId: userId,
-      });
-      handleClose();
-    },
-    [handleClose, userId]
+      }),
+    [userId]
   );
+
+  const updateReport = useCallback(
+    async (): Promise<void> =>
+      await api.report.updateReport({
+        data: valueRef.current.value,
+        _id: selectedReportId,
+      }),
+    [selectedReportId]
+  );
+
+  const handeSubmit = useCallback(async (): Promise<void> => {
+    selectedReportId ? await updateReport() : await addNewReport();
+    handleClose();
+  }, [addNewReport, handleClose, selectedReportId, updateReport]);
 
   return (
     <Dialog
@@ -47,7 +74,9 @@ export const AddReportDialog: FC = () => {
         onSubmit: handeSubmit,
       }}
     >
-      <DialogTitle>צור דיווח חדש</DialogTitle>
+      <DialogTitle>
+        {selectedReportId ? "עדכן דיווח" : "צור דיווח חדש"}
+      </DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -57,6 +86,7 @@ export const AddReportDialog: FC = () => {
           label="דיווח"
           fullWidth
           variant="standard"
+          inputRef={valueRef}
         />
       </DialogContent>
       <DialogActions>

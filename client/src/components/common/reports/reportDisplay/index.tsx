@@ -15,6 +15,8 @@ import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
 import { style } from "./style";
 import swal from "sweetalert";
 import { api } from "../../../../api";
+import { useDispatch } from "react-redux";
+import { openUpdate } from "../../../../store/addReport";
 interface IReportDisplayProps {
   report: IReport;
   isEditable?: boolean;
@@ -24,6 +26,8 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
   report,
   isEditable = false,
 }) => {
+  const dispatch = useDispatch();
+
   const handleDelete = useCallback(async () => {
     const isDelete = await swal({
       title: "האם אתה בטוח שברצונך למחוק דיווח זה",
@@ -36,6 +40,10 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
     if (isDelete) await api.report.deleteReport(report._id);
   }, [report]);
 
+  const handleUpdateClick = useCallback(async () => {
+    dispatch(openUpdate(report._id));
+  }, [dispatch, report._id]);
+
   const HeadersAction: JSX.Element = useMemo(
     () =>
       isEditable ? (
@@ -43,15 +51,16 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
           <IconButton onClick={handleDelete}>
             <Delete />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleUpdateClick}>
             <ModeEditOutline />
           </IconButton>
         </>
       ) : (
         <></>
       ),
-    [isEditable]
+    [handleDelete, handleUpdateClick, isEditable]
   );
+
   return (
     <Card sx={style.cardContainer}>
       <CardHeader
