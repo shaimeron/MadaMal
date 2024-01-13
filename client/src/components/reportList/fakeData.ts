@@ -25,7 +25,7 @@ export const fakeData: IReport[] = [
     {
         _id: "4",
         creationDate: new Date(),
-        ownerId: "1",
+        ownerId: "2",
         data: "בדיקה 1",
         updates: []
     },

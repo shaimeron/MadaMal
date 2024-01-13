@@ -4,9 +4,12 @@ import { IReport } from "../../models";
 import { fakeData } from "./fakeData";
 import { ReportDisplay } from "../reportDisplay";
 import { style } from "./style";
+import { useAppSelector } from "../../hooks/store";
+import { selectUserId } from "../../store/user";
 
 export const ReportList: FC = () => {
   const [reportList, setReportList] = useState<IReport[]>();
+  const userId: string = useAppSelector(selectUserId);
 
   useEffect(() => {
     setReportList(fakeData);
@@ -16,10 +19,13 @@ export const ReportList: FC = () => {
     () =>
       reportList?.map((report) => (
         <ListItem key={report._id}>
-          <ReportDisplay report={report} />
+          <ReportDisplay
+            report={report}
+            isEditable={report.ownerId === userId}
+          />
         </ListItem>
       )) ?? [],
-    [reportList]
+    [reportList, userId]
   );
   return (
     <Box>

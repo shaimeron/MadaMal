@@ -20,7 +20,7 @@ interface IReportDisplayProps {
 
 export const ReportDisplay: FC<IReportDisplayProps> = ({
   report,
-  isEditable = true,
+  isEditable = false,
 }) => {
   const HeadersAction: JSX.Element = useMemo(
     () =>
