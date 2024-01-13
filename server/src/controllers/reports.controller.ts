@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { reportsModel } from "../models";
+import { IReportDTO, reportsModel } from "../models/reports";
 
 export class ReportsController {
   async getAll(req: Request, res: Response) {
@@ -13,16 +13,21 @@ export class ReportsController {
   }
 
   async createReport(req: Request, res: Response) {
-    const obj = await reportsModel.create(req.body);
+    const reportDto: IReportDTO = req.body;
+    const obj = await reportsModel.create(reportDto);
     res.status(201).send(obj);
   }
 
-  updateReport(req: Request, res: Response) {
-    res.send("put student by id: " + req.params.id);
+  async updateReport(req: Request, res: Response) {
+    const {_id, ...restOfDTO}: IReportDTO = req.body;
+    const obj = await reportsModel.updateOne({ _id }, restOfDTO);
+    res.status(201).send(obj);
   }
 
-  deleteById(req: Request, res: Response) {
-    res.send("delete student by id: " + req.params.id);
+  async deleteById(req: Request, res: Response) {
+    const _id: string = req.params.id;
+    const obj = await reportsModel.deleteOne({ _id });
+    res.send(`${obj.deletedCount ? '' : 'failed to '}delete report by id: ${_id}`);
   }
 
   addUpdateToReport(req: Request, res: Response) {

@@ -10,7 +10,7 @@ router.get("/:id", reportsController.getById.bind(reportsController));
 
 router.post("/", reportsController.createReport.bind(reportsController));
 
-router.put("/:id", reportsController.updateReport.bind(reportsController));
+router.put("/", reportsController.updateReport.bind(reportsController));
 
 router.delete("/:id", reportsController.deleteById.bind(reportsController));
 
