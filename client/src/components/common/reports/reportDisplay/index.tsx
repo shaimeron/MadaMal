@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import {
   Avatar,
   Button,
@@ -13,6 +13,8 @@ import { IReport } from "../../../../models";
 import { red } from "@mui/material/colors";
 import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
 import { style } from "./style";
+import swal from "sweetalert";
+import { api } from "../../../../api";
 interface IReportDisplayProps {
   report: IReport;
   isEditable?: boolean;
@@ -22,11 +24,23 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
   report,
   isEditable = false,
 }) => {
+  const handleDelete = useCallback(async () => {
+    const isDelete = await swal({
+      title: "האם אתה בטוח שברצונך למחוק דיווח זה",
+      text: "ברגע שהדיוח יימחק אין דרך לשחזר אותו",
+      icon: "warning",
+      buttons: ["בטל", "מחק"],
+      dangerMode: true,
+    });
+
+    if (isDelete) await api.report.deleteReport(report._id);
+  }, [report]);
+
   const HeadersAction: JSX.Element = useMemo(
     () =>
       isEditable ? (
         <>
-          <IconButton>
+          <IconButton onClick={handleDelete}>
             <Delete />
           </IconButton>
           <IconButton>

@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
   
 export const api = {
     report: {
-        getAll: async (): Promise<IReport[]> => (await axiosInstance.get('/reports/all')).data
+        getAll: async (): Promise<IReport[]> => (await axiosInstance.get('/reports/all')).data,
+        deleteReport: async (reportId: string): Promise<void> => (await axiosInstance.delete(`/reports/${reportId}`))
     }
 }
