@@ -16,5 +16,9 @@ export const api = {
         deleteReport: async (reportId: string): Promise<void> => (await axiosInstance.delete(`/reports/${reportId}`)),
         addReport: async (reportDTO: IReportDTO): Promise<void> => (await axiosInstance.post(`/reports`, reportDTO)),
         updateReport: async (reportDTO: IReportDTO): Promise<void> => (await axiosInstance.put(`/reports`, reportDTO))
+    },
+    image: {
+        uploadImage: async (image: FormData): Promise<string> => (await axiosInstance.post('/image/uploadImage', image)),
+        getImage: async (filename: string): Promise<string> => (await axiosInstance.get(`/image/getImage/${filename}`)).data
     }
 }

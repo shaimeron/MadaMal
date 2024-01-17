@@ -2,8 +2,6 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
-  Typography,
 } from "@mui/material";
 import { FC, useCallback } from "react";
 import { openAdd } from "../../../store/addReport";

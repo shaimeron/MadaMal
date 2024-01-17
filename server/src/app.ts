@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import reportsRoute from "./routes/reports.route";
 import authRoute from "./routes/auth_route";
 import cors from "cors";
+import imageRoute from "./routes/image.route";
 
 const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
@@ -20,6 +21,7 @@ const initApp = (): Promise<Express> => {
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
+      app.use('/image', imageRoute);
       resolve(app);
     });
   });
