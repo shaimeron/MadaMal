@@ -9,11 +9,7 @@ export const WeatherDisplay: FC = () => {
             const apiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=32.067624&lon=34.776054`;
 
             try {
-                const response = await fetch(apiUrl, {
-                    headers: {
-                        'User-Agent': 'YourAppName/1.0 (your@email.com)'
-                    }
-                });
+                const response = await fetch(apiUrl);
 
                 if (!response.ok) {
                     throw new Error(`Weather api Error: ${response.status}`);
