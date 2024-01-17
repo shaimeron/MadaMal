@@ -1,8 +1,10 @@
 import axios from "axios";
 import { IReport, IReportDTO } from "../models";
 
+export const serverURL = 'http://localhost:3000';
+
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3000/',
+    baseURL: serverURL,
     timeout: 1000,
     headers: {
       'Access-Control-Allow-Credentials':true

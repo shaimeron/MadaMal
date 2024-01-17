@@ -16,7 +16,10 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DB_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
-      app.use(cors())
+      app.use(cors({
+        origin: "*", // Replace with your client app's URL
+        methods: ["GET", "POST"]
+      }))
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use("/reports", reportsRoute);
