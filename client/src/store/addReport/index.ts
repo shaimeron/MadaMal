@@ -1,34 +1,34 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '..'
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 // Define a type for the slice state
 interface AddReportsState {
-  isOpen: boolean,
-  selectedReportId?: string
+  isOpen: boolean;
+  selectedReportId?: string;
 }
 
 // Define the initial state using that type
 const initialState: AddReportsState = {
-   isOpen: false,
-}
+  isOpen: false,
+};
 
 export const addReportsSlice = createSlice({
-  name: 'addReports',
+  name: "addReports",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     openAdd: () => ({
-     ...initialState,
-     isOpen: true
+      ...initialState,
+      isOpen: true,
     }),
-    openUpdate: (state, action: PayloadAction<string> ) => ({
-     ...state,
-     isOpen: true,
-     selectedReportId: action.payload
+    openUpdate: (state, action: PayloadAction<string>) => ({
+      ...state,
+      isOpen: true,
+      selectedReportId: action.payload,
     }),
-    closeDialog: ( ) => ({
-      ...initialState
-     }),
+    closeDialog: () => ({
+      ...initialState,
+    }),
   },
 });
 

@@ -33,11 +33,11 @@ export const AddReportDialog: FC = () => {
   useEffect(() => {
     const func = async () => {
       if (isOpen) await getReportData();
-      else valueRef.current.value = "";
     };
 
     func();
   }, [getReportData, isOpen]);
+
   const handleClose = useCallback(() => {
     dispatch(closeDialog());
   }, [dispatch]);
