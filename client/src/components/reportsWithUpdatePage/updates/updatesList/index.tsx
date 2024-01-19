@@ -1,10 +1,11 @@
 import { FC, useMemo } from "react";
 import { List } from "@mui/material";
-import { useAppSelector } from "../../../hooks/store";
-import { IReportItem } from "../../../models";
-import { selectUserId } from "../../../store/user";
+import { useAppSelector } from "../../../../hooks/store";
+import { IReportItem } from "../../../../models";
+import { selectUserId } from "../../../../store/user";
 import { style } from "./style";
 import { UpdateDisplay } from "../updateDisplay";
+import { AddUpdateToReport } from "../addUpdateToReport";
 
 interface IUpdatesListProps {
   updates: IReportItem[];
@@ -24,5 +25,10 @@ export const UpdatesList: FC<IUpdatesListProps> = ({ updates, reportId }) => {
       )) ?? [],
     [reportId, updates, userId]
   );
-  return <List sx={style.listContainer}>{updateDisplayListItems}</List>;
+  return (
+    <>
+      <AddUpdateToReport reportId={reportId} userId={userId} />
+      <List sx={style.listContainer}>{updateDisplayListItems}</List>;
+    </>
+  );
 };

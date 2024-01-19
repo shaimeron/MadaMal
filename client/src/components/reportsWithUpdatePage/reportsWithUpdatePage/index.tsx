@@ -4,7 +4,7 @@ import { IReport } from "../../../models";
 import { selectReportById } from "../../../store/reports";
 import { useAppSelector } from "../../../hooks/store";
 import { ReportDisplay } from "../../common/reports";
-import { UpdatesList } from "../updatesList";
+import { UpdatesList } from "../updates";
 
 export const ReportsWithUpdatePage: FC = () => {
   const { reportId } = useParams();

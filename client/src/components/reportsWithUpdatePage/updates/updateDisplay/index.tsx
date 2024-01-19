@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo } from "react";
 import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { Delete, ModeEditOutline } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { IReportItem } from "../../../models";
+import { IReportItem } from "../../../../models";
 import swal from "sweetalert";
 
 interface IUpdateDisplayProps {
