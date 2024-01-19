@@ -6,6 +6,7 @@ import { UserPage } from "../userPage";
 import { useGetAllReports } from "../../hooks/report";
 import { AddReportDialog } from "../addReportDialog";
 import { Chat } from "../Chat";
+import { ReportsWithUpdatePage } from "../reportsWithUpdatePage";
 
 export const App: FC = () => {
   useGetAllReports();
@@ -18,6 +19,7 @@ export const App: FC = () => {
           <Route index element={<AllReporsPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/report/:reportId" element={<ReportsWithUpdatePage />} />
         </Route>
       </Routes>
     </>
