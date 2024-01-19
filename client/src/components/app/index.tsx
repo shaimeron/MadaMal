@@ -5,6 +5,7 @@ import { AllReporsPage } from "../allReports";
 import { UserPage } from "../userPage/userPage";
 import { useGetAllReports } from "../../hooks/report";
 import { AddReportDialog } from "../addReportDialog";
+import { LoginPage } from "../Login/LoginScreen";
 
 export const App: FC = () => {
   useGetAllReports();
@@ -17,6 +18,7 @@ export const App: FC = () => {
           <Route path="/" element={<Navbar />}>
             <Route index element={<AllReporsPage />} />
             <Route path="/user" element={<UserPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
