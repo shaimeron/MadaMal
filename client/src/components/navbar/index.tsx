@@ -12,6 +12,7 @@ import {
 import { FC, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { style } from "./style";
+import { AddReportDialog } from "../addReportDialog";
 
 interface INavItem {
   link: string;
@@ -50,6 +51,8 @@ export const Navbar: FC = () => {
   );
   return (
     <>
+      <AddReportDialog />
+
       <Grid container direction="column">
         <Grid item>
           <Box sx={style.containerBox}>

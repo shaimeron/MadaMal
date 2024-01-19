@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Navbar } from "../navbar";
 import { AllReporsPage } from "../allReports";
 import { UserPage } from "../userPage";
@@ -12,16 +12,14 @@ export const App: FC = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <AddReportDialog />
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route index element={<AllReporsPage />} />
-            <Route path="/user" element={<UserPage />} />
-            <Route path="/chat" element={<Chat />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AddReportDialog />
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route index element={<AllReporsPage />} />
+          <Route path="/user" element={<UserPage />} />
+          <Route path="/chat" element={<Chat />} />
+        </Route>
+      </Routes>
     </>
   );
 };

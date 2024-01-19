@@ -60,10 +60,14 @@ export const AddReportDialog: FC = () => {
     [selectedReportId]
   );
 
-  const handeSubmit = useCallback(async (): Promise<void> => {
-    selectedReportId ? await updateReport() : await addNewReport();
-    handleClose();
-  }, [addNewReport, handleClose, selectedReportId, updateReport]);
+  const handeSubmit = useCallback(
+    async (event): Promise<void> => {
+      event.preventDefault();
+      selectedReportId ? await updateReport() : await addNewReport();
+      handleClose();
+    },
+    [addNewReport, handleClose, selectedReportId, updateReport]
+  );
 
   return (
     <Dialog
