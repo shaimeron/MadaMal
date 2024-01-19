@@ -26,6 +26,11 @@ export const api = {
       await axiosInstance.put(`/reports`, reportDTO),
     addUpdateToReport: async (updateDTO: IUpdateInReportDTO): Promise<void> =>
       await axiosInstance.post(`/reports/update`, updateDTO),
+    deleteUpdateFromReport: async (
+      reportId: string,
+      updateId: string
+    ): Promise<void> =>
+      await axiosInstance.delete(`/reports/update/${reportId}/${updateId}`),
   },
   image: {
     uploadImage: async (image: FormData): Promise<string> =>

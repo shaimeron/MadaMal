@@ -20,7 +20,7 @@ router.post(
 );
 
 router.delete(
-  "/update",
+  "/update/:reportId/:updateId",
   reportsController.deleteUpdateFromReport.bind(reportsController)
 );
 

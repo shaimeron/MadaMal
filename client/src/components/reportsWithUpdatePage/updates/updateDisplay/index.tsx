@@ -4,6 +4,7 @@ import { Delete, ModeEditOutline } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { IReportItem } from "../../../../models";
 import swal from "sweetalert";
+import { api } from "../../../../api";
 
 interface IUpdateDisplayProps {
   reportId: string;
@@ -27,8 +28,8 @@ export const UpdateDisplay: FC<IUpdateDisplayProps> = ({
       dangerMode: true,
     });
 
-    // if (isDelete) await api.report.deleteReport(report._id);
-  }, [update]);
+    if (isDelete) await api.report.deleteUpdateFromReport(reportId, update._id);
+  }, [reportId, update._id]);
 
   const handleUpdateClick = useCallback(async () => {}, [dispatch]);
 

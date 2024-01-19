@@ -46,11 +46,24 @@ export class ReportsController {
     res.send(`added update to report ${reportId}`);
   }
 
-  changeUpdateInReport(req: Request, res: Response) {
-    res.send("delete student by id: " + req.params.id);
+  async changeUpdateInReport(req: Request, res: Response) {
+    // const { reportId, updateId } = req.params;
+    // const obj = await reportsModel.deleteOne({ _id });
+    // res.send(
+    //   `${obj.deletedCount ? "" : "failed to "}delete report by id: ${_id}`
+    // );
   }
 
-  deleteUpdateFromReport(req: Request, res: Response) {
-    res.send("delete student by id: " + req.params.id);
+  async deleteUpdateFromReport(req: Request, res: Response) {
+    const { reportId, updateId } = req.params;
+    const obj = await reportsModel.updateOne(
+      { _id: reportId },
+      {
+        $pull: {
+          updates: { _id: updateId },
+        },
+      }
+    );
+    res.status(201).send(obj);
   }
 }
