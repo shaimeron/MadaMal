@@ -5,8 +5,13 @@ export const style: styleType = {
     width: "100%",
   },
   cardHeader: {
-    "& .MuiCardHeader-avatar": {
-      margin: " 0 0 0 16px",
+    paddingBottom: 0,
+    "& .MuiCardHeader-content ": {
+      display: "flex",
+      alignItems: "center",
+    },
+    "& .MuiCardHeader-subheader  ": {
+      paddingRight: "6px",
     },
   },
   cardButton: {

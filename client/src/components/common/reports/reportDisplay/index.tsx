@@ -18,19 +18,22 @@ import { api } from "../../../../api";
 import { useDispatch } from "react-redux";
 import { openUpdate } from "../../../../store/addReport";
 import { useNavigate } from "react-router-dom";
+import { dateFormater } from "../../../../utils/date";
+import { useAppSelector } from "../../../../hooks/store";
+import { selectUserId } from "../../../../store/user";
 interface IReportDisplayProps {
   report: IReport;
-  isEditable?: boolean;
   isWithUpdateDisplayClick?: boolean;
 }
 
 export const ReportDisplay: FC<IReportDisplayProps> = ({
   report,
-  isEditable = false,
   isWithUpdateDisplayClick = true,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userId: string = useAppSelector(selectUserId);
 
   const displayUpdates = useCallback(() => {
     isWithUpdateDisplayClick && navigate(`/report/${report._id}`);
@@ -54,7 +57,7 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
 
   const HeadersAction: JSX.Element = useMemo(
     () =>
-      isEditable ? (
+      userId === report.ownerId ? (
         <>
           <IconButton onClick={handleDelete}>
             <Delete />
@@ -66,9 +69,13 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
       ) : (
         <></>
       ),
-    [handleDelete, handleUpdateClick, isEditable]
+    [handleDelete, handleUpdateClick, report.ownerId, userId]
   );
 
+  const dateDisplay = useMemo(
+    () => dateFormater(report?.creationDate),
+    [report?.creationDate]
+  );
   return (
     <Card sx={style.cardContainer}>
       <CardHeader
@@ -80,7 +87,7 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
           </Avatar>
         }
         title={report.ownerId}
-        subheader={report.creationDate.toDateString()}
+        subheader={dateDisplay}
       />
       {/* <CardMedia
         component="img"

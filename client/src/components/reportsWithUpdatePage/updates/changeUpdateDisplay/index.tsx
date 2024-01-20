@@ -1,5 +1,11 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { Box, Button, Grid, ListItem, TextField } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  TextField,
+} from "@mui/material";
 import { api } from "../../../../api";
 import { style } from "./style";
 
@@ -41,36 +47,32 @@ export const ChangeUpdateDisplay: FC<IChangeUpdateDisplayProps> = ({
   }, [addNewUpdate, handleClose]);
 
   return (
-    <ListItem key={updateId}>
-      <Box
-        component="form"
-        sx={style.boxForm}
-        noValidate
-        onSubmit={handleSubmit}
-        onReset={handleClose}
-        autoComplete="off"
-      >
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item sx={style.gridText}>
-            <TextField
-              onChange={(e) => setDataOfUpdate(e.target.value)}
-              variant="outlined"
-              margin="none"
-              placeholder="מה העדכון שלך?"
-              fullWidth
-              value={dataOfUpdate}
-            />
-          </Grid>
-          <Grid item sx={style.gridButtons}>
-            <Button variant="contained" color="success" type="submit">
-              שנה
-            </Button>
-            <Button variant="contained" color="error" type="reset">
-              בטל
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-    </ListItem>
+    <Card sx={style.cardContainer}>
+      <CardContent sx={style.cardContent}>
+        <TextField
+          onChange={(e) => setDataOfUpdate(e.target.value)}
+          variant="outlined"
+          margin="none"
+          placeholder="מה העדכון שלך?"
+          fullWidth
+          multiline
+          maxRows={4}
+          value={dataOfUpdate}
+        />
+      </CardContent>
+      <CardActions>
+        <Button
+          variant="contained"
+          color="success"
+          sx={style.changeButtom}
+          onClick={handleSubmit}
+        >
+          שנה
+        </Button>
+        <Button variant="contained" color="error" onClick={handleClose}>
+          בטל
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
