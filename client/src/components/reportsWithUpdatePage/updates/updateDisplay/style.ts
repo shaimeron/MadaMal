@@ -9,4 +9,7 @@ export const style: styleType = {
       margin: " 0 0 0 16px",
     },
   },
+  cardButton: {
+    cursor: "pointer",
+  },
 };

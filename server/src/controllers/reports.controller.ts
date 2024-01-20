@@ -47,11 +47,16 @@ export class ReportsController {
   }
 
   async changeUpdateInReport(req: Request, res: Response) {
-    // const { reportId, updateId } = req.params;
-    // const obj = await reportsModel.deleteOne({ _id });
-    // res.send(
-    //   `${obj.deletedCount ? "" : "failed to "}delete report by id: ${_id}`
-    // );
+    const { reportId, _id, data }: IUpdateInReportDTO = req.body;
+    const obj = await reportsModel.updateOne(
+      { _id: reportId, updates: { $elemMatch: { _id } } },
+      { $set: { "updates.$.data": data } }
+    );
+    res.send(
+      `${
+        obj.acknowledged ? "" : "failed to "
+      }change update ${_id} in report ${reportId}`
+    );
   }
 
   async deleteUpdateFromReport(req: Request, res: Response) {
