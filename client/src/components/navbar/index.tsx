@@ -66,8 +66,8 @@ export const Navbar: FC = () => {
                   justifyContent="space-between"
                 >
                   <Grid item sx={style.itemContainer}>
-                    <ListItemButton item onClick={() => navigate("/login")}>
-                      התחבר
+                    <ListItemButton onClick={() => navigate("/login")}>
+                      <ListItemText primary={"התחבר"} />
                     </ListItemButton>
                     <Grid item>
                       <List sx={style.linkList}>{navListItems}</List>

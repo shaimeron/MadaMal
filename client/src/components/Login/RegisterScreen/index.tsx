@@ -19,6 +19,7 @@ export const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -31,14 +32,43 @@ export const SignUpPage: React.FC = () => {
     }
   };
 
+  const validateForm = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (!fullname.trim()) {
+      errors.fullname = 'שם מלא הינו שדה חובה';
+    }
+
+    if (!email.trim()) {
+      errors.email = 'אימייל הינו שדה חובה';
+    } else if (!isValidEmail(email.trim())) {
+      errors.email = 'אנא הזן כתובת דוא"ל חוקית';
+    }
+
+    if (!password.trim()) {
+      errors.password = 'סיסמה הינה שדה חובה';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const isValidEmail = (value: string) => {
+    // Simple email validation using regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
+
   const handleSignUp = () => {
-    // Add your signup logic here
-    console.log('Sign up button clicked');
+    if (validateForm()) {
+      // Add your signup logic here
+      console.log('Sign up button clicked');
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs" style={{ textAlign: 'right' }}>
+      <Container component="main" maxWidth="xs" style={{ textAlign: 'right' }}>
         <Typography variant="h5" style={{ textAlign: 'center', marginBottom: '20px' }}>
           הרשמה
         </Typography>
@@ -51,6 +81,8 @@ export const SignUpPage: React.FC = () => {
               name="fullname"
               value={fullname}
               onChange={(e) => setFullname(e.target.value)}
+              error={!!formErrors.fullname}
+              helperText={formErrors.fullname}
             />
           </Grid>
           <Grid item xs={12}>
@@ -62,6 +94,8 @@ export const SignUpPage: React.FC = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              error={!!formErrors.email}
+              helperText={formErrors.email}
             />
           </Grid>
           <Grid item xs={12}>
@@ -73,6 +107,8 @@ export const SignUpPage: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              error={!!formErrors.password}
+              helperText={formErrors.password}
             />
           </Grid>
           <Grid item xs={12}>
