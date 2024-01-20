@@ -1,0 +1,1 @@
+export { UpdatesList } from "./updatesList";

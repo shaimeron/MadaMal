@@ -17,16 +17,24 @@ import swal from "sweetalert";
 import { api } from "../../../../api";
 import { useDispatch } from "react-redux";
 import { openUpdate } from "../../../../store/addReport";
+import { useNavigate } from "react-router-dom";
 interface IReportDisplayProps {
   report: IReport;
   isEditable?: boolean;
+  isWithUpdateDisplayClick?: boolean;
 }
 
 export const ReportDisplay: FC<IReportDisplayProps> = ({
   report,
   isEditable = false,
+  isWithUpdateDisplayClick = true,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const displayUpdates = useCallback(() => {
+    isWithUpdateDisplayClick && navigate(`/report/${report._id}`);
+  }, [isWithUpdateDisplayClick, navigate, report._id]);
 
   const handleDelete = useCallback(async () => {
     const isDelete = await swal({
@@ -40,7 +48,7 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
     if (isDelete) await api.report.deleteReport(report._id);
   }, [report]);
 
-  const handleUpdateClick = useCallback(async () => {
+  const handleUpdateClick = useCallback(() => {
     dispatch(openUpdate(report._id));
   }, [dispatch, report._id]);
 
@@ -86,7 +94,12 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
         </Typography>
       </CardContent>
       <CardActions disableSpacing dir="ltr">
-        <Button variant="contained" dir="ltr" startIcon={<Update />}>
+        <Button
+          variant="contained"
+          dir="ltr"
+          startIcon={<Update />}
+          onClick={displayUpdates}
+        >
           {report.updates.length
             ? `${report.updates.length} עדכונים`
             : "אין עדכונים"}

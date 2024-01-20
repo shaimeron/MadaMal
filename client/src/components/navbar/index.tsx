@@ -1,6 +1,7 @@
 import {
   AppBar,
   Box,
+  Container,
   Grid,
   List,
   ListItem,
@@ -83,7 +84,9 @@ export const Navbar: FC = () => {
           </Box>
         </Grid>
         <Grid item sx={style.pageContainer}>
-          <Outlet />
+          <Container maxWidth="sm">
+            <Outlet />
+          </Container>
         </Grid>
       </Grid>
     </>
