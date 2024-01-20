@@ -26,6 +26,9 @@ export const api = {
       await axiosInstance.put(`/reports`, reportDTO),
     addUpdateToReport: async (updateDTO: IUpdateInReportDTO): Promise<void> =>
       await axiosInstance.post(`/reports/update`, updateDTO),
+    changeUpdateInReport: async (
+      updateDTO: IUpdateInReportDTO
+    ): Promise<void> => await axiosInstance.put(`/reports/update`, updateDTO),
     deleteUpdateFromReport: async (
       reportId: string,
       updateId: string

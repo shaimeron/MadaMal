@@ -11,6 +11,11 @@ import { HashRouter } from "react-router-dom";
 const defaultTheme = createTheme({
   direction: "rtl",
   components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: { direction: "rtl" },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
         body: {
@@ -25,7 +30,7 @@ const defaultTheme = createTheme({
     },
   },
   typography: {
-    allVariants: { textAlign: "start" },
+    allVariants: { textAlign: "start", wordWrap: "break-word" },
   },
 });
 
