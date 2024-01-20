@@ -2,42 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.css";
 import { App } from "./components";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter } from "react-router-dom";
-
-const defaultTheme = createTheme({
-  direction: "rtl",
-  components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: { direction: "rtl" },
-      },
-    },
-    MuiListItem: {
-      styleOverrides: {
-        root: { padding: "8px 0px" },
-      },
-    },
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          // overflow: "hidden",
-        },
-      },
-    },
-  },
-  palette: {
-    background: {
-      default: "whitesmoke",
-    },
-  },
-  typography: {
-    allVariants: { textAlign: "start", wordWrap: "break-word" },
-  },
-});
+import { defaultTheme } from "./utils/theme";
 
 const queryClient = new QueryClient();
 

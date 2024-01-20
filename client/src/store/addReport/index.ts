@@ -35,6 +35,10 @@ export const addReportsSlice = createSlice({
 export const { openAdd, openUpdate, closeDialog } = addReportsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectReportDialog = (state: RootState) => state.reportDialog;
+export const selectReportDialogStatus = (state: RootState): boolean =>
+  state.reportDialog.isOpen;
+export const selectReportDialogSelectedId = (
+  state: RootState
+): string | undefined => state.reportDialog.selectedReportId;
 
 export default addReportsSlice.reducer;
