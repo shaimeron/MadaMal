@@ -8,94 +8,76 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useRef } from "react";
 import { FC } from "react";
-import { selectUserId } from "../../store/user";
 import { useAppSelector } from "../../hooks/store";
-import { api } from "../../api";
-import { closeDialog, selectReportDialog } from "../../store/addReport";
+import { closeDialog, selectReportDialogStatus } from "../../store/addReport";
 import { useDispatch } from "react-redux";
-import { IReport } from "../../models";
+import { useAddDialog } from "./hooks/useAddDialog";
 
 export const AddReportDialog: FC = () => {
-  const { isOpen, selectedReportId } = useAppSelector(selectReportDialog);
-  const userId: string = useAppSelector(selectUserId);
+  const isOpen: boolean = useAppSelector(selectReportDialogStatus);
+  const { getReportData, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
-  const valueRef: React.Ref<any> = useRef(""); //creating a refernce for TextField Component
-
-  const getReportData = useCallback(async () => {
-    if (selectedReportId) {
-      const currReport: IReport = await api.report.getById(selectedReportId);
-      valueRef.current.value = currReport.data;
-    } else {
-      valueRef.current.value = "";
-    }
-  }, [selectedReportId]);
+  const valueRef: React.Ref<any> = useRef("");
 
   useEffect(() => {
     const func = async () => {
-      if (isOpen) await getReportData();
+      if (isOpen) {
+        const data = await getReportData();
+        valueRef.current.value = data;
+      }
     };
 
     func();
   }, [getReportData, isOpen]);
 
   const handleClose = useCallback(() => {
-    dispatch(closeDialog());
-  }, [dispatch]);
-
-  const addNewReport = useCallback(
-    async (): Promise<void> =>
-      await api.report.addReport({
-        data: valueRef.current.value,
-        ownerId: userId,
-      }),
-    [userId]
-  );
-
-  const updateReport = useCallback(
-    async (): Promise<void> =>
-      await api.report.updateReport({
-        data: valueRef.current.value,
-        _id: selectedReportId,
-      }),
-    [selectedReportId]
-  );
+    if (isOpen) {
+      dispatch(closeDialog());
+      valueRef.current.value = "";
+    }
+  }, [dispatch, isOpen]);
 
   const handeSubmit = useCallback(
-    async (event): Promise<void> => {
+    async (event: any): Promise<void> => {
       event.preventDefault();
-      selectedReportId ? await updateReport() : await addNewReport();
+      await handeSave(valueRef.current.value);
       handleClose();
     },
-    [addNewReport, handleClose, selectedReportId, updateReport]
+    [handeSave, handleClose]
   );
 
   return (
     <Dialog
       open={isOpen}
       onClose={handleClose}
+      fullWidth
       PaperProps={{
         component: "form",
         onSubmit: handeSubmit,
       }}
     >
-      <DialogTitle>
-        {selectedReportId ? "עדכן דיווח" : "צור דיווח חדש"}
-      </DialogTitle>
+      <DialogTitle>{titleText}</DialogTitle>
       <DialogContent>
         <TextField
+          variant="outlined"
+          fullWidth
+          multiline
+          maxRows={4}
           autoFocus
           required
           margin="dense"
           name="reportData"
           label="דיווח"
-          fullWidth
-          variant="standard"
           inputRef={valueRef}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>בטל</Button>
-        <Button type="submit">שמור</Button>
+        <Button variant="contained" color="error" onClick={handleClose}>
+          בטל
+        </Button>
+        <Button variant="contained" color="success" type="submit">
+          {submitText}
+        </Button>
       </DialogActions>
     </Dialog>
   );
