@@ -1,4 +1,4 @@
-import { styleType } from "../../models";
+import { styleType } from "../../../models";
 
 export const style: styleType = {
   itemContainer: {
@@ -12,8 +12,5 @@ export const style: styleType = {
   linkListItemButton: { textAlign: "center", width: "max-content" },
   containerBox: {
     flexGrow: 1,
-  },
-  pageContainer: {
-    marginTop: "100px",
   },
 };
