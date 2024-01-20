@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { IReportDTO, reportsModel } from "../models/reports";
+import {
+  IReportDTO,
+  IUpdateInReportDTO,
+  reportsModel,
+} from "../models/reports";
 
 export class ReportsController {
   async getAll(req: Request, res: Response) {
@@ -19,7 +23,7 @@ export class ReportsController {
   }
 
   async updateReport(req: Request, res: Response) {
-    const {_id, ...restOfDTO}: IReportDTO = req.body;
+    const { _id, ...restOfDTO }: IReportDTO = req.body;
     const obj = await reportsModel.updateOne({ _id }, restOfDTO);
     res.status(201).send(obj);
   }
@@ -27,18 +31,39 @@ export class ReportsController {
   async deleteById(req: Request, res: Response) {
     const _id: string = req.params.id;
     const obj = await reportsModel.deleteOne({ _id });
-    res.send(`${obj.deletedCount ? '' : 'failed to '}delete report by id: ${_id}`);
+    res.send(
+      `${obj.deletedCount ? "" : "failed to "}delete report by id: ${_id}`
+    );
   }
 
-  addUpdateToReport(req: Request, res: Response) {
-    res.send("delete student by id: " + req.params.id);
+  async addUpdateToReport(req: Request, res: Response) {
+    const { reportId, ...updateBody }: IUpdateInReportDTO = req.body;
+
+    await reportsModel.updateOne(
+      { _id: reportId },
+      { $push: { updates: updateBody } }
+    );
+    res.send(`added update to report ${reportId}`);
   }
 
-  changeUpdateInReport(req: Request, res: Response) {
-    res.send("delete student by id: " + req.params.id);
+  async changeUpdateInReport(req: Request, res: Response) {
+    // const { reportId, updateId } = req.params;
+    // const obj = await reportsModel.deleteOne({ _id });
+    // res.send(
+    //   `${obj.deletedCount ? "" : "failed to "}delete report by id: ${_id}`
+    // );
   }
 
-  deleteUpdateFromReport(req: Request, res: Response) {
-    res.send("delete student by id: " + req.params.id);
+  async deleteUpdateFromReport(req: Request, res: Response) {
+    const { reportId, updateId } = req.params;
+    const obj = await reportsModel.updateOne(
+      { _id: reportId },
+      {
+        $pull: {
+          updates: { _id: updateId },
+        },
+      }
+    );
+    res.status(201).send(obj);
   }
 }

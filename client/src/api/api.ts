@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IReport, IReportDTO } from "../models";
+import { IReport, IReportDTO, IUpdateInReportDTO } from "../models";
 
 export const serverURL = "http://localhost:3000";
 
@@ -24,6 +24,13 @@ export const api = {
       await axiosInstance.post(`/reports`, reportDTO),
     updateReport: async (reportDTO: IReportDTO): Promise<void> =>
       await axiosInstance.put(`/reports`, reportDTO),
+    addUpdateToReport: async (updateDTO: IUpdateInReportDTO): Promise<void> =>
+      await axiosInstance.post(`/reports/update`, updateDTO),
+    deleteUpdateFromReport: async (
+      reportId: string,
+      updateId: string
+    ): Promise<void> =>
+      await axiosInstance.delete(`/reports/update/${reportId}/${updateId}`),
   },
   image: {
     uploadImage: async (image: FormData): Promise<string> =>

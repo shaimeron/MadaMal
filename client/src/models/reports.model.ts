@@ -1,16 +1,20 @@
 export interface IReportItem {
-  _id: string
-  creationDate: Date
-  ownerId: string
-  data: string
+  _id: string;
+  creationDate: Date;
+  ownerId: string;
+  data: string;
 }
 
 export interface IReport extends IReportItem {
-  updates: IReportItem[]
+  updates: IReportItem[];
 }
 
 export interface IReportDTO {
-  _id?: string
-  ownerId?: string,
-  data?: string
+  _id?: string;
+  ownerId?: string;
+  data?: string;
+}
+
+export interface IUpdateInReportDTO extends IReportDTO {
+  reportId: string;
 }
