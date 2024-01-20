@@ -11,12 +11,17 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { api } from "../../../api";
+import { MIN_PASSWORD_LENGTH, isValidEmail } from "../utils";
+import { useNavigate } from "react-router-dom";
+
 
 const theme = createTheme({
   direction: "rtl",
 });
 
 export const SignUpPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [fullname, setFullname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -49,18 +54,12 @@ export const SignUpPage: React.FC = () => {
       errors.email = 'אנא הזן כתובת דוא"ל חוקית';
     }
 
-    if (!password.trim()) {
+    if (!password.trim() && password.length < MIN_PASSWORD_LENGTH) {
       errors.password = "סיסמה הינה שדה חובה";
     }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
-  };
-
-  const isValidEmail = (value: string) => {
-    // Simple email validation using regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(value);
   };
 
   const handleSignUp = async () => {
@@ -70,12 +69,13 @@ export const SignUpPage: React.FC = () => {
 
         if (response.status === 201) {
           // Successful signup
-          setSnackbarMessage("המשתמש נוצר בהצלחה");
+          alert("המשתמש נוצר בהצלחה");
+          navigate('/login')
         } else {
           // Handle other response status codes
           setSnackbarMessage("אירעה שגיאה ביצירת המשתמש");
+          setOpenSnackbar(true);
         }
-        setOpenSnackbar(true);
       } catch (error: any) {
         if (error.response.status === 406) {
           setSnackbarMessage("משתמש כבר קיים");

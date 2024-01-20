@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
-import { IReport, IReportDTO, IUpdateInReportDTO, UserRegister } from "../models";
+import { IReport, IReportDTO, IUpdateInReportDTO, UserLoginDeatils, UserRegister } from "../models";
 
 export const serverURL = "http://localhost:3000";
 
@@ -45,7 +45,9 @@ export const api = {
       (await axiosInstance.get(`/image/getImage/${filename}`)).data,
   },
   auth: {
-    register: async (details: UserRegister): Promise<AxiosResponse<UserRegister>> =>
-    await axiosInstance.post(`auth/register`, details),
+    register: async (data: UserRegister): Promise<AxiosResponse<UserRegister>> =>
+    await axiosInstance.post(`auth/register`, data),
+    login: async (details: UserLoginDeatils): Promise<AxiosResponse<UserLoginDeatils>> =>
+    await axiosInstance.post(`auth/login`, details),
   }
 };
