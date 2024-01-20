@@ -33,11 +33,11 @@ export const AddReportDialog: FC = () => {
   useEffect(() => {
     const func = async () => {
       if (isOpen) await getReportData();
-      else valueRef.current.value = "";
     };
 
     func();
   }, [getReportData, isOpen]);
+
   const handleClose = useCallback(() => {
     dispatch(closeDialog());
   }, [dispatch]);
@@ -60,10 +60,14 @@ export const AddReportDialog: FC = () => {
     [selectedReportId]
   );
 
-  const handeSubmit = useCallback(async (): Promise<void> => {
-    selectedReportId ? await updateReport() : await addNewReport();
-    handleClose();
-  }, [addNewReport, handleClose, selectedReportId, updateReport]);
+  const handeSubmit = useCallback(
+    async (event): Promise<void> => {
+      event.preventDefault();
+      selectedReportId ? await updateReport() : await addNewReport();
+      handleClose();
+    },
+    [addNewReport, handleClose, selectedReportId, updateReport]
+  );
 
   return (
     <Dialog

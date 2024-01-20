@@ -16,15 +16,18 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DB_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
-      app.use(cors({
-        origin: "*", // Replace with your client app's URL
-        methods: ["GET", "POST"]
-      }))
+      app.use(
+        cors({
+          origin: "*",
+          // Replace with your client app's URL
+          methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+        })
+      );
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
-      app.use('/image', imageRoute);
+      app.use("/image", imageRoute);
       resolve(app);
     });
   });
@@ -32,5 +35,3 @@ const initApp = (): Promise<Express> => {
 };
 
 export default initApp;
-
-

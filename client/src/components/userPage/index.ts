@@ -1,1 +1,1 @@
-export {UserPage as AllReporsPage} from './userPage'
+export {UserPage} from './userPage'
