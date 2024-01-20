@@ -1,5 +1,5 @@
-import { FC, useCallback, useMemo, useState } from "react";
-import { List } from "@mui/material";
+import { FC, useCallback, useState } from "react";
+import { List, ListItem } from "@mui/material";
 import { useAppSelector } from "../../../../hooks/store";
 import { IReportItem } from "../../../../models";
 import { selectUserId } from "../../../../store/user";
@@ -26,23 +26,25 @@ export const UpdatesList: FC<IUpdatesListProps> = ({ updates, reportId }) => {
   );
 
   const updateDisplayListItems =
-    updates?.map((update) =>
-      update._id === updateIdToChange ? (
-        <ChangeUpdateDisplay
-          updateId={update._id}
-          updateData={update.data}
-          reportId={reportId}
-          closeUpdate={closeChangeUpdateDisplay}
-        />
-      ) : (
-        <UpdateDisplay
-          openUpdate={openChangeUpdateDisplay}
-          update={update}
-          isEditable={update.ownerId === userId}
-          reportId={reportId}
-        />
-      )
-    ) ?? [];
+    updates?.map((update) => (
+      <ListItem key={update._id}>
+        {update._id === updateIdToChange ? (
+          <ChangeUpdateDisplay
+            updateId={update._id}
+            updateData={update.data}
+            reportId={reportId}
+            closeUpdate={closeChangeUpdateDisplay}
+          />
+        ) : (
+          <UpdateDisplay
+            openUpdate={openChangeUpdateDisplay}
+            update={update}
+            isEditable={update.ownerId === userId}
+            reportId={reportId}
+          />
+        )}
+      </ListItem>
+    )) ?? [];
 
   return (
     <>

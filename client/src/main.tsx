@@ -16,6 +16,11 @@ const defaultTheme = createTheme({
         root: { direction: "rtl" },
       },
     },
+    MuiListItem: {
+      styleOverrides: {
+        root: { padding: "8px 0px" },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: {
         body: {

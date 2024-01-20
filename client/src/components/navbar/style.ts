@@ -14,6 +14,6 @@ export const style: styleType = {
     flexGrow: 1,
   },
   pageContainer: {
-    marginTop: "80px",
+    marginTop: "100px",
   },
 };

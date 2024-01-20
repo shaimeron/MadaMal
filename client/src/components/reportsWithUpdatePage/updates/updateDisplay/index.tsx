@@ -1,10 +1,17 @@
 import { FC, useCallback, useMemo } from "react";
-import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { Delete, ModeEditOutline } from "@mui/icons-material";
 import { IReportItem } from "../../../../models";
 import swal from "sweetalert";
 import { api } from "../../../../api";
 import { style } from "./style";
+import { dateFormater } from "../../../../utils/date";
 
 interface IUpdateDisplayProps {
   reportId: string;
@@ -35,23 +42,40 @@ export const UpdateDisplay: FC<IUpdateDisplayProps> = ({
     openUpdate(update._id);
   }, [openUpdate, update._id]);
 
-  const listItemButtons: JSX.Element = useMemo(
+  const HeadersAction: JSX.Element = useMemo(
     () =>
       isEditable ? (
-        <ListItemIcon>
-          <Delete onClick={handleDelete} sx={style.cardButton} />
-          <ModeEditOutline onClick={handleUpdateClick} sx={style.cardButton} />
-        </ListItemIcon>
+        <>
+          <IconButton onClick={handleDelete}>
+            <Delete />
+          </IconButton>
+          <IconButton onClick={handleUpdateClick}>
+            <ModeEditOutline />
+          </IconButton>
+        </>
       ) : (
         <></>
       ),
     [handleDelete, handleUpdateClick, isEditable]
   );
 
+  const dateDisplay = useMemo(
+    () => dateFormater(update?.creationDate),
+    [update?.creationDate]
+  );
+
   return (
-    <ListItem key={update._id}>
-      <ListItemText primary={update.data} />
-      {listItemButtons}
-    </ListItem>
+    <Card sx={style.cardContainer}>
+      <CardHeader
+        sx={style.cardHeader}
+        action={HeadersAction}
+        title={update.ownerId}
+        subheader={dateDisplay}
+      />
+
+      <CardContent>
+        <Typography>{update.data}</Typography>
+      </CardContent>
+    </Card>
   );
 };

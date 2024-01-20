@@ -1,16 +1,13 @@
 import { styleType } from "../../../../models";
 
 export const style: styleType = {
-  boxForm: {
+  cardContainer: {
     width: "100%",
   },
-  gridText: {
-    width: "73%",
+  cardContent: {
+    paddingBottom: 0,
   },
-  gridButtons: {
-    width: "27%",
-    display: "flex",
-    paddingRight: "6px",
-    justifyContent: "space-between",
+  changeButtom: {
+    marginLeft: "10px",
   },
 };

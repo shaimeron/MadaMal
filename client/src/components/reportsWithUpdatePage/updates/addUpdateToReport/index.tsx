@@ -38,6 +38,8 @@ export const AddUpdateToReport: FC<IAddUpdateToReportProps> = ({
             required
             variant="outlined"
             color="secondary"
+            multiline
+            maxRows={4}
             placeholder="מה העדכון שלך?"
             sx={{ mb: 3 }}
             fullWidth
