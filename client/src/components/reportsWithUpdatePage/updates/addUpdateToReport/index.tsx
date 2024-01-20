@@ -49,8 +49,7 @@ export const AddUpdateToReport: FC<IAddUpdateToReportProps> = ({
           <Button
             variant="outlined"
             type="submit"
-            sx={{ direction: "ltr" }}
-            endIcon={<SendIcon />}
+            endIcon={<SendIcon sx={{ transform: "rotateY(180deg)" }} />}
           >
             הוסף עדכון
           </Button>
