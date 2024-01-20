@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Navbar } from "../navbar";
 import { AllReporsPage } from "../allReports";
 import { UserPage } from "../userPage";
 import { useGetAllReports } from "../../hooks/report";
 import { AddReportDialog } from "../addReportDialog";
 import { Chat } from "../Chat";
 import { ReportsWithUpdatePage } from "../reportsWithUpdatePage";
+import { StaticDisplay } from "../mainDisplay";
 
 export const App: FC = () => {
   useGetAllReports();
@@ -15,7 +15,7 @@ export const App: FC = () => {
     <>
       <AddReportDialog />
       <Routes>
-        <Route path="/" element={<Navbar />}>
+        <Route path="/" element={<StaticDisplay />}>
           <Route index element={<AllReporsPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/chat" element={<Chat />} />

@@ -1,0 +1,1 @@
+export { StaticDisplay } from "./staticDisplay";
