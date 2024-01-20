@@ -58,7 +58,7 @@ export const LoginPage: React.FC = () => {
             dir="rtl"
           />
         </div>
-        <Link href="/register" style={{ marginTop: '10px', display: 'block' }}>
+        <Link href="#/register" style={{ marginTop: '10px', display: 'block' }}>
           לחצו כאן להרשמה
         </Link>
         <Button

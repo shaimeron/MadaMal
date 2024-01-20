@@ -1,7 +1,13 @@
-import axios from "axios";
-import { IReport, IReportDTO, IUpdateInReportDTO } from "../models";
+import axios, { AxiosResponse, HttpStatusCode } from "axios";
+import { IReport, IReportDTO, IUpdateInReportDTO, UserRegister } from "../models";
 
 export const serverURL = "http://localhost:3000";
+
+export interface ApiResponse<T = any> {
+  status: number;
+  data?: T;
+  error?: string;
+}
 
 const axiosInstance = axios.create({
   baseURL: serverURL,
@@ -38,4 +44,8 @@ export const api = {
     getImage: async (filename: string): Promise<string> =>
       (await axiosInstance.get(`/image/getImage/${filename}`)).data,
   },
+  auth: {
+    register: async (details: UserRegister): Promise<AxiosResponse<UserRegister>> =>
+    await axiosInstance.post(`auth/register`, details),
+  }
 };
