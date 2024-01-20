@@ -1,11 +1,8 @@
-import {
-  Button,
-  Card,
-  CardActions,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { FC, useCallback } from "react";
 import { openAdd } from "../../../store/addReport";
 import { useDispatch } from "react-redux";
+import AddIcon from "@mui/icons-material/Add";
 
 export const AddReport: FC = () => {
   const dispatch = useDispatch();
@@ -15,12 +12,8 @@ export const AddReport: FC = () => {
   }, [dispatch]);
 
   return (
-    <Card>
-      <CardActions>
-        <Button size="small" onClick={openAddDialog}>
-          הוסף דיווח
-        </Button>
-      </CardActions>
-    </Card>
+    <Button variant="contained" endIcon={<AddIcon />} onClick={openAddDialog}>
+      הוסף דיווח
+    </Button>
   );
 };
