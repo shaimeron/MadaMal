@@ -4,6 +4,7 @@ import express, { Express } from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import reportsRoute from "./routes/reports.route";
+import usersRoute from "./routes/users.route";
 import authRoute from "./routes/auth_route";
 import cors from "cors";
 import imageRoute from "./routes/image.route";
@@ -28,6 +29,7 @@ const initApp = (): Promise<Express> => {
       app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
       app.use("/image", imageRoute);
+      app.use("/users", usersRoute);
       resolve(app);
     });
   });

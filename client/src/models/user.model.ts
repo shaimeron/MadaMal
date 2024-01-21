@@ -9,3 +9,10 @@ export interface UserRegister extends UserLoginDeatils {
     imageUrl?: string;
 }
 
+export interface UserDto {
+    _id: string;
+    email: string;
+    fullname: string;
+    imageUrl: string;
+}
+

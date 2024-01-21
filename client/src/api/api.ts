@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
-import { IReport, IReportDTO, IUpdateInReportDTO, UserLoginDeatils, UserRegister } from "../models";
+import { IReport, IReportDTO, IUpdateInReportDTO, UserDto, UserLoginDeatils, UserRegister } from "../models";
 
 export const serverURL = "http://localhost:3000";
 
@@ -9,7 +9,12 @@ export interface ApiResponse<T = any> {
   error?: string;
 }
 
-const axiosInstance = axios.create({
+export interface LoginDecodedData {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const axiosInstance = axios.create({
   baseURL: serverURL,
   timeout: 1000,
   headers: {
@@ -47,7 +52,11 @@ export const api = {
   auth: {
     register: async (data: UserRegister): Promise<AxiosResponse<UserRegister>> =>
     await axiosInstance.post(`auth/register`, data),
-    login: async (details: UserLoginDeatils): Promise<AxiosResponse<UserLoginDeatils>> =>
+    login: async (details: UserLoginDeatils): Promise<AxiosResponse<LoginDecodedData>> =>
     await axiosInstance.post(`auth/login`, details),
+  },
+  user: {
+    getById: async (userId: string): Promise<UserDto> =>
+    (await axiosInstance.get(`/users/${userId}`)).data,
   }
 };

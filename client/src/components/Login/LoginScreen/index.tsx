@@ -10,9 +10,12 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google"; // Import the Google icon
-import { MIN_PASSWORD_LENGTH, isValidEmail } from "../utils";
+import { MIN_PASSWORD_LENGTH, handleLoginHeaders, isValidEmail, parseJwt } from "../utils";
 import { api } from "../../../api";
 import { useNavigate } from "react-router-dom";
+import { LoginDecodedData } from "../../../api/api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../store/user";
 
 const theme = createTheme({
   direction: "rtl",
@@ -20,11 +23,40 @@ const theme = createTheme({
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  
+
+  const onLoginSucsses = async (data: LoginDecodedData) => {
+    const { accessToken } = data;
+    const decodedAccessToken = parseJwt(accessToken);
+
+    const userId = decodedAccessToken?._id;
+    if (!userId) {
+      setSnackbarMessage("שגיאה בפרטי ההתחברות נא לנסות שוב");
+      setOpenSnackbar(true);
+
+      return;
+    }
+
+    try {
+      handleLoginHeaders(data);
+      const userDetails = await api.user.getById(userId);
+      dispatch(setUser(userDetails));
+
+
+    } catch (error: any) {
+      setSnackbarMessage("שגיאה בפרטי ההתחברות נא לנסות שוב");
+      setOpenSnackbar(true);
+    }
+
+    alert("התחברת בהצלחה!");
+    navigate("/");
+  };
 
   const handleLogin = async () => {
     if (!isValidEmail(email) || password.length < MIN_PASSWORD_LENGTH) {
@@ -36,10 +68,9 @@ export const LoginPage: React.FC = () => {
 
     try {
       const response = await api.auth.login({ email, password });
-      alert('התחברת בהצלחה!');
-      navigate("/");
+      onLoginSucsses(response.data);
     } catch (error: any) {
-      if(error.response.status === 401) {
+      if (error.response.status === 401) {
         setSnackbarMessage("פרטי ההתחברות שהזנת שגויים");
       } else {
         setSnackbarMessage("אירעה שגיאה בעת התחברות");
