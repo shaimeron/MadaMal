@@ -1,7 +1,7 @@
 import { LoginDecodedData, api } from "../../api/api";
 
 export const MIN_PASSWORD_LENGTH = 3;
-export const ACCSES_TOKEN = "accessToken";
+export const ACCESSS_TOKEN = "accessToken";
 export const REFRESH_TOKEN = "refreshToken";
 
 interface FormValues {
@@ -50,8 +50,21 @@ export const handleLoginHeaders = (data: LoginDecodedData) => {
   localStorage.setItem("refreshToken", refreshToken);
 };
 
+export const refreshAccessToken = async () => {
+  try {
+    const response = await api.auth.refresh();
+
+    console.log('response nowww is', response);
+
+    return response.data.accessToken;
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+    throw error;
+  }
+}
+
 export const handleLogout = () => {
-  localStorage.removeItem(ACCSES_TOKEN);
+  localStorage.removeItem(ACCESSS_TOKEN);
   localStorage.removeItem(REFRESH_TOKEN);
 
   api.auth.logout();

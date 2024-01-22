@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
+import { ACCESSS_TOKEN, refreshAccessToken } from "../components/Login/utils";
 import { IReport, IReportDTO, IUpdateInReportDTO, UserDto, UserLoginDeatils, UserRegister } from "../models";
-import { ACCSES_TOKEN } from "../components/Login/utils";
 
 // TODO - change to env
 export const serverURL = "http://localhost:3000";
@@ -27,7 +27,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem(ACCSES_TOKEN);
+    const accessToken = localStorage.getItem(ACCESSS_TOKEN);
 
     console.log('now is access is ', accessToken);
     if (accessToken) {
@@ -41,6 +41,31 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+axiosInstance.interceptors.response.use(
+  response => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const newAccessToken = await refreshAccessToken();
+        localStorage.setItem(ACCESSS_TOKEN, newAccessToken);
+
+        // Update the authorization header and retry the original request
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        console.error('Error on refreshing token:', refreshError);
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 
 export const api = {
   report: {
@@ -75,6 +100,8 @@ export const api = {
       await axiosInstance.post(`auth/login`, details),
     logout: async (): Promise<AxiosResponse<void>> =>
       await axiosInstance.post(`auth/logout`),
+    refresh: async (): Promise<AxiosResponse<LoginDecodedData>> =>
+      await axiosInstance.post(`auth/refresh`),
   },
   user: {
     getById: async (userId: string): Promise<UserDto> =>
