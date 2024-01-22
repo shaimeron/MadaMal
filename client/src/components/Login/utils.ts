@@ -3,6 +3,10 @@ import { LoginDecodedData, api } from "../../api/api";
 export const MIN_PASSWORD_LENGTH = 3;
 export const ACCESSS_TOKEN = "accessToken";
 export const REFRESH_TOKEN = "refreshToken";
+export const googleApi = {
+  clientId: '544789251553-0qii4frjud6uu674obslmdp6n9uaou08.apps.googleusercontent.com',
+  
+}
 
 interface FormValues {
   fullname: string;

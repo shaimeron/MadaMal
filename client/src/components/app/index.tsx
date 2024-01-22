@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "../navbar";
 import { AllReporsPage } from "../allReports";
@@ -9,9 +9,21 @@ import { LoginPage } from "../Login/LoginScreen";
 import { SignUpPage } from "../Login/RegisterScreen";
 import { Chat } from "../Chat";
 import { ReportsWithUpdatePage } from "../reportsWithUpdatePage";
-
+import { gapi } from 'gapi-script';
+import { googleApi } from "../Login/utils";
 export const App: FC = () => {
   useGetAllReports();
+
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: googleApi.clientId,
+        scope: "",
+      })
+    };
+
+    gapi.load('client:auth2', start);
+  })
 
   return (
     <>

@@ -29,12 +29,10 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem(ACCESSS_TOKEN);
 
-    console.log('now is access is ', accessToken);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-      console.log('ohh nooo', accessToken);
-    }
+    } 
+
     return config;
   },
   (error) => {
