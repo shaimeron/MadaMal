@@ -1,6 +1,8 @@
-import axios, { AxiosResponse, HttpStatusCode } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { IReport, IReportDTO, IUpdateInReportDTO, UserDto, UserLoginDeatils, UserRegister } from "../models";
+import { ACCSES_TOKEN } from "../components/Login/utils";
 
+// TODO - change to env
 export const serverURL = "http://localhost:3000";
 
 export interface ApiResponse<T = any> {
@@ -16,12 +18,29 @@ export interface LoginDecodedData {
 
 export const axiosInstance = axios.create({
   baseURL: serverURL,
-  timeout: 1000,
+  timeout: 15000,
   headers: {
     "Access-Control-Allow-Credentials": true,
     "Access-Control-Allow-Origin": "*",
   },
 });
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem(ACCSES_TOKEN);
+
+    console.log('now is access is ', accessToken);
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      console.log('ohh nooo', accessToken);
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const api = {
   report: {
@@ -51,12 +70,14 @@ export const api = {
   },
   auth: {
     register: async (data: UserRegister): Promise<AxiosResponse<UserRegister>> =>
-    await axiosInstance.post(`auth/register`, data),
+      await axiosInstance.post(`auth/register`, data),
     login: async (details: UserLoginDeatils): Promise<AxiosResponse<LoginDecodedData>> =>
-    await axiosInstance.post(`auth/login`, details),
+      await axiosInstance.post(`auth/login`, details),
+    logout: async (): Promise<AxiosResponse<void>> =>
+      await axiosInstance.post(`auth/logout`),
   },
   user: {
     getById: async (userId: string): Promise<UserDto> =>
-    (await axiosInstance.get(`/users/${userId}`)).data,
+      (await axiosInstance.get(`/users/${userId}`)).data,
   }
 };

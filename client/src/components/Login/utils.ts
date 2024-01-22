@@ -1,10 +1,14 @@
-import { LoginDecodedData, axiosInstance } from "../../api/api";
-import { store } from "../../store";
-import { logout, setUser } from "../../store/user";
+import { LoginDecodedData, api } from "../../api/api";
 
 export const MIN_PASSWORD_LENGTH = 3;
 export const ACCSES_TOKEN = "accessToken";
 export const REFRESH_TOKEN = "refreshToken";
+
+interface FormValues {
+  fullname: string;
+  email: string;
+  password: string;
+}
 
 export const isValidEmail = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,48 +23,49 @@ export const parseJwt = (token: string) => {
   }
 };
 
+export const validateUserForm = ({ fullname, email, password }: FormValues) => {
+  const errors: { [key: string]: string } = {};
+
+  if (!fullname.trim()) {
+    errors.fullname = "שם מלא הינו שדה חובה";
+  }
+
+  if (!email.trim()) {
+    errors.email = "אימייל הינו שדה חובה";
+  } else if (!isValidEmail(email.trim())) {
+    errors.email = 'אנא הזן כתובת דוא"ל חוקית';
+  }
+
+  if (!password.trim() && password.length < MIN_PASSWORD_LENGTH) {
+    errors.password = "סיסמה הינה שדה חובה";
+  }
+
+  return errors;
+};
+
+
 export const handleLoginHeaders = (data: LoginDecodedData) => {
   const { accessToken, refreshToken } = data;
-
   localStorage.setItem("accessToken", accessToken);
   localStorage.setItem("refreshToken", refreshToken);
-
-  // Add an interceptor to include the access token in the request headers
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      const accessToken = localStorage.getItem("accessToken");
-
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
-  // Add an interceptor to include the access token in the request headers
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      const accessToken = localStorage.getItem("accessToken");
-
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
 };
 
 export const handleLogout = () => {
   localStorage.removeItem(ACCSES_TOKEN);
   localStorage.removeItem(REFRESH_TOKEN);
 
-  store.dispatch(logout());
+  api.auth.logout();
 }
+
+export const getUserId = () => {
+  try {
+    const accessToken = localStorage.getItem("accessToken") ?? '';
+    const decodedAccessToken = parseJwt(accessToken);
+
+    return decodedAccessToken?._id || '';
+  } catch (e) {
+    return '';
+  }
+}
+
+export const isUserLoggedIn = () => !!getUserId();

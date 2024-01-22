@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import GoogleIcon from "@mui/icons-material/Google"; // Import the Google icon
 import {
-  Container,
-  Typography,
-  TextField,
   Button,
+  Container,
   CssBaseline,
   Link,
   Snackbar,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import GoogleIcon from "@mui/icons-material/Google"; // Import the Google icon
-import { MIN_PASSWORD_LENGTH, handleLoginHeaders, isValidEmail, parseJwt } from "../utils";
-import { api } from "../../../api";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../../api";
 import { LoginDecodedData } from "../../../api/api";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../../store/user";
+import { MIN_PASSWORD_LENGTH, handleLoginHeaders, isValidEmail, parseJwt } from "../utils";
 
 const theme = createTheme({
   direction: "rtl",
@@ -23,19 +21,19 @@ const theme = createTheme({
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
-  
+
 
   const onLoginSucsses = async (data: LoginDecodedData) => {
     const { accessToken } = data;
     const decodedAccessToken = parseJwt(accessToken);
 
     const userId = decodedAccessToken?._id;
+
     if (!userId) {
       setSnackbarMessage("שגיאה בפרטי ההתחברות נא לנסות שוב");
       setOpenSnackbar(true);
@@ -45,17 +43,13 @@ export const LoginPage: React.FC = () => {
 
     try {
       handleLoginHeaders(data);
-      const userDetails = await api.user.getById(userId);
-      dispatch(setUser(userDetails));
-
-
+      alert("התחברת בהצלחה!");
+      navigate("/");
+      window.location.reload();
     } catch (error: any) {
       setSnackbarMessage("שגיאה בפרטי ההתחברות נא לנסות שוב");
       setOpenSnackbar(true);
     }
-
-    alert("התחברת בהצלחה!");
-    navigate("/");
   };
 
   const handleLogin = async () => {

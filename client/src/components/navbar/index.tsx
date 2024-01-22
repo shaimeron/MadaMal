@@ -10,12 +10,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { style } from "./style";
+import { handleLogout, isUserLoggedIn } from "../Login/utils";
 import { AddReportDialog } from "../addReportDialog";
-import { selectUserId } from "../../store/user";
-import { useAppSelector } from "../../hooks/store";
+import { style } from "./style";
 
 
 interface INavItem {
@@ -38,8 +37,11 @@ const navItems: INavItem[] = [
 ];
 export const Navbar: FC = () => {
   const navigate = useNavigate();
-  const userId: string = useAppSelector(selectUserId);
+  const [isUserLogged, setIdUserLogged] = useState(false);
 
+  useEffect(() => {
+    setIdUserLogged(isUserLoggedIn());
+  }, []);
 
   const navListItems = useMemo(
     () =>
@@ -73,7 +75,7 @@ export const Navbar: FC = () => {
                   <Grid item sx={style.itemContainer}>
 
                     {
-                      !userId &&
+                      !isUserLogged &&
                       <ListItemButton onClick={() => navigate("/login")}>
                         <ListItemText primary={"התחבר"} />
                       </ListItemButton>
@@ -89,9 +91,15 @@ export const Navbar: FC = () => {
                   <Grid item sx={style.itemContainer}>
                     <Grid item>מזג אוויר</Grid>
                     {
-                      !!userId &&
-                      <Grid item>התנתקות</Grid>
-                    }
+                      isUserLogged &&
+                      <ListItemButton onClick={() => {
+                        handleLogout();
+                        alert('התנתקת בהצלחה!')
+                        navigate("/login");
+                        window.location.reload();
+                      }}>
+                        <ListItemText primary={"התנתק"} />
+                      </ListItemButton>}
                   </Grid>
                 </Grid>
               </Toolbar>
