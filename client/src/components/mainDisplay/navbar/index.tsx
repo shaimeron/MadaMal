@@ -12,6 +12,7 @@ import {
 import { FC, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { style } from "./style";
+import {WeatherDisplay} from "../../Weather";
 
 interface INavItem {
   link: string;
@@ -68,7 +69,7 @@ export const Navbar: FC = () => {
               <Typography variant="h6"> MADAMAL - דיווחי מדא</Typography>
             </Grid>
             <Grid item sx={style.itemContainer}>
-              <Grid item>מזג אוויר</Grid>
+              <Grid item>מזג אוויר{<WeatherDisplay/>} </Grid>
               <Grid item>התנתק</Grid>
             </Grid>
           </Grid>
