@@ -1,2 +1,2 @@
 export { authMiddleware, AuthResquest } from "./auth_middleware";
-export { imagesDirName, saveFile, getFileByName } from "./imageHandler";
+export { imagesDirName, saveFile, getFileUserId } from "./imageHandler";
