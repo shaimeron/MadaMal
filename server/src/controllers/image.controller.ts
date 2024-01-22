@@ -1,6 +1,5 @@
-import {saveFile, getFileByName} from '../common/imageHandler';
+import {saveFile, getFileUserId} from '../common/imageHandler';
 import {Request, Response} from "express";
-import fs from "fs";
 
 export class ImageController {
     uploadImage = (req: Request, res: Response) => {
@@ -8,22 +7,18 @@ export class ImageController {
             return res.status(400).send('No Image uploaded.');
         }
 
-        saveFile(req.file, (err) => {
+        saveFile(req.file, req.params.userId, (err) => {
             if (err) {
                 return res.status(500).send('Server error in saving Image.');
             }
 
-            res.json({message: 'Image uploaded successfully', filename: req.body.imageName});
+            res.status(200).send('Image saved.');
         });
     };
 
-    getImage = (req: Request, res: Response) => {
-        const filepath = getFileByName(req.params.filename);
+    getImage = async (req: Request, res: Response) => {
+        const filepath = await getFileUserId(req.params.userId);
 
-        if (!fs.existsSync(filepath)) {
-            return res.status(404).send('Image not found');
-        }
-
-        res.sendFile(filepath);
+        res.send(filepath);
     };
 }

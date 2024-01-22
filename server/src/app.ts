@@ -16,6 +16,7 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DB_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
+      app.use(express.static('public'));
       app.use(
         cors({
           origin: "*",
