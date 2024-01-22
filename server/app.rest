@@ -12,7 +12,7 @@ GET http://localhost:3000/student?name=John%20Doe
 GET http://localhost:3000/student/1234567891
 
 
-###.
+###
 
 POST http://localhost:3000/student
 Content-Type: application/json
