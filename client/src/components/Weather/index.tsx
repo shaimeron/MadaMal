@@ -31,7 +31,7 @@ export const WeatherDisplay: FC = () => {
             {isLoading ? (
                 <p>Loading weather data...</p>
             ) : (
-                <p>Current temperature in Tel Aviv: {temperature}°C</p>
+                <span>{temperature}°C</span>
             )}
         </div>
     );
