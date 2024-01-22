@@ -32,10 +32,17 @@ export const userSlice = createSlice({
      fullname: action.payload.fullname,
      imageUrl: action.payload.imageUrl ?? '',
     }),
+    logout: (state) => ({
+      ...state,
+      userId: '',
+      email: '',
+      fullname: '',
+      imageUrl: '',
+     }),
   },
 })
 
-export const { setUser } = userSlice.actions
+export const { setUser,logout } = userSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUserId = (state: RootState) => state.user.userId

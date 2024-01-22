@@ -1,6 +1,10 @@
 import { LoginDecodedData, axiosInstance } from "../../api/api";
+import { store } from "../../store";
+import { logout, setUser } from "../../store/user";
 
 export const MIN_PASSWORD_LENGTH = 3;
+export const ACCSES_TOKEN = "accessToken";
+export const REFRESH_TOKEN = "refreshToken";
 
 export const isValidEmail = (value: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,3 +57,10 @@ export const handleLoginHeaders = (data: LoginDecodedData) => {
     }
   );
 };
+
+export const handleLogout = () => {
+  localStorage.removeItem(ACCSES_TOKEN);
+  localStorage.removeItem(REFRESH_TOKEN);
+
+  store.dispatch(logout());
+}

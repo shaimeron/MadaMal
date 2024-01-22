@@ -14,6 +14,9 @@ import { FC, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { style } from "./style";
 import { AddReportDialog } from "../addReportDialog";
+import { selectUserId } from "../../store/user";
+import { useAppSelector } from "../../hooks/store";
+
 
 interface INavItem {
   link: string;
@@ -35,6 +38,8 @@ const navItems: INavItem[] = [
 ];
 export const Navbar: FC = () => {
   const navigate = useNavigate();
+  const userId: string = useAppSelector(selectUserId);
+
 
   const navListItems = useMemo(
     () =>
@@ -66,9 +71,14 @@ export const Navbar: FC = () => {
                   justifyContent="space-between"
                 >
                   <Grid item sx={style.itemContainer}>
-                    <ListItemButton onClick={() => navigate("/login")}>
-                      <ListItemText primary={"התחבר"} />
-                    </ListItemButton>
+
+                    {
+                      !userId &&
+                      <ListItemButton onClick={() => navigate("/login")}>
+                        <ListItemText primary={"התחבר"} />
+                      </ListItemButton>
+                    }
+
                     <Grid item>
                       <List sx={style.linkList}>{navListItems}</List>
                     </Grid>
@@ -78,7 +88,10 @@ export const Navbar: FC = () => {
                   </Grid>
                   <Grid item sx={style.itemContainer}>
                     <Grid item>מזג אוויר</Grid>
-                    <Grid item>התנתק</Grid>
+                    {
+                      !!userId &&
+                      <Grid item>התנתקות</Grid>
+                    }
                   </Grid>
                 </Grid>
               </Toolbar>
