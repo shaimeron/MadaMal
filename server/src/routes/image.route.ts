@@ -9,7 +9,7 @@ const uploadImage = multer({ dest: imagesDirName, storage: storage });
 
 const imageController = new ImageController();
 
-router.post("/uploadImage", uploadImage.single('image'), imageController.uploadImage);
-router.get("/getImage/:filename", imageController.getImage);
+router.post("/uploadImage/:userId", uploadImage.single('image'), imageController.uploadImage);
+router.get("/getImage/:userId", imageController.getImage);
 
 export default router;

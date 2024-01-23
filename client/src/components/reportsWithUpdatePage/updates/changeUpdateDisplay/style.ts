@@ -1,8 +1,13 @@
 import { styleType } from "../../../../models";
 
 export const style: styleType = {
-  listContainer: {
+  cardContainer: {
     width: "100%",
-    marginTop: "20px",
+  },
+  cardContent: {
+    paddingBottom: 0,
+  },
+  changeButtom: {
+    marginLeft: "10px",
   },
 };

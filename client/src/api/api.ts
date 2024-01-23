@@ -79,6 +79,9 @@ export const api = {
       await axiosInstance.put(`/reports`, reportDTO),
     addUpdateToReport: async (updateDTO: IUpdateInReportDTO): Promise<void> =>
       await axiosInstance.post(`/reports/update`, updateDTO),
+    changeUpdateInReport: async (
+      updateDTO: IUpdateInReportDTO
+    ): Promise<void> => await axiosInstance.put(`/reports/update`, updateDTO),
     deleteUpdateFromReport: async (
       reportId: string,
       updateId: string
@@ -86,10 +89,10 @@ export const api = {
       await axiosInstance.delete(`/reports/update/${reportId}/${updateId}`),
   },
   image: {
-    uploadImage: async (image: FormData): Promise<string> =>
-      await axiosInstance.post("/image/uploadImage", image),
-    getImage: async (filename: string): Promise<string> =>
-      (await axiosInstance.get(`/image/getImage/${filename}`)).data,
+    uploadImage: async (image: FormData, userId: string): Promise<string> =>
+      await axiosInstance.post(`/image/uploadImage/${userId}`, image),
+    getImage: async (userId: string): Promise<string> =>
+      (await axiosInstance.get(`/image/getImage/${userId}`)).data,
   },
   auth: {
     register: async (data: UserRegister): Promise<AxiosResponse<UserRegister>> =>
