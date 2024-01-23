@@ -1,4 +1,3 @@
-import GoogleIcon from "@mui/icons-material/Google"; // Import the Google icon
 import {
   Button,
   Container,
@@ -13,8 +12,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import { LoginDecodedData } from "../../../api/api";
-import { MIN_PASSWORD_LENGTH, googleApi, handleLoginHeaders, isValidEmail, parseJwt } from "../utils";
-import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import { MIN_PASSWORD_LENGTH, handleLoginHeaders, isValidEmail, parseJwt } from "../utils";
 
 const theme = createTheme({
   direction: "rtl",
@@ -78,15 +76,6 @@ export const LoginPage: React.FC = () => {
     setOpenSnackbar(false);
   };
 
-  const handleGoogleLoginSucsses = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-
-  }
-
-  const handleGoogleLogin = () => {
-    // Add your Google login logic here
-    console.log("Login with Google button clicked");
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -127,15 +116,6 @@ export const LoginPage: React.FC = () => {
         <Link href="#/register" style={{ marginTop: "10px", display: "block" }}>
           לחצו כאן להרשמה
         </Link>
-
-        <GoogleLogin
-          clientId={googleApi.clientId}
-          buttonText="התחברות עם גוגל"
-          onSuccess={handleGoogleLoginSucsses}
-          onFailure={() => alert('התחברות באמצעות גוגל נכשלה')}
-          cookiePolicy={'single_host_origin'}
-          isSignedIn={true}
-        />
 
         <Button
           type="button"

@@ -71,6 +71,7 @@ export const UserForm: React.FC<UserFormProps> = ({
           />
         </Grid>
         <Grid item xs={12}>
+        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
           {selectedImage && (
             <Avatar
               alt="Profile"
@@ -84,6 +85,7 @@ export const UserForm: React.FC<UserFormProps> = ({
             onChange={onImageChange}
             style={{ marginLeft: "10px" }}
           />
+          </div>
         </Grid>
       </Grid>
       <Button

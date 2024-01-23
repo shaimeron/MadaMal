@@ -1,15 +1,16 @@
 // SignUpPage.tsx
-import {
-  Container,
-  Snackbar,
-  Typography
-} from "@mui/material";
+import { Container, Snackbar, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import { UserForm } from "../../common/userForm";
-import { validateUserForm } from '../utils'; // adjust the import path
+import { validateUserForm, googleApi } from "../utils"; // adjust the import path
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
 
 const theme = createTheme({
   direction: "rtl",
@@ -47,7 +48,7 @@ export const SignUpPage: React.FC = () => {
 
         if (response.status === 201) {
           alert("המשתמש נוצר בהצלחה");
-          navigate('/login')
+          navigate("/login");
         } else {
           setSnackbarMessage("אירעה שגיאה ביצירת המשתמש");
           setOpenSnackbar(true);
@@ -68,12 +69,35 @@ export const SignUpPage: React.FC = () => {
     setOpenSnackbar(false);
   };
 
+  const handleGoogleLoginSucsses = (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    const { profileObj } = response;
+    setEmail(profileObj.email);
+    setFullname(`${profileObj.givenName} ${profileObj.familyName}`);
+    setSelectedImage(profileObj.imageUrl);
+    console.log(response);
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs" style={{ textAlign: 'right' }}>
-        <Typography variant="h5" style={{ textAlign: 'center', marginBottom: '20px' }}>
+      <Container component="main" maxWidth="xs" style={{ textAlign: "right" }}>
+        <Typography
+          variant="h5"
+          style={{ textAlign: "center", marginBottom: "20px" }}
+        >
           הרשמה
         </Typography>
+        <div style={{display: 'flex', justifyContent: 'center', marginBottom: 15}}>
+          <GoogleLogin
+            clientId={googleApi.clientId}
+            buttonText="הרשמה באמצעות גוגל"
+            onSuccess={handleGoogleLoginSucsses}
+            onFailure={() => alert("התחברות באמצעות גוגל נכשלה")}
+            cookiePolicy={"single_host_origin"}
+            isSignedIn={true}
+          />
+        </div>
         <UserForm
           mode="signup"
           fullname={fullname}
@@ -92,7 +116,8 @@ export const SignUpPage: React.FC = () => {
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
           message={snackbarMessage}
-        />      </Container>
+        />{" "}
+      </Container>
     </ThemeProvider>
   );
 };
