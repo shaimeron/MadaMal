@@ -8,6 +8,20 @@ import usersRoute from "./routes/users.route";
 import authRoute from "./routes/auth_route";
 import cors from "cors";
 import imageRoute from "./routes/image.route";
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'MadaMal API',
+      version: '1.0.0',
+    },
+  },
+  apis: [`${__dirname}/routes/*.ts`], // Path to the API docs
+};
+const openapiSpecification = swaggerJSDoc(options);
 
 const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
@@ -30,6 +44,7 @@ const initApp = (): Promise<Express> => {
       app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
       app.use("/image", imageRoute);
+      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
       app.use("/users", usersRoute);
       resolve(app);
     });
