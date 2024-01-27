@@ -1,6 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import { ACCESSS_TOKEN, refreshAccessToken } from "../components/Login/utils";
-import { IReport, IReportDTO, IUpdateInReportDTO, UserDto, UserLoginDeatils, UserRegister } from "../models";
+import {
+  IReport,
+  IReportDTO,
+  IUpdateInReportDTO,
+  UserDto,
+  UserLoginDeatils,
+  UserRegister,
+} from "../models";
 
 // TODO - change to env
 export const serverURL = "http://localhost:3000";
@@ -31,7 +38,7 @@ axiosInstance.interceptors.request.use(
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-    } 
+    }
 
     return config;
   },
@@ -41,7 +48,7 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  response => response,
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -52,10 +59,10 @@ axiosInstance.interceptors.response.use(
         localStorage.setItem(ACCESSS_TOKEN, newAccessToken);
 
         // Update the authorization header and retry the original request
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        console.error('Error on refreshing token:', refreshError);
+        console.error("Error on refreshing token:", refreshError);
         return Promise.reject(refreshError);
       }
     }
@@ -63,7 +70,6 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 export const api = {
   report: {
@@ -89,15 +95,20 @@ export const api = {
       await axiosInstance.delete(`/reports/update/${reportId}/${updateId}`),
   },
   image: {
-    uploadImage: async (image: FormData, userId: string): Promise<string> =>
-      await axiosInstance.post(`/image/uploadImage/${userId}`, image),
-    getImage: async (userId: string): Promise<string> =>
-      (await axiosInstance.get(`/image/getImage/${userId}`)).data,
+    uploadImage: async (image: FormData, imageName?: string): Promise<string> =>
+      (await axiosInstance.post(`/image/uploadImage/${imageName ?? ""}`, image))
+        .data,
+    getImage: async (fileName: string): Promise<string> =>
+      await axiosInstance.get(`/images/${fileName}`),
   },
   auth: {
-    register: async (data: UserRegister): Promise<AxiosResponse<UserRegister>> =>
+    register: async (
+      data: UserRegister
+    ): Promise<AxiosResponse<UserRegister>> =>
       await axiosInstance.post(`auth/register`, data),
-    login: async (details: UserLoginDeatils): Promise<AxiosResponse<LoginDecodedData>> =>
+    login: async (
+      details: UserLoginDeatils
+    ): Promise<AxiosResponse<LoginDecodedData>> =>
       await axiosInstance.post(`auth/login`, details),
     logout: async (): Promise<AxiosResponse<void>> =>
       await axiosInstance.post(`auth/logout`),
@@ -107,5 +118,5 @@ export const api = {
   user: {
     getById: async (userId: string): Promise<UserDto> =>
       (await axiosInstance.get(`/users/${userId}`)).data,
-  }
+  },
 };

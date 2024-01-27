@@ -98,7 +98,7 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
           <CardMedia
             component="img"
             height="194"
-            src={`${serverURL}/images/${report.imageName}`}
+            src={`${serverURL}/${report.imageName}`}
           />
         )}
       </CardContent>

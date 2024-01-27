@@ -6,29 +6,31 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FC } from "react";
 import { useAppSelector } from "../../hooks/store";
 import { closeDialog, selectReportDialogStatus } from "../../store/addReport";
 import { useDispatch } from "react-redux";
 import { useAddDialog } from "./hooks/useAddDialog";
+import { ImageInput } from "../common/imageInput";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
-  const { getReportData, handeSave, titleText, submitText } = useAddDialog();
+  const [selectedImage, setSelectedImage] = useState<File>();
+  const { getReport, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
   const valueRef: React.Ref<any> = useRef("");
 
   useEffect(() => {
     const func = async () => {
       if (isOpen) {
-        const data = await getReportData();
-        valueRef.current.value = data;
+        const report = await getReport();
+        valueRef.current.value = report ? report.data : "";
       }
     };
 
     func();
-  }, [getReportData, isOpen]);
+  }, [getReport, isOpen]);
 
   const handleClose = useCallback(() => {
     if (isOpen) {
@@ -40,10 +42,10 @@ export const AddReportDialog: FC = () => {
   const handeSubmit = useCallback(
     async (event: any): Promise<void> => {
       event.preventDefault();
-      await handeSave(valueRef.current.value);
+      await handeSave(valueRef.current.value, selectedImage);
       handleClose();
     },
-    [handeSave, handleClose]
+    [handeSave, handleClose, selectedImage]
   );
 
   return (
@@ -70,6 +72,7 @@ export const AddReportDialog: FC = () => {
           label="דיווח"
           inputRef={valueRef}
         />
+        <ImageInput onImageSelected={setSelectedImage} />
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="error" onClick={handleClose}>

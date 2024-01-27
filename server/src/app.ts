@@ -10,6 +10,7 @@ import cors from "cors";
 import imageRoute from "./routes/image.route";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
+import { IMAGES_DIR } from "./common/imageHandler";
 
 const options = {
   definition: {
@@ -31,7 +32,7 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DB_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
-      app.use(express.static("public"));
+      app.use(express.static(IMAGES_DIR));
       app.use(
         cors({
           origin: "*",

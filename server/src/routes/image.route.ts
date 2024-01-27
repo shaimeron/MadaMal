@@ -1,11 +1,8 @@
-import express, {Router} from "express";
-import {ImageController} from "../controllers";
-import multer from "multer";
-import {imagesDirName} from "../common";
-const router: Router = express.Router();
-const storage = multer.memoryStorage();
+import express, { Router } from "express";
+import { ImageController } from "../controllers";
+import { uploadImage } from "./utils";
 
-const uploadImage = multer({ dest: imagesDirName, storage: storage });
+const router: Router = express.Router();
 
 const imageController = new ImageController();
 
@@ -38,8 +35,11 @@ const imageController = new ImageController();
  *       500:
  *         description: Internal server error.
  */
-router.post("/uploadImage/:userId", uploadImage.single('image'), imageController.uploadImage);
-
+router.post(
+  "/uploadImage/:fileName?",
+  uploadImage.single("image"),
+  imageController.uploadImage
+);
 /**
  * @swagger
  * /getImage/{userId}:
@@ -68,5 +68,4 @@ router.post("/uploadImage/:userId", uploadImage.single('image'), imageController
  *         description: Internal server error.
  */
 router.get("/getImage/:userId", imageController.getImage);
-
 export default router;
