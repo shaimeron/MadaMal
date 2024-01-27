@@ -10,18 +10,18 @@ const imageController = new ImageController();
  * @swagger
  * /uploadImage/{userId}:
  *   post:
- *     summary: Uploads an image for a specific user.
- *     description: Allows a user to upload an image file to their profile. The image file should be sent as form data.
+ *     summary: Uploads an image to server.
+ *     description: upload an image file to the server and if fileName received so delete the file. The image file should be sent as form data. the response is the name of the created file
  *     tags:
  *       - Images
  *     consumes:
  *       - multipart/form-data
  *     parameters:
  *       - in: path
- *         name: userId
- *         required: true
+ *         name: fileName
+ *         required: false
  *         type: string
- *         description: The unique identifier of the user.
+ *         description: The previus image file name of the report.
  *       - in: formData
  *         name: image
  *         type: file

@@ -60,6 +60,7 @@ router.get("/:id", reportsController.getById.bind(reportsController));
  *             _id: 5f8f1a8b0f1b5b1b7c9bce1a
  *             ownerId: 5f8f1a8b0f1b5b1b7c9bce1a
  *             data: This is a report.
+ *             imageName: image.jpeg.
  *
  *     responses:
  *       201:
@@ -87,6 +88,7 @@ router.post("/", reportsController.createReport.bind(reportsController));
  *             _id: 5f8f1a8b0f1b5b1b7c9bce1a
  *             ownerId: 5f8f1a8b0f1b5b1b7c9bce1a
  *             data: This is a report.
+ *             imageName: image.jpeg.
  *     responses:
  *       200:
  *         description: Report updated successfully.
