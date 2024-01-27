@@ -9,7 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { style } from "./style";
 import { WeatherDisplay } from "../../Weather";
@@ -41,6 +41,17 @@ export const Navbar: FC = () => {
     setIdUserLogged(isUserLoggedIn());
   }, []);
 
+  const handleLoginClick = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
+
+  const handleLogoutClick = useCallback(() => {
+    handleLogout();
+    alert("התנתקת בהצלחה!");
+    navigate("/login");
+    window.location.reload();
+  }, [navigate]);
+
   const navListItems = useMemo(
     () =>
       navItems.map((item) => (
@@ -55,6 +66,7 @@ export const Navbar: FC = () => {
       )),
     [navigate]
   );
+
   return (
     <Box sx={style.containerBox}>
       <AppBar position="fixed">
@@ -67,31 +79,26 @@ export const Navbar: FC = () => {
           >
             <Grid item sx={style.itemContainer}>
               {!isUserLogged && (
-                <ListItemButton onClick={() => navigate("/login")}>
+                <ListItemButton onClick={handleLoginClick}>
                   <ListItemText primary={"התחבר"} />
                 </ListItemButton>
               )}{" "}
-              <Grid item>
-                <List sx={style.linkList}>{navListItems}</List>
-              </Grid>
+            </Grid>
+            <Grid item sx={style.itemContainer}>
+              <List sx={style.linkList}>{navListItems}</List>
             </Grid>
             <Grid item sx={style.nameContainer}>
               <Typography variant="h6"> MADAMAL - דיווחי מדא</Typography>
             </Grid>
+            <Grid item sx={style.weatherContainer}>
+              מזג אוויר{<WeatherDisplay />}
+            </Grid>
             <Grid item sx={style.itemContainer}>
-              <Grid item>מזג אוויר{<WeatherDisplay />} </Grid>
               {isUserLogged && (
-                <ListItemButton
-                  onClick={() => {
-                    handleLogout();
-                    alert("התנתקת בהצלחה!");
-                    navigate("/login");
-                    window.location.reload();
-                  }}
-                >
+                <ListItemButton onClick={handleLogoutClick}>
                   <ListItemText primary={"התנתק"} />
                 </ListItemButton>
-              )}{" "}
+              )}
             </Grid>
           </Grid>
         </Toolbar>
