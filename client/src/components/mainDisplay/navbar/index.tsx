@@ -9,10 +9,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { style } from "./style";
-import {WeatherDisplay} from "../../Weather";
+import { WeatherDisplay } from "../../Weather";
+import { handleLogout, isUserLoggedIn } from "../../Login/utils";
 
 interface INavItem {
   link: string;
@@ -34,6 +35,11 @@ const navItems: INavItem[] = [
 ];
 export const Navbar: FC = () => {
   const navigate = useNavigate();
+  const [isUserLogged, setIdUserLogged] = useState(false);
+
+  useEffect(() => {
+    setIdUserLogged(isUserLoggedIn());
+  }, []);
 
   const navListItems = useMemo(
     () =>
@@ -60,7 +66,11 @@ export const Navbar: FC = () => {
             justifyContent="space-between"
           >
             <Grid item sx={style.itemContainer}>
-              <Grid item>התחבר</Grid>
+              {!isUserLogged && (
+                <ListItemButton onClick={() => navigate("/login")}>
+                  <ListItemText primary={"התחבר"} />
+                </ListItemButton>
+              )}{" "}
               <Grid item>
                 <List sx={style.linkList}>{navListItems}</List>
               </Grid>
@@ -69,8 +79,19 @@ export const Navbar: FC = () => {
               <Typography variant="h6"> MADAMAL - דיווחי מדא</Typography>
             </Grid>
             <Grid item sx={style.itemContainer}>
-              <Grid item>מזג אוויר{<WeatherDisplay/>} </Grid>
-              <Grid item>התנתק</Grid>
+              <Grid item>מזג אוויר{<WeatherDisplay />} </Grid>
+              {isUserLogged && (
+                <ListItemButton
+                  onClick={() => {
+                    handleLogout();
+                    alert("התנתקת בהצלחה!");
+                    navigate("/login");
+                    window.location.reload();
+                  }}
+                >
+                  <ListItemText primary={"התנתק"} />
+                </ListItemButton>
+              )}{" "}
             </Grid>
           </Grid>
         </Toolbar>

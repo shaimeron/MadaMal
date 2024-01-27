@@ -7,7 +7,11 @@ import { selectUserId } from "../../../store/user";
 
 interface IUseAddDialog {
   getReport: () => Promise<IReport | null>;
-  handeSave: (data: string, image: any) => Promise<void>;
+  handeSave: (
+    data: string,
+    image: any,
+    imageFileName?: string
+  ) => Promise<void>;
   titleText: string;
   submitText: string;
 }
@@ -26,7 +30,11 @@ export const useAddDialog = (): IUseAddDialog => {
   );
 
   const handeSave = useCallback(
-    async (data: string, imageFile?: File): Promise<void> => {
+    async (
+      data: string,
+      imageFile?: File,
+      imageFileName?: string
+    ): Promise<void> => {
       const dto: IReportDTO = {
         data,
       };
@@ -35,7 +43,7 @@ export const useAddDialog = (): IUseAddDialog => {
         const image = new FormData();
         image.append("image", imageFile);
 
-        const imageName = await api.image.uploadImage(image);
+        const imageName = await api.image.uploadImage(image, imageFileName);
         dto.imageName = imageName;
       }
 

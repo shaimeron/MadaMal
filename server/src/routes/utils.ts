@@ -8,9 +8,7 @@ const storage = multer.diskStorage({
     return cb(null, IMAGES_DIR);
   },
   filename: function (req, file, cb) {
-    const fileNameForSave =
-      (req.params.fileName ?? uuidv4()) + path.extname(file.originalname);
-    return cb(null, fileNameForSave);
+    return cb(null, uuidv4() + path.extname(file.originalname));
   },
 });
 

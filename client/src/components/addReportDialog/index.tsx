@@ -17,6 +17,8 @@ import { ImageInput } from "../common/imageInput";
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
   const [selectedImage, setSelectedImage] = useState<File>();
+  const [defaultImageName, setDefaultImageName] = useState<string>();
+
   const { getReport, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
   const valueRef: React.Ref<any> = useRef("");
@@ -26,6 +28,7 @@ export const AddReportDialog: FC = () => {
       if (isOpen) {
         const report = await getReport();
         valueRef.current.value = report ? report.data : "";
+        report?.imageName && setDefaultImageName(report.imageName);
       }
     };
 
@@ -36,16 +39,18 @@ export const AddReportDialog: FC = () => {
     if (isOpen) {
       dispatch(closeDialog());
       valueRef.current.value = "";
+      setSelectedImage(undefined);
+      setDefaultImageName(undefined);
     }
   }, [dispatch, isOpen]);
 
   const handeSubmit = useCallback(
     async (event: any): Promise<void> => {
       event.preventDefault();
-      await handeSave(valueRef.current.value, selectedImage);
+      await handeSave(valueRef.current.value, selectedImage, defaultImageName);
       handleClose();
     },
-    [handeSave, handleClose, selectedImage]
+    [defaultImageName, handeSave, handleClose, selectedImage]
   );
 
   return (
@@ -72,7 +77,10 @@ export const AddReportDialog: FC = () => {
           label="דיווח"
           inputRef={valueRef}
         />
-        <ImageInput onImageSelected={setSelectedImage} />
+        <ImageInput
+          onImageSelected={setSelectedImage}
+          defaultImageName={defaultImageName}
+        />
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="error" onClick={handleClose}>

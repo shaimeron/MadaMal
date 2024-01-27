@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { Avatar } from "@mui/material";
+import { Box, CardMedia } from "@mui/material";
+import { serverURL } from "../../../api";
+import { style } from "./style";
 
 interface ImageInputProps {
   onImageSelected: (file?: File) => void;
+  defaultImageName?: string;
 }
-export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelected }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+export const ImageInput: React.FC<ImageInputProps> = ({
+  onImageSelected,
+  defaultImageName,
+}) => {
+  const [selectedImageToDisplay, setSelectedImageToDisplay] =
+    useState<string>();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -14,27 +21,34 @@ export const ImageInput: React.FC<ImageInputProps> = ({ onImageSelected }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
+        setSelectedImageToDisplay(reader.result as string);
       };
       reader.readAsDataURL(file);
+    } else {
+      setSelectedImageToDisplay("");
     }
   };
 
   return (
-    <>
-      {selectedImage && (
-        <Avatar
-          alt="Profile"
-          src={selectedImage}
-          sx={{ width: 100, height: 100 }}
+    <Box sx={style.boxContainer}>
+      {(selectedImageToDisplay || defaultImageName) && (
+        <CardMedia
+          component="img"
+          alt="Preview"
+          src={
+            selectedImageToDisplay
+              ? selectedImageToDisplay
+              : `${serverURL}/${defaultImageName}`
+          }
+          sx={style.img}
         />
       )}
       <input
         type="file"
         accept="image/*"
         onChange={handleImageChange}
-        style={{ marginLeft: "10px" }}
+        style={{ marginTop: "10px", direction: "rtl" }}
       />
-    </>
+    </Box>
   );
 };

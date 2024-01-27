@@ -40,32 +40,5 @@ router.post(
   uploadImage.single("image"),
   imageController.uploadImage
 );
-/**
- * @swagger
- * /getImage/{userId}:
- *   get:
- *     summary: Retrieves the image path for a specific user.
- *     description: Provides the ability to retrieve the image path associated with a given user's profile.
- *     tags:
- *       - Images
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         type: string
- *         description: The unique identifier of the user.
- *     responses:
- *       200:
- *         description: Image path retrieved successfully.
- *         content:
- *           string:
- *             schema:
- *               type: string
- *               format: string
- *       404:
- *         description: No image found for the given user ID.
- *       500:
- *         description: Internal server error.
- */
-router.get("/getImage/:userId", imageController.getImage);
+
 export default router;

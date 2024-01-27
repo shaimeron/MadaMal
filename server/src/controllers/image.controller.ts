@@ -1,4 +1,7 @@
 import { Request, Response } from "express";
+import { IMAGES_DIR } from "../common/imageHandler";
+import path from "path";
+import fs from "fs";
 
 export class ImageController {
   uploadImage = (req: Request, res: Response) => {
@@ -6,11 +9,12 @@ export class ImageController {
       return res.status(400).send("No Image uploaded.");
     }
 
-    res.status(200).send(req?.file.filename);
-  };
+    if (req.params.fileName) {
+      fs.rmSync(path.join(IMAGES_DIR, req.params.fileName), {
+        force: true,
+      });
+    }
 
-  getImage = async (req: Request, res: Response) => {
-    // const filepath = await getFileUserId(req.params.userId);
-    // res.send(filepath);
+    res.status(200).send(req?.file.filename);
   };
 }

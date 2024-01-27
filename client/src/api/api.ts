@@ -98,8 +98,6 @@ export const api = {
     uploadImage: async (image: FormData, imageName?: string): Promise<string> =>
       (await axiosInstance.post(`/image/uploadImage/${imageName ?? ""}`, image))
         .data,
-    getImage: async (fileName: string): Promise<string> =>
-      await axiosInstance.get(`/images/${fileName}`),
   },
   auth: {
     register: async (

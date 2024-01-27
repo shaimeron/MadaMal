@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { AllReporsPage } from "../allReports";
 import { UserPage } from "../userPage";
 import { useGetAllReports } from "../../hooks/report";
-import { AddReportDialog } from "../addReportDialog";
 import { LoginPage } from "../Login/LoginScreen";
 import { SignUpPage } from "../Login/RegisterScreen";
 import { Chat } from "../Chat";
@@ -28,7 +27,6 @@ export const App: FC = () => {
 
   return (
     <>
-      <AddReportDialog />
       <Routes>
         <Route path="/" element={<StaticDisplay />}>
           <Route index element={<AllReporsPage />} />
