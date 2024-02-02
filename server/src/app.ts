@@ -6,7 +6,6 @@ import bodyParser from "body-parser";
 import reportsRoute from "./routes/reports.route";
 import usersRoute from "./routes/users.route";
 import authRoute from "./routes/auth_route";
-import cors from "cors";
 import imageRoute from "./routes/image.route";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
@@ -33,14 +32,12 @@ const initApp = (): Promise<Express> => {
     mongoose.connect(url!).then(() => {
       const app = express();
       app.use(express.static(IMAGES_DIR));
-      app.use(
-        cors({
-          origin: "*",
-          // Replace with your client app's URL
-
-          methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "*"],
-        })
-      );
+      app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "*");
+        res.header("Access-Control-Allow-Headers", "*");
+        next();
+      });
       app.use(bodyParser.json({ limit: "50mb" }));
       app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
       app.use("/reports", reportsRoute);
