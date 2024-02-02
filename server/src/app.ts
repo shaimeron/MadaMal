@@ -46,12 +46,12 @@ const initApp = (): Promise<Express> => {
       app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
       app.use("/image", imageRoute);
+      app.use("/users", usersRoute);
       app.use(
         "/api-docs",
         swaggerUi.serve,
         swaggerUi.setup(openapiSpecification)
       );
-      app.use("/users", usersRoute);
       resolve(app);
     });
   });

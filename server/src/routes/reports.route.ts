@@ -6,7 +6,7 @@ const reportsController = new ReportsController();
 
 /**
  * @swagger
- * /all:
+ * /reports/all:
  *   get:
  *     summary: Retrieve all reports.
  *     description: Fetches a list of all reports in the system.
@@ -22,7 +22,7 @@ router.get("/all", reportsController.getAll.bind(reportsController));
 
 /**
  * @swagger
- * /{id}:
+ * /reports/{id}:
  *   get:
  *     summary: Retrieve a report by its ID.
  *     description: Fetches a specific report by its unique identifier.
@@ -46,7 +46,7 @@ router.get("/:id", reportsController.getById.bind(reportsController));
 
 /**
  * @swagger
- * /:
+ * /reports/:
  *   post:
  *     summary: Create a new report.
  *     description: Adds a new report to the system.
@@ -57,7 +57,6 @@ router.get("/:id", reportsController.getById.bind(reportsController));
  *       content:
  *         application/json:
  *           example:
- *             _id: 5f8f1a8b0f1b5b1b7c9bce1a
  *             ownerId: 5f8f1a8b0f1b5b1b7c9bce1a
  *             data: This is a report.
  *             imageName: image.jpeg.
@@ -74,7 +73,7 @@ router.post("/", reportsController.createReport.bind(reportsController));
 
 /**
  * @swagger
- * /:
+ * /reports/:
  *   put:
  *     summary: Update an existing report.
  *     description: Updates an existing report in the system.
@@ -86,7 +85,6 @@ router.post("/", reportsController.createReport.bind(reportsController));
  *         application/json:
  *           example:
  *             _id: 5f8f1a8b0f1b5b1b7c9bce1a
- *             ownerId: 5f8f1a8b0f1b5b1b7c9bce1a
  *             data: This is a report.
  *             imageName: image.jpeg.
  *     responses:
@@ -103,7 +101,7 @@ router.put("/", reportsController.updateReport.bind(reportsController));
 
 /**
  * @swagger
- * /{id}:
+ * /reports/{id}:
  *   delete:
  *     summary: Delete a report.
  *     description: Deletes a report from the system by its ID.
@@ -127,7 +125,7 @@ router.delete("/:id", reportsController.deleteById.bind(reportsController));
 
 /**
  * @swagger
- * /update:
+ * /reports/update:
  *   post:
  *     summary: Add an update to a report.
  *     description: Adds a new update to a report.
@@ -138,7 +136,6 @@ router.delete("/:id", reportsController.deleteById.bind(reportsController));
  *       content:
  *         application/json:
  *           example:
- *             _id: 5f8f1a8b0f1b5b1b7c9bce1a
  *             ownerId: 5f8f1a8b0f1b5b1b7c9bce1a
  *             data: This is a report.
  *             reportId: 5f8f1a8b0f1b5b1b7c9bce1a
@@ -158,7 +155,7 @@ router.post(
 
 /**
  * @swagger
- * /update/{reportId}/{updateId}:
+ * /reports/update/{reportId}/{updateId}:
  *   delete:
  *     summary: Delete an update from a report.
  *     description: Deletes an update from a report by its ID.
@@ -190,7 +187,7 @@ router.delete(
 
 /**
  * @swagger
- * /update:
+ * /reports/update:
  *   put:
  *     summary: Update an existing report update.
  *     description: Updates an existing report update in the system.

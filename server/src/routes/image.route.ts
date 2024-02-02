@@ -8,7 +8,7 @@ const imageController = new ImageController();
 
 /**
  * @swagger
- * /uploadImage/{userId}:
+ * /image/uploadImage/{userId}:
  *   post:
  *     summary: Uploads an image to server.
  *     description: upload an image file to the server and if fileName received so delete the file. The image file should be sent as form data. the response is the name of the created file
