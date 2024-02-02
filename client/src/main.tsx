@@ -8,6 +8,8 @@ import { store } from "./store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter } from "react-router-dom";
 import { defaultTheme } from "./utils/theme";
+import env from "dotenv";
+env.config();
 
 const queryClient = new QueryClient();
 

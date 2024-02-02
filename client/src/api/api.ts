@@ -10,7 +10,7 @@ import {
 } from "../models";
 
 // TODO - change to env
-export const serverURL = "http://localhost:3000";
+export const serverURL = process.env.SERVER_URL || "http://localhost:3000";
 
 export interface ApiResponse<T = any> {
   status: number;
