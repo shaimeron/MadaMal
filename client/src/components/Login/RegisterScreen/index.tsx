@@ -72,7 +72,7 @@ export const SignUpPage: React.FC = () => {
   const handleGoogleLoginSucsses = (
     response: GoogleLoginResponse | GoogleLoginResponseOffline
   ) => {
-    const { profileObj } = response;
+    const { profileObj } = response as GoogleLoginResponse;
     setEmail(profileObj.email);
     setFullname(`${profileObj.givenName} ${profileObj.familyName}`);
     setSelectedImage(profileObj.imageUrl);
@@ -88,7 +88,13 @@ export const SignUpPage: React.FC = () => {
         >
           הרשמה
         </Typography>
-        <div style={{display: 'flex', justifyContent: 'center', marginBottom: 15}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 15,
+          }}
+        >
           <GoogleLogin
             clientId={googleApi.clientId}
             buttonText="הרשמה באמצעות גוגל"
