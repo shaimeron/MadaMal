@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import { UserForm } from "../../common/userForm";
 import { validateUserForm, googleApi } from "../utils"; // adjust the import path
-import {
-  GoogleLogin,
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-} from "react-google-login";
+// import {
+//   GoogleLogin,
+//   GoogleLoginResponse,
+//   GoogleLoginResponseOffline,
+// } from "react-google-login";
 
 const theme = createTheme({
   direction: "rtl",
@@ -69,15 +69,15 @@ export const SignUpPage: React.FC = () => {
     setOpenSnackbar(false);
   };
 
-  const handleGoogleLoginSucsses = (
-    response: GoogleLoginResponse | GoogleLoginResponseOffline
-  ) => {
-    const { profileObj } = response as GoogleLoginResponse;
-    setEmail(profileObj.email);
-    setFullname(`${profileObj.givenName} ${profileObj.familyName}`);
-    setSelectedImage(profileObj.imageUrl);
-    console.log(response);
-  };
+  // const handleGoogleLoginSucsses = (
+  //   response: GoogleLoginResponse | GoogleLoginResponseOffline
+  // ) => {
+  //   const { profileObj } = response as GoogleLoginResponse;
+  //   setEmail(profileObj.email);
+  //   setFullname(`${profileObj.givenName} ${profileObj.familyName}`);
+  //   setSelectedImage(profileObj.imageUrl);
+  //   console.log(response);
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,14 +95,14 @@ export const SignUpPage: React.FC = () => {
             marginBottom: 15,
           }}
         >
-          <GoogleLogin
+          {/* <GoogleLogin
             clientId={googleApi.clientId}
             buttonText="הרשמה באמצעות גוגל"
             onSuccess={handleGoogleLoginSucsses}
             onFailure={() => alert("התחברות באמצעות גוגל נכשלה")}
             cookiePolicy={"single_host_origin"}
             isSignedIn={true}
-          />
+          /> */}
         </div>
         <UserForm
           mode="signup"
