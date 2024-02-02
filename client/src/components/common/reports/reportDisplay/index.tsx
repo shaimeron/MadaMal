@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  CardMedia,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -14,7 +15,7 @@ import { red } from "@mui/material/colors";
 import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
 import { style } from "./style";
 import swal from "sweetalert";
-import { api } from "../../../../api";
+import { api, serverURL } from "../../../../api";
 import { useDispatch } from "react-redux";
 import { openUpdate } from "../../../../store/addReport";
 import { useNavigate } from "react-router-dom";
@@ -89,16 +90,17 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
         title={report.ownerId}
         subheader={dateDisplay}
       />
-      {/* <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      /> */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {report.data}
         </Typography>
+        {report.imageName && (
+          <CardMedia
+            component="img"
+            height="194"
+            src={`${serverURL}/${report.imageName}`}
+          />
+        )}
       </CardContent>
       <CardActions disableSpacing dir="ltr">
         <Button

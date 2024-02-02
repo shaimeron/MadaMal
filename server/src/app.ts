@@ -8,15 +8,16 @@ import usersRoute from "./routes/users.route";
 import authRoute from "./routes/auth_route";
 import cors from "cors";
 import imageRoute from "./routes/image.route";
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+import { IMAGES_DIR } from "./common/imageHandler";
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'MadaMal API',
-      version: '1.0.0',
+      title: "MadaMal API",
+      version: "1.0.0",
     },
   },
   apis: [`${__dirname}/routes/*.ts`], // Path to the API docs
@@ -31,21 +32,26 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DB_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
-      app.use(express.static('public'));
+      app.use(express.static(IMAGES_DIR));
       app.use(
         cors({
           origin: "*",
           // Replace with your client app's URL
-          methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+
+          methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "*"],
         })
       );
-      app.use(bodyParser.json());
-      app.use(bodyParser.urlencoded({ extended: true }));
+      app.use(bodyParser.json({ limit: "50mb" }));
+      app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
       app.use("/reports", reportsRoute);
       app.use("/auth", authRoute);
       app.use("/image", imageRoute);
-      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
       app.use("/users", usersRoute);
+      app.use(
+        "/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(openapiSpecification)
+      );
       resolve(app);
     });
   });

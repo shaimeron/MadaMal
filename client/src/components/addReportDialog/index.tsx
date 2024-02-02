@@ -6,44 +6,51 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FC } from "react";
 import { useAppSelector } from "../../hooks/store";
 import { closeDialog, selectReportDialogStatus } from "../../store/addReport";
 import { useDispatch } from "react-redux";
 import { useAddDialog } from "./hooks/useAddDialog";
+import { ImageInput } from "../common/imageInput";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
-  const { getReportData, handeSave, titleText, submitText } = useAddDialog();
+  const [selectedImage, setSelectedImage] = useState<File>();
+  const [defaultImageName, setDefaultImageName] = useState<string>();
+
+  const { getReport, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
   const valueRef: React.Ref<any> = useRef("");
 
   useEffect(() => {
     const func = async () => {
       if (isOpen) {
-        const data = await getReportData();
-        valueRef.current.value = data;
+        const report = await getReport();
+        valueRef.current.value = report ? report.data : "";
+        report?.imageName && setDefaultImageName(report.imageName);
       }
     };
 
     func();
-  }, [getReportData, isOpen]);
+  }, [getReport, isOpen]);
 
   const handleClose = useCallback(() => {
     if (isOpen) {
       dispatch(closeDialog());
       valueRef.current.value = "";
+      setSelectedImage(undefined);
+      setDefaultImageName(undefined);
     }
   }, [dispatch, isOpen]);
 
   const handeSubmit = useCallback(
     async (event: any): Promise<void> => {
       event.preventDefault();
-      await handeSave(valueRef.current.value);
+      await handeSave(valueRef.current.value, selectedImage, defaultImageName);
       handleClose();
     },
-    [handeSave, handleClose]
+    [defaultImageName, handeSave, handleClose, selectedImage]
   );
 
   return (
@@ -69,6 +76,10 @@ export const AddReportDialog: FC = () => {
           name="reportData"
           label="דיווח"
           inputRef={valueRef}
+        />
+        <ImageInput
+          onImageSelected={setSelectedImage}
+          defaultImageName={defaultImageName}
         />
       </DialogContent>
       <DialogActions>

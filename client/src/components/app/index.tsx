@@ -3,12 +3,11 @@ import { Routes, Route } from "react-router-dom";
 import { AllReporsPage } from "../allReports";
 import { UserPage } from "../userPage";
 import { useGetAllReports } from "../../hooks/report";
-import { AddReportDialog } from "../addReportDialog";
 import { LoginPage } from "../Login/LoginScreen";
 import { SignUpPage } from "../Login/RegisterScreen";
 import { Chat } from "../Chat";
 import { ReportsWithUpdatePage } from "../reportsWithUpdatePage";
-import { gapi } from 'gapi-script';
+import { gapi } from "gapi-script";
 import { googleApi } from "../Login/utils";
 import { StaticDisplay } from "../mainDisplay";
 
@@ -20,15 +19,14 @@ export const App: FC = () => {
       gapi.client.init({
         clientId: googleApi.clientId,
         scope: "",
-      })
-    };
+      });
+    }
 
-    gapi.load('client:auth2', start);
-  })
+    gapi.load("client:auth2", start);
+  });
 
   return (
     <>
-      <AddReportDialog />
       <Routes>
         <Route path="/" element={<StaticDisplay />}>
           <Route index element={<AllReporsPage />} />

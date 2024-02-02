@@ -8,6 +8,13 @@ export const style: styleType = {
     justifyContent: "space-between",
   },
   nameContainer: { flex: 1, display: "flex", justifyContent: "center" },
+  weatherContainer: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   linkList: { display: "flex" },
   linkListItemButton: { textAlign: "center", width: "max-content" },
   containerBox: {

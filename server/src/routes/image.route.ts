@@ -1,30 +1,27 @@
-import express, {Router} from "express";
-import {ImageController} from "../controllers";
-import multer from "multer";
-import {imagesDirName} from "../common";
-const router: Router = express.Router();
-const storage = multer.memoryStorage();
+import express, { Router } from "express";
+import { ImageController } from "../controllers";
+import { uploadImage } from "./utils";
 
-const uploadImage = multer({ dest: imagesDirName, storage: storage });
+const router: Router = express.Router();
 
 const imageController = new ImageController();
 
 /**
  * @swagger
- * /uploadImage/{userId}:
+ * /image/uploadImage/{userId}:
  *   post:
- *     summary: Uploads an image for a specific user.
- *     description: Allows a user to upload an image file to their profile. The image file should be sent as form data.
+ *     summary: Uploads an image to server.
+ *     description: upload an image file to the server and if fileName received so delete the file. The image file should be sent as form data. the response is the name of the created file
  *     tags:
  *       - Images
  *     consumes:
  *       - multipart/form-data
  *     parameters:
  *       - in: path
- *         name: userId
- *         required: true
+ *         name: fileName
+ *         required: false
  *         type: string
- *         description: The unique identifier of the user.
+ *         description: The previus image file name of the report.
  *       - in: formData
  *         name: image
  *         type: file
@@ -38,35 +35,10 @@ const imageController = new ImageController();
  *       500:
  *         description: Internal server error.
  */
-router.post("/uploadImage/:userId", uploadImage.single('image'), imageController.uploadImage);
-
-/**
- * @swagger
- * /getImage/{userId}:
- *   get:
- *     summary: Retrieves the image path for a specific user.
- *     description: Provides the ability to retrieve the image path associated with a given user's profile.
- *     tags:
- *       - Images
- *     parameters:
- *       - in: path
- *         name: userId
- *         required: true
- *         type: string
- *         description: The unique identifier of the user.
- *     responses:
- *       200:
- *         description: Image path retrieved successfully.
- *         content:
- *           string:
- *             schema:
- *               type: string
- *               format: string
- *       404:
- *         description: No image found for the given user ID.
- *       500:
- *         description: Internal server error.
- */
-router.get("/getImage/:userId", imageController.getImage);
+router.post(
+  "/uploadImage/:fileName?",
+  uploadImage.single("image"),
+  imageController.uploadImage
+);
 
 export default router;

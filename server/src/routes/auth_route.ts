@@ -4,7 +4,7 @@ import authController from "../controllers/auth_controller";
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Register a new user.
  *     description: Creates a new user account.
@@ -31,7 +31,7 @@ router.post("/register", authController.register);
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Login.
  *     description: Logs a user into the system.
@@ -56,7 +56,7 @@ router.post("/login", authController.login);
 
 /**
  * @swagger
- * /logout:
+ * /auth/logout:
  *   get:
  *     summary: Logout.
  *     description: Logs a user out of the system.
@@ -72,7 +72,7 @@ router.get("/logout", authController.logout);
 
 /**
  * @swagger
- * /refresh:
+ * /auth/refresh:
  *   get:
  *     summary: Refresh token.
  *     description: Refreshes a user's token.

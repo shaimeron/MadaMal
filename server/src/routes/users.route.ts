@@ -1,6 +1,6 @@
 import express from "express";
-import {UsersController} from "../controllers";
-import {authMiddleware} from "../common";
+import { UsersController } from "../controllers";
+import { authMiddleware } from "../common";
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const usersController = new UsersController();
 
 /**
  * @swagger
- * /{id}:
+ * /users/{id}:
  *   get:
  *     summary: Retrieve a user by their ID.
  *     description: Fetches a specific user's details by their unique identifier. Requires authentication.
@@ -32,6 +32,10 @@ const usersController = new UsersController();
  *       500:
  *         description: Internal server error.
  */
-router.get("/:id", authMiddleware, usersController.getById.bind(usersController));
+router.get(
+  "/:id",
+  authMiddleware,
+  usersController.getById.bind(usersController)
+);
 
 export default router;
