@@ -12,42 +12,40 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/hooks/store";
 import { selectReportDialogStatus, closeDialog } from "@/store/addReport";
-import { EAddReportFields, schema } from "../formUtils";
+import { AddReportFormData, EAddReportFields, schema } from "../formUtils";
 import { useAddDialog } from "./hooks/useAddDialog";
 import { AddReportFormBody } from "../addReportFormBody";
-import { IReport } from "@/models";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
-  const { getReport, handeSave, titleText, submitText } = useAddDialog();
+  const { getReportForForm, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
 
-  const { handleSubmit, control, reset } = useForm<FormData>({
+  const { handleSubmit, control, reset } = useForm<AddReportFormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      [EAddReportFields.DATA]: "",
+      [EAddReportFields.DEFAULT_IMAGE_NAME]: "",
+    },
   });
 
   useEffect(() => {
     const func = async () => {
       if (isOpen) {
-        const report: IReport | undefined = await getReport();
-        if (report) {
-          reset({
-            values: {
-              [EAddReportFields.DATA]: report.data,
-              [EAddReportFields.DEFAULT_IMAGE_NAME]: report.imageName,
-            },
-          });
+        const reportForForm = await getReportForForm();
+        if (reportForForm) {
+          reset(reportForForm);
         }
       }
     };
 
     func();
-  }, [getReport, isOpen, reset]);
+  }, [getReportForForm, isOpen, reset]);
 
   const handleClose = useCallback(() => {
     if (isOpen) {
-      dispatch(closeDialog());
       reset();
+      dispatch(closeDialog());
     }
   }, [dispatch, isOpen, reset]);
 
