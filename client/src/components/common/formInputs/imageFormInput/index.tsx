@@ -1,10 +1,10 @@
-import { FC, useCallback, useEffect, useState } from "react";
-import { useWatch } from "react-hook-form";
+/* eslint-disable @typescript-eslint/ban-types */
+import { FC, useCallback, useState } from "react";
+import { Controller } from "react-hook-form";
 import { IFormFieldInput } from "@/models/form";
-import { Box, CardMedia } from "@mui/material";
+import { Box, CardMedia, TextField } from "@mui/material";
 import { serverURL } from "@/api";
-import { style } from "@@/userPage/userPage/style";
-import { TextFieldFormInput } from "..";
+import { style } from "./style";
 
 interface IImageFormInputProps extends IFormFieldInput {
   defaultImageName?: string;
@@ -18,29 +18,51 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
   const [selectedImageToDisplay, setSelectedImageToDisplay] =
     useState<string>();
 
-  const selectedImage = useWatch({
-    control,
-    name: formData.fieldName,
-  });
+  const handleImageChange = useCallback(
+    (setFormValue: Function, file?: File) => {
+      setFormValue(file);
 
-  const handleImageChange = useCallback((file: File) => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImageToDisplay(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSelectedImageToDisplay("");
-    }
-  }, []);
-
-  useEffect(() => {
-    handleImageChange(selectedImage);
-  }, [handleImageChange, selectedImage]);
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSelectedImageToDisplay(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setSelectedImageToDisplay("");
+      }
+    },
+    []
+  );
 
   return (
     <Box sx={style.boxContainer}>
+      <Controller
+        name={formData.fieldName}
+        control={control}
+        render={({
+          field: { name, onChange, disabled },
+          fieldState: { error },
+        }) => (
+          <TextField
+            variant="outlined"
+            margin="dense"
+            fullWidth
+            type="file"
+            sx={formData.sxStyle}
+            label={formData.label ?? ""}
+            name={name}
+            disabled={disabled}
+            InputProps={{ componentsProps: { input: { accept: "image/*" } } }}
+            onChange={(event) => {
+              const file = (event.target as HTMLInputElement).files?.[0];
+              handleImageChange(onChange, file);
+            }}
+            error={!!error}
+            helperText={error?.message}
+          />
+        )}
+      />
       {(selectedImageToDisplay || defaultImageName) && (
         <CardMedia
           component="img"
@@ -53,7 +75,6 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
           sx={style.img}
         />
       )}
-      <TextFieldFormInput control={control} formData={formData} type="file" />
     </Box>
   );
 };
