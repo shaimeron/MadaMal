@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview  --port 443 --host",
+    "preview": "vite preview",
     "prod": "tsc && vite build && vite preview  --port 443 --host"
   },
   "dependencies": {
@@ -21,7 +21,6 @@
     "axios": "^1.6.5",
     "bootstrap": "^5.3.2",
     "date-fns": "^3.3.0",
-    "dotenv": "^16.3.1",
     "gapi-script": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -32,7 +31,6 @@
     "sweetalert": "^2.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
