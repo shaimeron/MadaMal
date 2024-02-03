@@ -19,7 +19,7 @@ const options = {
       version: "1.0.0",
     },
   },
-  apis: [`${__dirname}/routes/*.ts`], // Path to the API docs
+  apis: [`${__dirname}/routes/*.ts`, `${__dirname}/routes/*.js`], // Path to the API docs
 };
 const openapiSpecification = swaggerJSDoc(options);
 
