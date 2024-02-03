@@ -4,6 +4,7 @@ import {
   IUpdateInReportDTO,
   reportsModel,
 } from "../models/reports";
+import { deleteImage } from "../common/imageHandler";
 
 export class ReportsController {
   async getAll(req: Request, res: Response) {
@@ -30,7 +31,10 @@ export class ReportsController {
 
   async deleteById(req: Request, res: Response) {
     const _id: string = req.params.id;
-    const obj = await reportsModel.deleteOne({ _id });
+    const report = await reportsModel.findById(_id);
+    const obj = await report.deleteOne();
+    if (report.imageName) deleteImage(report.imageName);
+
     res.send(
       `${obj.deletedCount ? "" : "failed to "}delete report by id: ${_id}`
     );
