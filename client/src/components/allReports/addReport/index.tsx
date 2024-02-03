@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { FC, useCallback } from "react";
-import { openAdd } from "../../../store/addReport";
+import { openAdd } from "@/store/addReport";
 import { useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 

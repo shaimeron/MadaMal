@@ -1,12 +1,18 @@
+import { api } from "@/api";
+import { useAppSelector } from "@/hooks/store";
+import { IReport, IReportDTO } from "@/models";
+import { selectReportDialogSelectedId } from "@/store/addReport";
+import { selectUserId } from "@/store/user";
+import {
+  AddReportFormData,
+  EAddReportFields,
+  defaultFormValues,
+} from "@@/addReport/formUtils";
 import { useCallback, useMemo } from "react";
-import { api } from "../../../api";
-import { useAppSelector } from "../../../hooks/store";
-import { IReport, IReportDTO } from "../../../models";
-import { selectReportDialogSelectedId } from "../../../store/addReport";
-import { selectUserId } from "../../../store/user";
 
+type TGetReportForFormRes = Promise<AddReportFormData>;
 interface IUseAddDialog {
-  getReport: () => Promise<IReport | null>;
+  getReportForForm: () => TGetReportForFormRes;
   handeSave: (
     data: string,
     image: any,
@@ -22,12 +28,17 @@ export const useAddDialog = (): IUseAddDialog => {
   );
   const userId: string = useAppSelector(selectUserId);
 
-  const getReport = useCallback(
-    async (): Promise<IReport | null> =>
-      selectedReportId ? await api.report.getById(selectedReportId) : null,
+  const getReportForForm = useCallback(async (): TGetReportForFormRes => {
+    if (!selectedReportId) return defaultFormValues;
 
-    [selectedReportId]
-  );
+    const report: IReport = await api.report.getById(selectedReportId);
+    if (!report) return defaultFormValues;
+
+    return {
+      [EAddReportFields.DATA]: report.data,
+      [EAddReportFields.DEFAULT_IMAGE_NAME]: report.imageName,
+    };
+  }, [selectedReportId]);
 
   const handeSave = useCallback(
     async (
@@ -66,7 +77,7 @@ export const useAddDialog = (): IUseAddDialog => {
 
   return {
     handeSave,
-    getReport,
+    getReportForForm,
     titleText,
     submitText,
   };

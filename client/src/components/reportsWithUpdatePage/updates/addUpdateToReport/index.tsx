@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from "react";
 import { Button, Card, CardContent, TextField } from "@mui/material";
 import { style } from "./style";
-import { api } from "../../../../api";
+import { api } from "@/api";
 import SendIcon from "@mui/icons-material/Send";
 interface IAddUpdateToReportProps {
   reportId: string;

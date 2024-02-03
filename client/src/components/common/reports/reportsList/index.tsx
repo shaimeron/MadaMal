@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { ListItem, List, Box } from "@mui/material";
-import { IReport } from "../../../../models";
+import { IReport } from "@/models";
 import { ReportDisplay } from "../reportDisplay";
 import { style } from "./style";
 

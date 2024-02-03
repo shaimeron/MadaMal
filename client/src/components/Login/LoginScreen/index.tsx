@@ -10,9 +10,14 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../../api";
-import { LoginDecodedData } from "../../../api/api";
-import { MIN_PASSWORD_LENGTH, handleLoginHeaders, isValidEmail, parseJwt } from "../utils";
+import { api } from "@/api";
+import { LoginDecodedData } from "@/api/api";
+import {
+  MIN_PASSWORD_LENGTH,
+  handleLoginHeaders,
+  isValidEmail,
+  parseJwt,
+} from "../utils";
 
 const theme = createTheme({
   direction: "rtl",
@@ -25,7 +30,6 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
-
 
   const onLoginSucsses = async (data: LoginDecodedData) => {
     const { accessToken } = data;
@@ -127,7 +131,6 @@ export const LoginPage: React.FC = () => {
         >
           שלח
         </Button>
-
       </Container>
       <Snackbar
         open={openSnackbar}

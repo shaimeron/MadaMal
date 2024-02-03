@@ -1,12 +1,12 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { api } from "../../../api";
-import { useAppSelector } from "../../../hooks/store";
-import { IReport, UserDto } from "../../../models";
-import { selectReportsofLoggedUser } from "../../../store/reports";
+import { api } from "@/api";
+import { useAppSelector } from "@/hooks/store";
+import { IReport, UserDto } from "@/models";
+import { selectReportsofLoggedUser } from "@/store/reports";
 import { getUserId, isUserLoggedIn, validateUserForm } from "../../Login/utils";
-import { ReportsList } from "../../common/reports";
-import { UserForm } from "../../common/userForm"; // Make sure the import path is correct
+import { ReportsList } from "@@/common/reports";
+import { UserForm } from "@@/common/userForm"; // Make sure the import path is correct
 import { useNavigate } from "react-router-dom";
 import { style } from "./style";
 

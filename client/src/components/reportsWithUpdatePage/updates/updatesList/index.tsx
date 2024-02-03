@@ -1,8 +1,8 @@
 import { FC, useCallback, useState } from "react";
 import { List, ListItem } from "@mui/material";
-import { useAppSelector } from "../../../../hooks/store";
-import { IReportItem } from "../../../../models";
-import { selectUserId } from "../../../../store/user";
+import { useAppSelector } from "@/hooks/store";
+import { IReportItem } from "@/models";
+import { selectUserId } from "@/store/user";
 import { style } from "./style";
 import { UpdateDisplay } from "../updateDisplay";
 import { AddUpdateToReport } from "../addUpdateToReport";

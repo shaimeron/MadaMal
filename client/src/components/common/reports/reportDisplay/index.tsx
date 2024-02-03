@@ -10,18 +10,18 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { IReport } from "../../../../models";
+import { IReport } from "@/models";
 import { red } from "@mui/material/colors";
 import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
 import { style } from "./style";
 import swal from "sweetalert";
-import { api, serverURL } from "../../../../api";
+import { api, serverURL } from "@/api";
 import { useDispatch } from "react-redux";
-import { openUpdate } from "../../../../store/addReport";
+import { openUpdate } from "@/store/addReport";
 import { useNavigate } from "react-router-dom";
-import { dateFormater } from "../../../../utils/date";
-import { useAppSelector } from "../../../../hooks/store";
-import { selectUserId } from "../../../../store/user";
+import { dateFormater } from "@/utils/date";
+import { useAppSelector } from "@/hooks/store";
+import { selectUserId } from "@/store/user";
 interface IReportDisplayProps {
   report: IReport;
   isWithUpdateDisplayClick?: boolean;

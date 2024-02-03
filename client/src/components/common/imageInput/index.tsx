@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, CardMedia } from "@mui/material";
-import { serverURL } from "../../../api";
+import { serverURL } from "@/api";
 import { style } from "./style";
 
 interface ImageInputProps {
