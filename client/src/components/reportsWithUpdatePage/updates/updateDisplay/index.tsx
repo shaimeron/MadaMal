@@ -7,11 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Delete, ModeEditOutline } from "@mui/icons-material";
-import { IReportItem } from "../../../../models";
+import { IReportItem } from "@/models";
 import swal from "sweetalert";
-import { api } from "../../../../api";
+import { api } from "@/api";
 import { style } from "./style";
-import { dateFormater } from "../../../../utils/date";
+import { dateFormater } from "@/utils/date";
 
 interface IUpdateDisplayProps {
   reportId: string;

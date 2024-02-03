@@ -3,8 +3,8 @@ import { Container, Snackbar, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../../api";
-import { UserForm } from "../../common/userForm";
+import { api } from "@/api";
+import { UserForm } from "@@/common/userForm";
 import { validateUserForm, googleApi } from "../utils"; // adjust the import path
 // import {
 //   GoogleLogin,

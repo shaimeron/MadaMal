@@ -4,30 +4,33 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FC } from "react";
-import { useAppSelector } from "../../hooks/store";
-import { closeDialog, selectReportDialogStatus } from "../../store/addReport";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/hooks/store";
+import { selectReportDialogStatus, closeDialog } from "@/store/addReport";
+import { EAddReportFields, schema } from "../formUtils";
 import { useAddDialog } from "./hooks/useAddDialog";
-import { ImageInput } from "../common/imageInput";
+import { AddReportFormBody } from "../addReportFormBody";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
-  const [selectedImage, setSelectedImage] = useState<File>();
   const [defaultImageName, setDefaultImageName] = useState<string>();
-
   const { getReport, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
-  const valueRef: React.Ref<any> = useRef("");
+
+  const { handleSubmit, control, reset } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
   useEffect(() => {
     const func = async () => {
       if (isOpen) {
         const report = await getReport();
-        valueRef.current.value = report ? report.data : "";
+        // valueRef.current.value = report ? report.data : "";
         report?.imageName && setDefaultImageName(report.imageName);
       }
     };
@@ -38,19 +41,21 @@ export const AddReportDialog: FC = () => {
   const handleClose = useCallback(() => {
     if (isOpen) {
       dispatch(closeDialog());
-      valueRef.current.value = "";
-      setSelectedImage(undefined);
+      reset();
       setDefaultImageName(undefined);
     }
-  }, [dispatch, isOpen]);
+  }, [dispatch, isOpen, reset]);
 
-  const handeSubmit = useCallback(
-    async (event: any): Promise<void> => {
-      event.preventDefault();
-      await handeSave(valueRef.current.value, selectedImage, defaultImageName);
+  const onSubmit = useCallback(
+    async (form: FieldValues): Promise<void> => {
+      await handeSave(
+        form[EAddReportFields.DATA],
+        form[EAddReportFields.IMAGE],
+        defaultImageName
+      );
       handleClose();
     },
-    [defaultImageName, handeSave, handleClose, selectedImage]
+    [defaultImageName, handeSave, handleClose]
   );
 
   return (
@@ -60,27 +65,12 @@ export const AddReportDialog: FC = () => {
       fullWidth
       PaperProps={{
         component: "form",
-        onSubmit: handeSubmit,
+        onSubmit: handleSubmit(onSubmit),
       }}
     >
       <DialogTitle>{titleText}</DialogTitle>
       <DialogContent>
-        <TextField
-          variant="outlined"
-          fullWidth
-          multiline
-          maxRows={4}
-          autoFocus
-          required
-          margin="dense"
-          name="reportData"
-          label="דיווח"
-          inputRef={valueRef}
-        />
-        <ImageInput
-          onImageSelected={setSelectedImage}
-          defaultImageName={defaultImageName}
-        />
+        <AddReportFormBody control={control} />
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="error" onClick={handleClose}>

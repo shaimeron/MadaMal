@@ -1,7 +1,7 @@
-import { styleType } from "../../../../models";
+import { styleType } from "@/models";
 
 export const style: styleType = {
-    listContainer: {
-        width:'100%' 
-    }
-}
+  listContainer: {
+    width: "100%",
+  },
+};

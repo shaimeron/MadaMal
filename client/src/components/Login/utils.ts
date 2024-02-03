@@ -1,12 +1,12 @@
-import { LoginDecodedData, api } from "../../api/api";
+import { LoginDecodedData, api } from "@/api/api";
 
 export const MIN_PASSWORD_LENGTH = 3;
 export const ACCESSS_TOKEN = "accessToken";
 export const REFRESH_TOKEN = "refreshToken";
 export const googleApi = {
-  clientId: '544789251553-0qii4frjud6uu674obslmdp6n9uaou08.apps.googleusercontent.com',
-  
-}
+  clientId:
+    "544789251553-0qii4frjud6uu674obslmdp6n9uaou08.apps.googleusercontent.com",
+};
 
 interface FormValues {
   fullname: string;
@@ -47,7 +47,6 @@ export const validateUserForm = ({ fullname, email, password }: FormValues) => {
   return errors;
 };
 
-
 export const handleLoginHeaders = (data: LoginDecodedData) => {
   const { accessToken, refreshToken } = data;
   localStorage.setItem("accessToken", accessToken);
@@ -58,31 +57,31 @@ export const refreshAccessToken = async () => {
   try {
     const response = await api.auth.refresh();
 
-    console.log('response nowww is', response);
+    console.log("response nowww is", response);
 
     return response.data.accessToken;
   } catch (error) {
-    console.error('Error refreshing access token:', error);
+    console.error("Error refreshing access token:", error);
     throw error;
   }
-}
+};
 
 export const handleLogout = () => {
   localStorage.removeItem(ACCESSS_TOKEN);
   localStorage.removeItem(REFRESH_TOKEN);
 
   api.auth.logout();
-}
+};
 
 export const getUserId = () => {
   try {
-    const accessToken = localStorage.getItem("accessToken") ?? '';
+    const accessToken = localStorage.getItem("accessToken") ?? "";
     const decodedAccessToken = parseJwt(accessToken);
 
-    return decodedAccessToken?._id || '';
+    return decodedAccessToken?._id || "";
   } catch (e) {
-    return '';
+    return "";
   }
-}
+};
 
 export const isUserLoggedIn = () => !!getUserId();

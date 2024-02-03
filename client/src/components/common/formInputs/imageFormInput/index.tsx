@@ -1,23 +1,29 @@
-import React, { useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
+import { useWatch } from "react-hook-form";
+import { IFormFieldInput } from "@/models/form";
 import { Box, CardMedia } from "@mui/material";
 import { serverURL } from "@/api";
-import { style } from "./style";
+import { style } from "@@/userPage/userPage/style";
+import { TextFieldFormInput } from "..";
 
-interface ImageInputProps {
-  onImageSelected: (file?: File) => void;
+interface IImageFormInputProps extends IFormFieldInput {
   defaultImageName?: string;
 }
-export const ImageInput: React.FC<ImageInputProps> = ({
-  onImageSelected,
+
+export const ImageFormInput: FC<IImageFormInputProps> = ({
+  control,
+  formData,
   defaultImageName,
 }) => {
   const [selectedImageToDisplay, setSelectedImageToDisplay] =
     useState<string>();
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    onImageSelected(file);
+  const selectedImage = useWatch({
+    control,
+    name: formData.fieldName,
+  });
 
+  const handleImageChange = useCallback((file: File) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -27,7 +33,11 @@ export const ImageInput: React.FC<ImageInputProps> = ({
     } else {
       setSelectedImageToDisplay("");
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    handleImageChange(selectedImage);
+  }, [handleImageChange, selectedImage]);
 
   return (
     <Box sx={style.boxContainer}>
@@ -43,12 +53,7 @@ export const ImageInput: React.FC<ImageInputProps> = ({
           sx={style.img}
         />
       )}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        style={{ marginTop: "10px", direction: "rtl" }}
-      />
+      <TextFieldFormInput control={control} formData={formData} type="file" />
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
-import { serverURL } from "../../api";
+import { serverURL } from "@/api";
 import {
   Button,
   Divider,
@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { userSlice } from "../../store/user";
+import { userSlice } from "@/store/user";
 
 const socket = socketIOClient(serverURL);
 

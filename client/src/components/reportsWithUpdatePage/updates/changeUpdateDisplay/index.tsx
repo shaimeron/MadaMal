@@ -6,7 +6,7 @@ import {
   CardContent,
   TextField,
 } from "@mui/material";
-import { api } from "../../../../api";
+import { api } from "@/api";
 import { style } from "./style";
 
 interface IChangeUpdateDisplayProps {

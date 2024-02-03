@@ -2,8 +2,8 @@ import { Container, Grid } from "@mui/material";
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
 import { style } from "./style";
-import { AddReportDialog } from "../../addReportDialog";
 import { Navbar } from "../navbar";
+import { AddReportDialog } from "@@/addReport";
 
 export const StaticDisplay: FC = () => {
   return (

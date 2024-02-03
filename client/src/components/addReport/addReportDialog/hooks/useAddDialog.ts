@@ -1,9 +1,9 @@
+import { api } from "@/api";
+import { useAppSelector } from "@/hooks/store";
+import { IReport, IReportDTO } from "@/models";
+import { selectReportDialogSelectedId } from "@/store/addReport";
+import { selectUserId } from "@/store/user";
 import { useCallback, useMemo } from "react";
-import { api } from "../../../api";
-import { useAppSelector } from "../../../hooks/store";
-import { IReport, IReportDTO } from "../../../models";
-import { selectReportDialogSelectedId } from "../../../store/addReport";
-import { selectUserId } from "../../../store/user";
 
 interface IUseAddDialog {
   getReport: () => Promise<IReport | null>;
