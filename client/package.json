@@ -1,5 +1,5 @@
 {
-  "name": "sa-2023f",
+  "name": "madamal_client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prod": "tsc && vite build && vite preview  --port 443 --host"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -19,8 +20,8 @@
     "@types/socket.io-client": "^3.0.0",
     "axios": "^1.6.5",
     "bootstrap": "^5.3.2",
-    "gapi-script": "^1.2.0",
     "date-fns": "^3.3.0",
+    "gapi-script": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.0",
