@@ -3,10 +3,14 @@ import { useAppSelector } from "@/hooks/store";
 import { IReport, IReportDTO } from "@/models";
 import { selectReportDialogSelectedId } from "@/store/addReport";
 import { selectUserId } from "@/store/user";
-import { AddReportFormData, EAddReportFields } from "@@/addReport/formUtils";
+import {
+  AddReportFormData,
+  EAddReportFields,
+  defaultFormValues,
+} from "@@/addReport/formUtils";
 import { useCallback, useMemo } from "react";
 
-type TGetReportForFormRes = Promise<AddReportFormData | undefined>;
+type TGetReportForFormRes = Promise<AddReportFormData>;
 interface IUseAddDialog {
   getReportForForm: () => TGetReportForFormRes;
   handeSave: (
@@ -25,10 +29,10 @@ export const useAddDialog = (): IUseAddDialog => {
   const userId: string = useAppSelector(selectUserId);
 
   const getReportForForm = useCallback(async (): TGetReportForFormRes => {
-    if (!selectedReportId) return undefined;
+    if (!selectedReportId) return defaultFormValues;
 
     const report: IReport = await api.report.getById(selectedReportId);
-    if (!report) return undefined;
+    if (!report) return defaultFormValues;
 
     return {
       [EAddReportFields.DATA]: report.data,

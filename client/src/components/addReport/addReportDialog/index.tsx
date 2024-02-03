@@ -12,7 +12,12 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/hooks/store";
 import { selectReportDialogStatus, closeDialog } from "@/store/addReport";
-import { AddReportFormData, EAddReportFields, schema } from "../formUtils";
+import {
+  AddReportFormData,
+  EAddReportFields,
+  defaultFormValues,
+  schema,
+} from "../formUtils";
 import { useAddDialog } from "./hooks/useAddDialog";
 import { AddReportFormBody } from "../addReportFormBody";
 
@@ -23,9 +28,9 @@ export const AddReportDialog: FC = () => {
 
   const { handleSubmit, control, reset } = useForm<AddReportFormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      [EAddReportFields.DATA]: "",
-      [EAddReportFields.DEFAULT_IMAGE_NAME]: "",
+    defaultValues: defaultFormValues,
+    resetOptions: {
+      keepDirtyValues: false,
     },
   });
 
@@ -33,9 +38,7 @@ export const AddReportDialog: FC = () => {
     const func = async () => {
       if (isOpen) {
         const reportForForm = await getReportForForm();
-        if (reportForForm) {
-          reset(reportForForm);
-        }
+        reset(reportForForm);
       }
     };
 

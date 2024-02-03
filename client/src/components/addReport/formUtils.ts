@@ -31,4 +31,8 @@ export const schema = z.object({
   }),
 });
 
+export const defaultFormValues = {
+  [EAddReportFields.DATA]: "",
+  [EAddReportFields.DEFAULT_IMAGE_NAME]: "",
+};
 export type AddReportFormData = z.infer<typeof schema>;
