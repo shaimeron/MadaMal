@@ -4,6 +4,7 @@ import { IFormFieldInputData } from "@/models/form";
 export enum EAddReportFields {
   IMAGE = "imageFile",
   DATA = "data",
+  DEFAULT_IMAGE_NAME = "defaultImageName",
 }
 
 export const addReportFormDataObject: Record<
@@ -13,6 +14,9 @@ export const addReportFormDataObject: Record<
   [EAddReportFields.IMAGE]: {
     fieldName: EAddReportFields.IMAGE,
   },
+  [EAddReportFields.DEFAULT_IMAGE_NAME]: {
+    fieldName: EAddReportFields.DEFAULT_IMAGE_NAME,
+  },
   [EAddReportFields.DATA]: {
     fieldName: EAddReportFields.DATA,
     label: "דיווח",
@@ -21,9 +25,10 @@ export const addReportFormDataObject: Record<
 
 export const schema = z.object({
   [EAddReportFields.IMAGE]: z.instanceof(File).optional(),
+  [EAddReportFields.DEFAULT_IMAGE_NAME]: z.string().optional(),
   [EAddReportFields.DATA]: z.string({
     required_error: "חובה למלא את טקסט הדיווח",
   }),
 });
 
-export type FormData = z.infer<typeof schema>;
+export type AddReportFormData = z.infer<typeof schema>;

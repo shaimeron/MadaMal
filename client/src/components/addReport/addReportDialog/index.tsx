@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
@@ -15,10 +15,10 @@ import { selectReportDialogStatus, closeDialog } from "@/store/addReport";
 import { EAddReportFields, schema } from "../formUtils";
 import { useAddDialog } from "./hooks/useAddDialog";
 import { AddReportFormBody } from "../addReportFormBody";
+import { IReport } from "@/models";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
-  const [defaultImageName, setDefaultImageName] = useState<string>();
   const { getReport, handeSave, titleText, submitText } = useAddDialog();
   const dispatch = useDispatch();
 
@@ -29,20 +29,25 @@ export const AddReportDialog: FC = () => {
   useEffect(() => {
     const func = async () => {
       if (isOpen) {
-        const report = await getReport();
-        // valueRef.current.value = report ? report.data : "";
-        report?.imageName && setDefaultImageName(report.imageName);
+        const report: IReport | undefined = await getReport();
+        if (report) {
+          reset({
+            values: {
+              [EAddReportFields.DATA]: report.data,
+              [EAddReportFields.DEFAULT_IMAGE_NAME]: report.imageName,
+            },
+          });
+        }
       }
     };
 
     func();
-  }, [getReport, isOpen]);
+  }, [getReport, isOpen, reset]);
 
   const handleClose = useCallback(() => {
     if (isOpen) {
       dispatch(closeDialog());
       reset();
-      setDefaultImageName(undefined);
     }
   }, [dispatch, isOpen, reset]);
 
@@ -51,11 +56,11 @@ export const AddReportDialog: FC = () => {
       await handeSave(
         form[EAddReportFields.DATA],
         form[EAddReportFields.IMAGE],
-        defaultImageName
+        form[EAddReportFields.DEFAULT_IMAGE_NAME]
       );
       handleClose();
     },
-    [defaultImageName, handeSave, handleClose]
+    [handeSave, handleClose]
   );
 
   return (

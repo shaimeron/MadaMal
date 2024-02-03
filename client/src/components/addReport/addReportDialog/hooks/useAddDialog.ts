@@ -6,7 +6,7 @@ import { selectUserId } from "@/store/user";
 import { useCallback, useMemo } from "react";
 
 interface IUseAddDialog {
-  getReport: () => Promise<IReport | null>;
+  getReport: () => Promise<IReport | undefined>;
   handeSave: (
     data: string,
     image: any,
@@ -23,8 +23,8 @@ export const useAddDialog = (): IUseAddDialog => {
   const userId: string = useAppSelector(selectUserId);
 
   const getReport = useCallback(
-    async (): Promise<IReport | null> =>
-      selectedReportId ? await api.report.getById(selectedReportId) : null,
+    async (): Promise<IReport | undefined> =>
+      selectedReportId ? await api.report.getById(selectedReportId) : undefined,
 
     [selectedReportId]
   );
