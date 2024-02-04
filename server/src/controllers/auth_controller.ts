@@ -1,25 +1,86 @@
-import {Request, Response} from 'express';
-import User from '../models/user_model';
-import bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
+import User, { IUser } from '../models/user_model'; import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
+import { Document } from 'mongoose';
+
+const client = new OAuth2Client();
+const googleSignin = async (req: Request, res: Response) => {
+    console.log(req.body);
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.credential,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        const email = payload?.email;
+        if (email != null) {
+            let user = await User.findOne({ 'email': email });
+            if (user == null) {
+                user = await User.create(
+                    {
+                        'email': email,
+                        'password': '',
+                        'imageUrl': payload?.picture
+                    });
+            }
+            const tokens = await generateTokens(user)
+            res.status(200).send(
+                {
+                    email: user.email,
+                    _id: user._id,
+                    imageUrl: user.imageUrl,
+                    ...tokens
+                })
+        }
+    } catch (err) {
+        return res.status(400).send(err.message);
+    }
+
+}
+
+
+
 
 const register = async (req: Request, res: Response) => {
-    const {email, password, fullname, imageUrl} = req.body;
+    const { email, password, fullname, imageUrl } = req.body;
     if (!email || !password || !fullname) {
         return res.status(400).send("missing email or password");
     }
     try {
-        const rs = await User.findOne({'email': email});
+        const rs = await User.findOne({ 'email': email });
         if (rs != null) {
             return res.status(406).send("email already exists");
         }
         const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
-       await User.create({email, 'password': encryptedPassword, fullname, 'imageUrl': imageUrl ?? ''});
-        return res.status(201).send({"message": "user created successfully"});
+        const createdUser = await User.create({ email, 'password': encryptedPassword, fullname, 'imageUrl': imageUrl ?? '' });
+        const tokens = await generateTokens(createdUser);
+        return res.status(201).send(
+            {
+                email: createdUser.email,
+                _id: createdUser._id,
+                imageUrl: createdUser.imageUrl,
+                ...tokens
+            })
     } catch (err) {
         return res.status(400).send("error missing email or password");
     }
+}
+
+const generateTokens = async (user: Document & IUser) => {
+    const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+    const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
+    if (user.refreshTokens == null) {
+        user.refreshTokens = [refreshToken];
+    } else {
+        user.refreshTokens.push(refreshToken);
+    }
+    await user.save();
+    return {
+        'accessToken': accessToken,
+        'refreshToken': refreshToken
+    };
 }
 
 const login = async (req: Request, res: Response) => {
@@ -29,7 +90,7 @@ const login = async (req: Request, res: Response) => {
         return res.status(400).send("missing email or password");
     }
     try {
-        const user = await User.findOne({'email': email});
+        const user = await User.findOne({ 'email': email });
         if (user == null) {
             return res.status(401).send("email or password incorrect");
         }
@@ -38,18 +99,9 @@ const login = async (req: Request, res: Response) => {
             return res.status(401).send("email or password incorrect");
         }
 
-        const accessToken = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
-        const refreshToken = jwt.sign({_id: user._id}, process.env.JWT_REFRESH_SECRET);
-        if (user.refreshTokens == null) {
-            user.refreshTokens = [refreshToken];
-        } else {
-            user.refreshTokens.push(refreshToken);
-        }
-        await user.save();
-        return res.status(200).send({
-            'accessToken': accessToken,
-            'refreshToken': refreshToken
-        });
+        const tokens = await generateTokens(user);
+
+        return res.status(200).send(tokens);
     } catch (err) {
         return res.status(400).send("error missing email or password");
     }
@@ -63,7 +115,7 @@ const logout = async (req: Request, res: Response) => {
         console.log(err);
         if (err) return res.sendStatus(401);
         try {
-            const userDb = await User.findOne({'_id': user._id});
+            const userDb = await User.findOne({ '_id': user._id });
             if (!userDb.refreshTokens || !userDb.refreshTokens.includes(refreshToken)) {
                 userDb.refreshTokens = [];
                 await userDb.save();
@@ -89,14 +141,14 @@ const refresh = async (req: Request, res: Response) => {
             return res.sendStatus(401);
         }
         try {
-            const userDb = await User.findOne({'_id': user._id});
+            const userDb = await User.findOne({ '_id': user._id });
             if (!userDb.refreshTokens || !userDb.refreshTokens.includes(refreshToken)) {
                 userDb.refreshTokens = [];
                 await userDb.save();
                 return res.sendStatus(401);
             }
-            const accessToken = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION});
-            const newRefreshToken = jwt.sign({_id: user._id}, process.env.JWT_REFRESH_SECRET);
+            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+            const newRefreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
             userDb.refreshTokens = userDb.refreshTokens.filter(t => t !== refreshToken);
             userDb.refreshTokens.push(newRefreshToken);
             await userDb.save();
@@ -111,6 +163,7 @@ const refresh = async (req: Request, res: Response) => {
 }
 
 export default {
+    googleSignin,
     register,
     login,
     logout,

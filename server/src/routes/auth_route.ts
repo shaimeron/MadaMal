@@ -28,6 +28,7 @@ import authController from "../controllers/auth_controller";
  *         description: Internal server error.
  */
 router.post("/register", authController.register);
+router.post("/google", authController.googleSignin);
 
 /**
  * @swagger
