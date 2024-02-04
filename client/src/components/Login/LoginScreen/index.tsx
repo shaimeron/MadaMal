@@ -18,6 +18,7 @@ import {
   isValidEmail,
   parseJwt,
 } from "../utils";
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 
 const theme = createTheme({
   direction: "rtl",
@@ -76,9 +77,24 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const handleGoogleLoignSuccess = async (credentialResponse: CredentialResponse) => {
+    try {
+      const response = await api.auth.googleLogin(credentialResponse);
+      onLoginSucsses(response.data);
+    } catch (error: any) {
+      handleGoogleLoginFailure();
+    }
+  }
+
+  const handleGoogleLoginFailure = () => {
+    setSnackbarMessage("אירעה שגיאה בעת התחברות עם גוגל יש לנסות שוב");
+    setOpenSnackbar(true);
+  }
+
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -120,6 +136,10 @@ export const LoginPage: React.FC = () => {
         <Link href="#/register" style={{ marginTop: "10px", display: "block" }}>
           לחצו כאן להרשמה
         </Link>
+
+        <GoogleLogin onSuccess={handleGoogleLoignSuccess}
+         onError={handleGoogleLoginFailure} 
+         />
 
         <Button
           type="button"
