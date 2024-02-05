@@ -6,7 +6,7 @@ import url from 'url';
 import { getImageUrl } from "../routes/utils";
 export class UsersController {
   async getById(req: Request, res: Response) {
-    const report = await userModel.findById(req.params.id).select('-password -__v -refreshTokens');
+    const report = await userModel.findById(req.params.id).select('-password -__v -refreshTokens').lean();
     res.send({
       ...report,
       imageUrl: getImageUrl(report.imageUrl)
