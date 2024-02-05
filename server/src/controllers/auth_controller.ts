@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import User, { IUser } from '../models/user_model'; import bcrypt from 'bcrypt';
+import User, { IUser } from '../models/user_model'; 
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
 import { Document } from 'mongoose';

@@ -16,18 +16,21 @@ export const UserPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+  const [selectedImageFile, setSelectedFile] = useState<File | undefined>(undefined);
+
   const allReports: IReport[] = useAppSelector(selectReportsofLoggedUser);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getUserData = async (userId: string): Promise<UserDto> =>
       await api.user.getById(userId);
-
     const userId = getUserId();
     try {
       getUserData(userId).then((data) => {
+        console.log('data is', data);
         setFullname(data.fullname);
         setEmail(data.email);
+        setSelectedImage(data.imageUrl ?? '')
       });
     } catch (e) {
       alert("שגיאה בקבלת פרטי משתמש מהשרת");
@@ -39,7 +42,15 @@ export const UserPage: React.FC = () => {
   }, [navigate]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Implement the image change handler
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleUpdate = async () => {
@@ -47,8 +58,20 @@ export const UserPage: React.FC = () => {
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
+      try {
+        let imageName = '';
+        if (!!selectedImageFile) {
+          const image = new FormData();
+          image.append("image", selectedImageFile);
+          imageName = await api.image.uploadImage(image);
+        }
+        const response = await api.user.update({ fullname, password, imageUrl: imageName });
+        alert('הפרטים עודכנו בהצלחה');
+      } catch (e) {
+        alert('שגיאה בעדכון הפרטים, יש לנסות שוב');
+      }
     }
-  };
+  }
 
   return (
     <Grid container>

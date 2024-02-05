@@ -38,4 +38,37 @@ router.get(
   usersController.getById.bind(usersController)
 );
 
+/**
+ * @swagger
+ * /users/update:
+ *   get:
+ *     summary: Retrieve a user to update.
+ *     description: Upates user details.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         type: string
+ *         description: Unique identifier of the user to retrieve.
+ *     responses:
+ *       200:
+ *         description: User details retrieved successfully.
+ *       401:
+ *         description: Unauthorized. Token is missing or invalid.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
+
+router.put(
+  '/update',
+  authMiddleware,
+  usersController.updateUser.bind(usersController)
+);
+
 export default router;

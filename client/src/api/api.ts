@@ -127,5 +127,8 @@ export const api = {
   user: {
     getById: async (userId: string): Promise<UserDto> =>
       (await axiosInstance.get(`/users/${userId}`)).data,
+
+    update: async (details: Partial<UserDto | UserLoginDeatils>): Promise<UserDto> =>
+      (await axiosInstance.put(`/users/update`, details)).data,
   },
 };

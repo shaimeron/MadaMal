@@ -10,8 +10,8 @@ export const googleApi = {
 
 interface FormValues {
   fullname: string;
-  email: string;
   password: string;
+  email?: string;
 }
 
 export const isValidEmail = (value: string) => {
@@ -34,10 +34,12 @@ export const validateUserForm = ({ fullname, email, password }: FormValues) => {
     errors.fullname = "שם מלא הינו שדה חובה";
   }
 
-  if (!email.trim()) {
-    errors.email = "אימייל הינו שדה חובה";
-  } else if (!isValidEmail(email.trim())) {
-    errors.email = 'אנא הזן כתובת דוא"ל חוקית';
+  if (!!email) {
+    if (!email?.trim()) {
+      errors.email = "אימייל הינו שדה חובה";
+    } else if (!isValidEmail(email.trim())) {
+      errors.email = 'אנא הזן כתובת דוא"ל חוקית';
+    }
   }
 
   if (!password.trim() && password.length < MIN_PASSWORD_LENGTH) {
