@@ -21,18 +21,18 @@ export const UserFormBody: FC<Props> = ({ control, mode }) => {
       <TextFieldFormInput
         control={control}
         formData={userFormDataObject[EUserFields.FULL_NAME]}
-        isDisabled={mode === "update"}
       />
       <TextFieldFormInput
         control={control}
         formData={userFormDataObject[EUserFields.EMAIL]}
+        isDisabled={mode === "update"}
       />
       <TextFieldFormInput
         control={control}
         formData={userFormDataObject[EUserFields.PASSWORD]}
         type="password"
-        placeholder={mode === "register" ? "" : "********"}
-        isDisabled={mode === "update"}
+        isDisabled={mode === "update"} 
+        labelOverride="*******" 
       />
       <ImageFormInput
         control={control}

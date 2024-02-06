@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { FC, useCallback, useState } from "react";
-import { Controller } from "react-hook-form";
+import { serverURL } from "@/api";
 import { IFormFieldInput } from "@/models/form";
 import { Box, CardMedia, TextField } from "@mui/material";
-import { serverURL } from "@/api";
+import { FC, useCallback, useState } from "react";
+import { Controller } from "react-hook-form";
 import { style } from "./style";
 
 interface IImageFormInputProps extends IFormFieldInput {
@@ -18,7 +18,12 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
   const [selectedImageToDisplay, setSelectedImageToDisplay] =
     useState<string>();
 
-  const handleImageChange = useCallback(
+  const imagePath = () =>
+    defaultImageName?.includes("http")
+      ? defaultImageName
+      : `${serverURL}/${defaultImageName}`;
+  
+      const handleImageChange = useCallback(
     (setFormValue: Function, file?: File) => {
       setFormValue(file);
 
@@ -67,11 +72,7 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
         <CardMedia
           component="img"
           alt="Preview"
-          src={
-            selectedImageToDisplay
-              ? selectedImageToDisplay
-              : `${serverURL}/${defaultImageName}`
-          }
+          src={selectedImageToDisplay ? selectedImageToDisplay : imagePath()}
           sx={style.img}
         />
       )}

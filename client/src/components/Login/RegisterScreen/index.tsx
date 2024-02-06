@@ -1,4 +1,3 @@
-// SignUpPage.tsx
 import { api } from "@/api";
 import {
   RegistrUserFormData,
@@ -12,7 +11,6 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { validateUserForm } from "../utils"; // adjust the import path
 import { uploadImage } from "@/utils/files";
 
 const theme = createTheme({
@@ -21,17 +19,8 @@ const theme = createTheme({
 
 export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const [fullname, setFullname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [selectedImageFile, setSelectedFile] = useState<File | undefined>(
-    undefined
-  );
-  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
 
   const { handleSubmit, control, reset } = useForm<RegistrUserFormData>({
     resolver: zodResolver(registrUserSchema),
@@ -43,8 +32,6 @@ export const SignUpPage: React.FC = () => {
 
   const handleValidFormData = async (formData: RegistrUserFormData) => {
     const { email, fullname, password, imageFile } = formData;
-
-    console.log("the data is now", formData);
 
     try {
       let serverFileName = "";

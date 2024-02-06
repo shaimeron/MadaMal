@@ -1,77 +1,74 @@
-import { Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { api } from "@/api";
+import { api, serverURL } from "@/api";
 import { useAppSelector } from "@/hooks/store";
-import { IReport, UserDto } from "@/models";
+import { IReport } from "@/models";
 import { selectReportsofLoggedUser } from "@/store/reports";
-import { getUserId, isUserLoggedIn, validateUserForm } from "../../Login/utils";
+import { selectUserProfileData, upadteUser } from "@/store/user";
+import { uploadImage } from "@/utils/files";
 import { ReportsList } from "@@/common/reports";
-import { UserForm } from "@@/common/userForm"; // Make sure the import path is correct
-import { useNavigate } from "react-router-dom";
+import {
+  EUserFields,
+  UpdateUserProfileFormData,
+  defaultFormValues,
+  updateUserProfileSchema,
+} from "@@/common/userForm/formUtils";
+import { UserFormBody } from "@@/common/userForm/userFormBody";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Grid, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { style } from "./style";
 
 export const UserPage: React.FC = () => {
-  const [fullname, setFullname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [selectedImageFile, setSelectedFile] = useState<File | undefined>(undefined);
-
+  const userData = useAppSelector(selectUserProfileData);
   const allReports: IReport[] = useAppSelector(selectReportsofLoggedUser);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { handleSubmit, control, setValue } =
+    useForm<UpdateUserProfileFormData>({
+      resolver: zodResolver(updateUserProfileSchema),
+      defaultValues: defaultFormValues,
+      resetOptions: {
+        keepDirtyValues: false,
+      },
+    });
 
   useEffect(() => {
-    const getUserData = async (userId: string): Promise<UserDto> =>
-      await api.user.getById(userId);
-    const userId = getUserId();
-    try {
-      getUserData(userId).then((data) => {
-        console.log('data is', data);
-        setFullname(data.fullname);
-        setEmail(data.email);
-        setSelectedImage(data.imageUrl ?? '')
-      });
-    } catch (e) {
-      alert("שגיאה בקבלת פרטי משתמש מהשרת");
-
-      if (!isUserLoggedIn()) {
-        navigate("/login");
+    const fetchData = async () => {
+      const { email, fullname, imageUrl } = userData;
+      if (!!userData.email) {
+        setValue(EUserFields.EMAIL, email);
+        setValue(EUserFields.FULL_NAME, fullname);
+        setValue(EUserFields.DEFAULT_IMAGE_NAME, imageUrl);
       }
-    }
-  }, [navigate]);
+    };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    fetchData();
+  }, [userData]);
+
+  const handleValidFormData = async (formData: UpdateUserProfileFormData) => {
+    const { fullname, imageFile } = formData;
+    try {
+      let serverFileName = "";
+      if (imageFile) {
+        serverFileName = await uploadImage(imageFile);
+      }
+
+      await api.user.update({ fullname, imageUrl: serverFileName });
+      dispatch(
+        upadteUser({
+          fullname,
+          imageUrl: `${serverURL}/${serverFileName}`,
+        })
+      );
+
+      alert("הפרטים עודכנו בהצלחה");
+    } catch (error: any) {
+      alert("אירעה שגיאה בעדכון הפרטים");
     }
   };
 
-  const handleUpdate = async () => {
-    const errors = validateUserForm({ fullname, email, password });
-    setFormErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      try {
-        let imageName = '';
-        if (!!selectedImageFile) {
-          const image = new FormData();
-          image.append("image", selectedImageFile);
-          imageName = await api.image.uploadImage(image);
-        }
-        const response = await api.user.update({ fullname, password, imageUrl: imageName });
-        alert('הפרטים עודכנו בהצלחה');
-      } catch (e) {
-        alert('שגיאה בעדכון הפרטים, יש לנסות שוב');
-      }
-    }
-  }
+  const handleWrongFormData = () => {};
 
   return (
     <Grid container>
@@ -82,19 +79,17 @@ export const UserPage: React.FC = () => {
         >
           עריכת פרטים
         </Typography>
-        <UserForm
-          mode="edit"
-          fullname={fullname}
-          email={email}
-          password={password}
-          selectedImage={selectedImage}
-          formErrors={formErrors}
-          onFullnameChange={(e) => setFullname(e.target.value)}
-          onEmailChange={(e) => setEmail(e.target.value)}
-          onPasswordChange={(e) => setPassword(e.target.value)}
-          onImageChange={handleImageChange}
-          onSubmit={handleUpdate}
-        />
+        <UserFormBody control={control} mode="update" />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit(handleValidFormData, handleWrongFormData)}
+          style={{ marginTop: "20px" }}
+        >
+          עדכון פרטים
+        </Button>
       </Grid>
       <Grid item sx={style.listContainer}>
         <ReportsList reports={allReports} />
