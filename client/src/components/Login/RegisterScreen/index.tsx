@@ -6,11 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { api } from "@/api";
 import { UserForm } from "@@/common/userForm";
 import { validateUserForm, googleApi } from "../utils"; // adjust the import path
-// import {
-//   GoogleLogin,
-//   GoogleLoginResponse,
-//   GoogleLoginResponseOffline,
-// } from "react-google-login";
 
 const theme = createTheme({
   direction: "rtl",
@@ -22,29 +17,38 @@ export const SignUpPage: React.FC = () => {
   const [fullname, setFullname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>('');
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
+        setCurrentImageUrl(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleSignUp = async () => {
-    const errors = validateUserForm({ fullname, email, password });
+    const errors = validateUserForm({ fullname, password });
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
       try {
-        const response = await api.auth.register({ fullname, email, password });
+        let imageName = '';
+        if (!!selectedImageFile) {
+          const image = new FormData();
+          image.append("image", selectedImageFile);
+          imageName = await api.image.uploadImage(image);
+        }
+
+        const response = await api.auth.register({ fullname, email, password, imageUrl: imageName });
 
         if (response.status === 201) {
           alert("המשתמש נוצר בהצלחה");
@@ -63,21 +67,11 @@ export const SignUpPage: React.FC = () => {
         setOpenSnackbar(true);
       }
     }
-  };
+  }
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
-  // const handleGoogleLoginSucsses = (
-  //   response: GoogleLoginResponse | GoogleLoginResponseOffline
-  // ) => {
-  //   const { profileObj } = response as GoogleLoginResponse;
-  //   setEmail(profileObj.email);
-  //   setFullname(`${profileObj.givenName} ${profileObj.familyName}`);
-  //   setSelectedImage(profileObj.imageUrl);
-  //   console.log(response);
-  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,21 +89,13 @@ export const SignUpPage: React.FC = () => {
             marginBottom: 15,
           }}
         >
-          {/* <GoogleLogin
-            clientId={googleApi.clientId}
-            buttonText="הרשמה באמצעות גוגל"
-            onSuccess={handleGoogleLoginSucsses}
-            onFailure={() => alert("התחברות באמצעות גוגל נכשלה")}
-            cookiePolicy={"single_host_origin"}
-            isSignedIn={true}
-          /> */}
         </div>
         <UserForm
           mode="signup"
           fullname={fullname}
           email={email}
           password={password}
-          selectedImage={selectedImage}
+          selectedImage={currentImageUrl}
           formErrors={formErrors}
           onFullnameChange={(e) => setFullname(e.target.value)}
           onEmailChange={(e) => setEmail(e.target.value)}

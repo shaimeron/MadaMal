@@ -71,20 +71,20 @@ export const UserForm: React.FC<UserFormProps> = ({
           />
         </Grid>
         <Grid item xs={12}>
-        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-          {selectedImage && (
-            <Avatar
-              alt="Profile"
-              src={selectedImage}
-              sx={{ width: 100, height: 100 }}
+          <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            {selectedImage && (
+              <Avatar
+                alt="Profile"
+                src={selectedImage}
+                sx={{ width: 100, height: 100 }}
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onImageChange}
+              style={{ marginLeft: "10px" }}
             />
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={onImageChange}
-            style={{ marginLeft: "10px" }}
-          />
           </div>
         </Grid>
       </Grid>

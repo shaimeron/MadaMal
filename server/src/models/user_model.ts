@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-// todo - add here fullname and imageUrl
-
 export interface IUser {
   email: string;
   password: string;

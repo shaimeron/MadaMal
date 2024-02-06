@@ -1,23 +1,25 @@
+import { api } from "@/api";
+import { LoginDecodedData } from "@/api/api";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Container,
   CssBaseline,
   Link,
   Snackbar,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { api } from "@/api";
-import { LoginDecodedData } from "@/api/api";
 import {
-  MIN_PASSWORD_LENGTH,
   handleLoginHeaders,
-  isValidEmail,
-  parseJwt,
+  parseJwt
 } from "../utils";
+import { LoginFormData, defaultFormValues, schema } from "./formUtils";
+import { LoginFormBody } from "./loginFormBody";
 
 const theme = createTheme({
   direction: "rtl",
@@ -25,11 +27,36 @@ const theme = createTheme({
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+
+  const { handleSubmit, control, reset } = useForm<LoginFormData>({
+    resolver: zodResolver(schema),
+    defaultValues: defaultFormValues,
+    resetOptions: {
+      keepDirtyValues: false,
+    },
+  });
+
+  const handleValidFormData = async (formData: LoginFormData) => {
+    const { email, password } = formData;
+    try {
+      const response = await api.auth.login({ email, password });
+      onLoginSucsses(response.data);
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setSnackbarMessage("פרטי ההתחברות שהזנת שגויים");
+      } else {
+        setSnackbarMessage("אירעה שגיאה בעת התחברות");
+      }
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleWrongFormData = () => {
+    setSnackbarMessage("נא למלא פרטי התחברות תקינים");
+    setOpenSnackbar(true);
+  };
 
   const onLoginSucsses = async (data: LoginDecodedData) => {
     const { accessToken } = data;
@@ -55,25 +82,20 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const handleLogin = async () => {
-    if (!isValidEmail(email) || password.length < MIN_PASSWORD_LENGTH) {
-      setSnackbarMessage("נא למלא פרטי התחברות תקינים");
-      setOpenSnackbar(true);
-
-      return;
-    }
-
+  const handleGoogleLoginSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
     try {
-      const response = await api.auth.login({ email, password });
+      const response = await api.auth.googleLogin(credentialResponse);
       onLoginSucsses(response.data);
     } catch (error: any) {
-      if (error.response.status === 401) {
-        setSnackbarMessage("פרטי ההתחברות שהזנת שגויים");
-      } else {
-        setSnackbarMessage("אירעה שגיאה בעת התחברות");
-      }
-      setOpenSnackbar(true);
+      handleGoogleLoginFailure();
     }
+  };
+
+  const handleGoogleLoginFailure = () => {
+    setSnackbarMessage("אירעה שגיאה בעת התחברות עם גוגל יש לנסות שוב");
+    setOpenSnackbar(true);
   };
 
   const handleCloseSnackbar = () => {
@@ -85,48 +107,22 @@ export const LoginPage: React.FC = () => {
       <CssBaseline />
       <Container component="main" maxWidth="xs" style={{ textAlign: "center" }}>
         <Typography variant="h5">התחברות</Typography>
-        <div>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="אימייל"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            dir="rtl"
-          />
-        </div>
-        <div>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="password"
-            label="סיסמה"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            dir="rtl"
-          />
-        </div>
+        <LoginFormBody control={control} />
         <Link href="#/register" style={{ marginTop: "10px", display: "block" }}>
           לחצו כאן להרשמה
         </Link>
 
+        <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={handleGoogleLoginFailure}
+        />
+
         <Button
-          type="button"
+          type="submit"
           fullWidth
           variant="contained"
           color="primary"
-          onClick={handleLogin}
+          onClick={handleSubmit(handleValidFormData, handleWrongFormData)}
           style={{ marginTop: "20px" }}
         >
           שלח

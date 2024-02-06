@@ -8,6 +8,7 @@ import {
   UserLoginDeatils,
   UserRegister,
 } from "@/models";
+import { CredentialResponse } from "@react-oauth/google";
 
 export const serverURL =
   import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
@@ -71,6 +72,8 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+// TODO - ADD HERE GOOGLE LOGIN
+
 export const api = {
   report: {
     getAll: async (): Promise<IReport[]> =>
@@ -104,17 +107,28 @@ export const api = {
       data: UserRegister
     ): Promise<AxiosResponse<UserRegister>> =>
       await axiosInstance.post(`auth/register`, data),
+
     login: async (
       details: UserLoginDeatils
     ): Promise<AxiosResponse<LoginDecodedData>> =>
       await axiosInstance.post(`auth/login`, details),
+
+    googleLogin: async (
+      credentials: CredentialResponse
+    ): Promise<AxiosResponse<LoginDecodedData>> =>
+      await axiosInstance.post(`auth/google`, credentials),
+
     logout: async (): Promise<AxiosResponse<void>> =>
       await axiosInstance.post(`auth/logout`),
+
     refresh: async (): Promise<AxiosResponse<LoginDecodedData>> =>
       await axiosInstance.post(`auth/refresh`),
   },
   user: {
     getById: async (userId: string): Promise<UserDto> =>
       (await axiosInstance.get(`/users/${userId}`)).data,
+
+    update: async (details: Partial<UserDto | UserLoginDeatils>): Promise<UserDto> =>
+      (await axiosInstance.put(`/users/update`, details)).data,
   },
 };

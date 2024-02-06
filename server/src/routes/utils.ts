@@ -12,4 +12,12 @@ const storage = multer.diskStorage({
   },
 });
 
+export const getImageUrl = (imageUrl: string) => {
+  if (imageUrl.length === 0 || imageUrl.includes('http')) {
+    return imageUrl;
+  }
+
+  return `${process.env.SERVER_URL}:${process.env.PORT}/${imageUrl}`
+}
+
 export const uploadImage = multer({ storage });
