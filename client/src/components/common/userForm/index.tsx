@@ -49,7 +49,7 @@ export const UserForm: React.FC<UserFormProps> = ({
             fullWidth
             label="אימייל"
             name="email"
-            type="email"getById
+            type="email"
             value={email}
             onChange={onEmailChange}
             error={!!formErrors.email}

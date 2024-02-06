@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
-import userModel from "../models/user_model";
 import bcrypt from 'bcrypt';
+import { Request, Response } from "express";
 import { AuthResquest } from "../common";
-import url from 'url';
+import userModel from "../models/user_model";
 import { getImageUrl } from "../routes/utils";
 export class UsersController {
   async getById(req: Request, res: Response) {
