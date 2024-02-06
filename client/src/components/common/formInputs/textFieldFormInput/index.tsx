@@ -6,6 +6,8 @@ import { IFormFieldInput } from "@/models/form";
 interface ITextFieldFormInputProps extends IFormFieldInput {
   isMultiline?: boolean;
   type?: React.HTMLInputTypeAttribute;
+  placeholder?: string;
+  isDisabled?: boolean;
 }
 
 export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
@@ -13,6 +15,8 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
   formData,
   isMultiline = false,
   type = "text",
+  placeholder = "",
+  isDisabled = false,
 }) => {
   return (
     <Controller
@@ -32,11 +36,12 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
           sx={formData.sxStyle}
           label={formData.label ?? ""}
           name={name}
-          disabled={disabled}
+          disabled={disabled && isDisabled}
           value={value ?? ""}
           onChange={onChange}
           error={!!error}
           helperText={error?.message}
+          placeholder={placeholder}
         />
       )}
     />
