@@ -1,27 +1,24 @@
+import { api } from "@/api";
+import { LoginDecodedData } from "@/api/api";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Container,
   CssBaseline,
   Link,
   Snackbar,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { api } from "@/api";
-import { LoginDecodedData } from "@/api/api";
-import {
-  MIN_PASSWORD_LENGTH,
-  handleLoginHeaders,
-  isValidEmail,
-  parseJwt,
-} from "../utils";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import {
+  handleLoginHeaders,
+  parseJwt
+} from "../utils";
 import { LoginFormData, defaultFormValues, schema } from "./formUtils";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormBody } from "./loginFormBody";
 
 const theme = createTheme({
