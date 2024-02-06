@@ -1,18 +1,41 @@
+import { api } from "@/api";
+import { useAppSelector } from "@/hooks/store";
+import { selectUserId, setUser } from "@/store/user";
+import { gapi } from "gapi-script";
 import { FC, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import { AllReporsPage } from "../allReports";
-import { UserPage } from "../userPage";
+import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import { useGetAllReports } from "../../hooks/report";
+import { Chat } from "../Chat";
 import { LoginPage } from "../Login/LoginScreen";
 import { SignUpPage } from "../Login/RegisterScreen";
-import { Chat } from "../Chat";
-import { ReportsWithUpdatePage } from "../reportsWithUpdatePage";
-import { gapi } from "gapi-script";
-import { googleApi } from "../Login/utils";
+import { getUserId, googleApi } from "../Login/utils";
+import { AllReporsPage } from "../allReports";
 import { StaticDisplay } from "../mainDisplay";
+import { ReportsWithUpdatePage } from "../reportsWithUpdatePage";
+import { UserPage } from "../userPage";
 
 export const App: FC = () => {
+  const dispatch = useDispatch();
+  const storeUserId = useAppSelector(selectUserId);
+
   useGetAllReports();
+  const handleFetchUserDetails = async () => {
+    const localStorageUserId = getUserId();
+    if (!!localStorageUserId && !storeUserId) {
+      const { _id, email, fullname, imageUrl } = await api.user.getById(
+        localStorageUserId
+      );
+      dispatch(
+        setUser({
+          userId: _id,
+          email,
+          fullname,
+          imageUrl,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     function start() {
@@ -24,6 +47,10 @@ export const App: FC = () => {
 
     gapi.load("client:auth2", start);
   });
+
+  useEffect(() => {
+    handleFetchUserDetails();
+  }, []);
 
   return (
     <>

@@ -13,7 +13,10 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { style } from "./style";
 import { WeatherDisplay } from "../../Weather";
-import { handleLogout, isUserLoggedIn } from "../../Login/utils";
+import { handleLogout } from "../../Login/utils";
+import { store } from "@/store";
+import { logout, selectUserId } from "@/store/user";
+import { useAppSelector } from "@/hooks/store";
 
 interface INavItem {
   link: string;
@@ -35,11 +38,8 @@ const navItems: INavItem[] = [
 ];
 export const Navbar: FC = () => {
   const navigate = useNavigate();
-  const [isUserLogged, setIdUserLogged] = useState(false);
+  const storeUserId = useAppSelector(selectUserId);
 
-  useEffect(() => {
-    setIdUserLogged(isUserLoggedIn());
-  }, []);
 
   const handleLoginClick = useCallback(() => {
     navigate("/login");
@@ -47,6 +47,7 @@ export const Navbar: FC = () => {
 
   const handleLogoutClick = useCallback(() => {
     handleLogout();
+    store.dispatch(logout());
     alert("התנתקת בהצלחה!");
     navigate("/login");
     window.location.reload();
@@ -78,7 +79,7 @@ export const Navbar: FC = () => {
             justifyContent="space-between"
           >
             <Grid item sx={style.itemContainer}>
-              {!isUserLogged && (
+              {!storeUserId && (
                 <ListItemButton onClick={handleLoginClick}>
                   <ListItemText primary={"התחבר"} />
                 </ListItemButton>
@@ -94,7 +95,7 @@ export const Navbar: FC = () => {
               מזג אוויר{<WeatherDisplay />}
             </Grid>
             <Grid item sx={style.itemContainer}>
-              {isUserLogged && (
+              {!!storeUserId && (
                 <ListItemButton onClick={handleLogoutClick}>
                   <ListItemText primary={"התנתק"} />
                 </ListItemButton>

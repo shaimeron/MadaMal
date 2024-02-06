@@ -31,6 +31,7 @@ export const userFormDataObject: Record<EUserFields, IFormFieldInputData> = {
 };
 
 const commonUserSchema = {
+  [EUserFields.EMAIL]: z.string().email("כתובת המייל לא חוקית"),
   [EUserFields.FULL_NAME]: z.string().min(3, "נא להזין שם מלא"),
   [EUserFields.IMAGE]: z.instanceof(File).optional(),
   [EUserFields.DEFAULT_IMAGE_NAME]: z.string().optional(),
@@ -39,7 +40,6 @@ const commonUserSchema = {
 export const registrUserSchema = z.object({
   ...commonUserSchema,
   [EUserFields.PASSWORD]: z.string().min(3, "נא להזין סיסמה באורך שלושה תווים לפחות"),
-  [EUserFields.EMAIL]: z.string().email("כתובת המייל לא חוקית"),
 });
 
 export const updateUserProfileSchema = z.object({

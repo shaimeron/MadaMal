@@ -6,8 +6,8 @@ import { IFormFieldInput } from "@/models/form";
 interface ITextFieldFormInputProps extends IFormFieldInput {
   isMultiline?: boolean;
   type?: React.HTMLInputTypeAttribute;
-  placeholder?: string;
   isDisabled?: boolean;
+  labelOverride?: string;
 }
 
 export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
@@ -15,15 +15,15 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
   formData,
   isMultiline = false,
   type = "text",
-  placeholder = "",
   isDisabled = false,
+  labelOverride
 }) => {
   return (
     <Controller
       name={formData.fieldName}
       control={control}
       render={({
-        field: { name, onChange, value, disabled },
+        field: { name, onChange, value },
         fieldState: { error },
       }) => (
         <TextField
@@ -34,14 +34,13 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
           maxRows={4}
           multiline={isMultiline}
           sx={formData.sxStyle}
-          label={formData.label ?? ""}
+          label={ labelOverride || formData.label }
           name={name}
-          disabled={disabled && isDisabled}
+          disabled={isDisabled}
           value={value ?? ""}
           onChange={onChange}
           error={!!error}
           helperText={error?.message}
-          placeholder={placeholder}
         />
       )}
     />
