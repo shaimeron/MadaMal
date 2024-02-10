@@ -38,6 +38,11 @@ export const selectUserId = createSelector(
   selectUser,
   (user: StoreUser): string => user.userId
 );
+
+export const selectIsUserLoggedIn = createSelector(
+  selectUserId,
+  (userId: string): boolean => !!userId
+);
 export const selectUserName = createSelector(
   selectUser,
   (user: StoreUser): string => user.fullname

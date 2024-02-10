@@ -48,7 +48,7 @@ export const UpdatesList: FC<IUpdatesListProps> = ({ updates, reportId }) => {
 
   return (
     <>
-      <AddUpdateToReport reportId={reportId} userId={userId} />
+      {userId && <AddUpdateToReport reportId={reportId} userId={userId} />}
       <List sx={style.listContainer}>{updateDisplayListItems}</List>
     </>
   );

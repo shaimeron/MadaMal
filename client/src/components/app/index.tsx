@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useGetAllReports } from "../../hooks/report";
-import { Chat } from "../Chat";
+import { ChatContainer } from "../Chat";
 import { LoginPage } from "../LoginScreen/loginPage";
 import { SignUpPage } from "../RegisterScreen";
 import { AllReporsPage } from "../allReports";
@@ -20,7 +20,7 @@ export const App: FC = () => {
         <Route path="/" element={<StaticDisplay />}>
           <Route index element={<AllReporsPage />} />
           <Route path="/user" element={<UserPage />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={<ChatContainer />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<SignUpPage />} />
           <Route path="/report/:reportId" element={<ReportsWithUpdatePage />} />
