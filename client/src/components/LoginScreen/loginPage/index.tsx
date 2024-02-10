@@ -1,14 +1,7 @@
 import { useAppSelector } from "@/hooks/store";
 import { selectUserId } from "@/store/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Container,
-  CssBaseline,
-  Link,
-  Typography,
-} from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Button, Link, Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -20,11 +13,7 @@ import {
 } from "../loginFormBody/formUtils";
 import { LoginFormBody } from "../loginFormBody";
 import { toast } from "react-toastify";
-import { useHandleLogin } from "./useHandleLogin";
-
-const theme = createTheme({
-  direction: "rtl",
-});
+import { useHandleLogin } from "./hooks";
 
 export const LoginPage: React.FC = () => {
   const storeUserId = useAppSelector(selectUserId);
@@ -57,31 +46,28 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container component="main" maxWidth="xs" style={{ textAlign: "center" }}>
-        <Typography variant="h5">התחברות</Typography>
-        <LoginFormBody control={control} />
-        <Link href="#/register" style={{ marginTop: "10px", display: "block" }}>
-          לחצו כאן להרשמה
-        </Link>
+    <>
+      <Typography variant="h5">התחברות</Typography>
+      <LoginFormBody control={control} />
+      <Link href="#/register" style={{ marginTop: "10px", display: "block" }}>
+        לחצו כאן להרשמה
+      </Link>
 
-        <GoogleLogin
-          onSuccess={handleGoogleLoginSuccess}
-          onError={handleGoogleLoginFailure}
-        />
+      <GoogleLogin
+        onSuccess={handleGoogleLoginSuccess}
+        onError={handleGoogleLoginFailure}
+      />
 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit(handleValidFormData, handleWrongFormData)}
-          style={{ marginTop: "20px" }}
-        >
-          שלח
-        </Button>
-      </Container>
-    </ThemeProvider>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit(handleValidFormData, handleWrongFormData)}
+        style={{ marginTop: "20px" }}
+      >
+        שלח
+      </Button>
+    </>
   );
 };

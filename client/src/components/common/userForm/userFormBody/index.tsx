@@ -1,16 +1,14 @@
 import { FC } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { ImageFormInput, TextFieldFormInput } from "@@/common/formInputs";
-import { EUserFields, userFormDataObject } from "./formUtils";
-
-type UserFormMode = "update" | "register";
+import { EUserFields, userFormDataObject } from "../formUtils";
 
 interface Props {
   control: Control<any>;
-  mode: UserFormMode;
+  isUpdateForm: boolean;
 }
 
-export const UserFormBody: FC<Props> = ({ control, mode }) => {
+export const UserFormBody: FC<Props> = ({ control, isUpdateForm }) => {
   const defaultImageName = useWatch({
     control,
     name: EUserFields.DEFAULT_IMAGE_NAME,
@@ -25,13 +23,13 @@ export const UserFormBody: FC<Props> = ({ control, mode }) => {
       <TextFieldFormInput
         control={control}
         formData={userFormDataObject[EUserFields.EMAIL]}
-        isDisabled={mode === "update"}
+        isDisabled={isUpdateForm}
       />
       <TextFieldFormInput
         control={control}
         formData={userFormDataObject[EUserFields.PASSWORD]}
         type="password"
-        isDisabled={mode === "update"}
+        isDisabled={isUpdateForm}
         labelOverride="*******"
       />
       <ImageFormInput

@@ -3,8 +3,10 @@ import { LoginDecodedData } from "@/api/api";
 import { parseJwt, handleLoginHeaders } from "@/utils/login";
 import { CredentialResponse } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
-import { LoginFormData } from "../loginFormBody/formUtils";
+import { LoginFormData } from "../../loginFormBody/formUtils";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { upadteUser } from "@/store/user";
 
 interface IUseHandleLogin {
   handleValidFormData: (formData: LoginFormData) => Promise<void>;
@@ -16,9 +18,11 @@ interface IUseHandleLogin {
 
 export const useHandleLogin = (): IUseHandleLogin => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onLoginSucsses = async (data: LoginDecodedData) => {
     const { accessToken } = data;
+
     const decodedAccessToken = parseJwt(accessToken);
 
     const userId = decodedAccessToken?._id;
@@ -31,6 +35,7 @@ export const useHandleLogin = (): IUseHandleLogin => {
     try {
       handleLoginHeaders(data);
       toast.success("התחברת בהצלחה!");
+      dispatch(upadteUser({ userId }));
       navigate("/");
     } catch (error: any) {
       toast.error("שגיאה בפרטי ההתחברות נא לנסות שוב");

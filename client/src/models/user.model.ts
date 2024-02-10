@@ -3,10 +3,12 @@ export interface UserLoginDeatils {
   password: string;
 }
 
-export interface UserRegister extends UserLoginDeatils {
+export interface UserUpdateDto {
   fullname: string;
   imageUrl?: string;
 }
+
+export type UserRegister = UserUpdateDto & UserLoginDeatils;
 
 interface BasicUserData {
   email: string;
