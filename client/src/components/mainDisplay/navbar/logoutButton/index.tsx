@@ -5,6 +5,7 @@ import { logout, selectUserName } from "@/store/user";
 import { useAppSelector } from "@/hooks/store";
 import { store } from "@/store";
 import { handleLogout } from "@/utils/login";
+import { toast } from "react-toastify";
 
 export const LogoutButton: FC = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const LogoutButton: FC = () => {
   const handleLogoutClick = useCallback(() => {
     handleLogout();
     store.dispatch(logout());
-    alert("התנתקת בהצלחה!");
+    toast.warn("התנתקת בהצלחה!");
     navigate("/login");
   }, [navigate]);
 

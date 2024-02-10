@@ -22,7 +22,7 @@ export const SignUpPage: React.FC = () => {
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>("");
 
-  const { handleSubmit, control, reset } = useForm<RegistrUserFormData>({
+  const { handleSubmit, control } = useForm<RegistrUserFormData>({
     resolver: zodResolver(registrUserSchema),
     defaultValues: defaultFormValues,
     resetOptions: {

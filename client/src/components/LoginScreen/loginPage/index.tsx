@@ -1,5 +1,3 @@
-import { api } from "@/api";
-import { LoginDecodedData } from "@/api/api";
 import { useAppSelector } from "@/hooks/store";
 import { selectUserId } from "@/store/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,12 +6,11 @@ import {
   Container,
   CssBaseline,
   Link,
-  Snackbar,
   Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import React, { useEffect, useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,7 +19,8 @@ import {
   schema,
 } from "../loginFormBody/formUtils";
 import { LoginFormBody } from "../loginFormBody";
-import { handleLoginHeaders, parseJwt } from "@/utils/login";
+import { toast } from "react-toastify";
+import { useHandleLogin } from "./useHandleLogin";
 
 const theme = createTheme({
   direction: "rtl",
@@ -35,15 +33,18 @@ export const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (storeUserId) {
-      alert("התחברת כבר");
+      toast.warn("הינך מחובר כעת");
       navigate("/");
     }
   }, []);
 
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const {
+    handleGoogleLoginFailure,
+    handleGoogleLoginSuccess,
+    handleValidFormData,
+  } = useHandleLogin();
 
-  const { handleSubmit, control, reset } = useForm<LoginFormData>({
+  const { handleSubmit, control } = useForm<LoginFormData>({
     resolver: zodResolver(schema),
     defaultValues: defaultFormValues,
     resetOptions: {
@@ -51,67 +52,8 @@ export const LoginPage: React.FC = () => {
     },
   });
 
-  const handleValidFormData = async (formData: LoginFormData) => {
-    const { email, password } = formData;
-    try {
-      const response = await api.auth.login({ email, password });
-      onLoginSucsses(response.data);
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        setSnackbarMessage("פרטי ההתחברות שהזנת שגויים");
-      } else {
-        setSnackbarMessage("אירעה שגיאה בעת התחברות");
-      }
-      setOpenSnackbar(true);
-    }
-  };
-
   const handleWrongFormData = () => {
-    setSnackbarMessage("נא למלא פרטי התחברות תקינים");
-    setOpenSnackbar(true);
-  };
-
-  const onLoginSucsses = async (data: LoginDecodedData) => {
-    const { accessToken } = data;
-    const decodedAccessToken = parseJwt(accessToken);
-
-    const userId = decodedAccessToken?._id;
-
-    if (!userId) {
-      setSnackbarMessage("שגיאה בפרטי ההתחברות נא לנסות שוב");
-      setOpenSnackbar(true);
-      return;
-    }
-
-    try {
-      handleLoginHeaders(data);
-      alert("התחברת בהצלחה!");
-      navigate("/");
-      window.location.reload();
-    } catch (error: any) {
-      setSnackbarMessage("שגיאה בפרטי ההתחברות נא לנסות שוב");
-      setOpenSnackbar(true);
-    }
-  };
-
-  const handleGoogleLoginSuccess = async (
-    credentialResponse: CredentialResponse
-  ) => {
-    try {
-      const response = await api.auth.googleLogin(credentialResponse);
-      onLoginSucsses(response.data);
-    } catch (error: any) {
-      handleGoogleLoginFailure();
-    }
-  };
-
-  const handleGoogleLoginFailure = () => {
-    setSnackbarMessage("אירעה שגיאה בעת התחברות עם גוגל יש לנסות שוב");
-    setOpenSnackbar(true);
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+    toast.error("נא למלא פרטי התחברות תקינים");
   };
 
   return (
@@ -140,12 +82,6 @@ export const LoginPage: React.FC = () => {
           שלח
         </Button>
       </Container>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        message={snackbarMessage}
-      />
     </ThemeProvider>
   );
 };
