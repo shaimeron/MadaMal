@@ -3,7 +3,7 @@ import { Control, useWatch } from "react-hook-form";
 import { ImageFormInput, TextFieldFormInput } from "@@/common/formInputs";
 import { EUserFields, userFormDataObject } from "./formUtils";
 
-export type UserFormMode = "update" | "register";
+type UserFormMode = "update" | "register";
 
 interface Props {
   control: Control<any>;
@@ -31,8 +31,8 @@ export const UserFormBody: FC<Props> = ({ control, mode }) => {
         control={control}
         formData={userFormDataObject[EUserFields.PASSWORD]}
         type="password"
-        isDisabled={mode === "update"} 
-        labelOverride="*******" 
+        isDisabled={mode === "update"}
+        labelOverride="*******"
       />
       <ImageFormInput
         control={control}

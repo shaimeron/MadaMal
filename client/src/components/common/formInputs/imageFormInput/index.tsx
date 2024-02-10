@@ -2,7 +2,7 @@
 import { serverURL } from "@/api";
 import { IFormFieldInput } from "@/models/form";
 import { Box, CardMedia, TextField } from "@mui/material";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import { style } from "./style";
 
@@ -18,12 +18,15 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
   const [selectedImageToDisplay, setSelectedImageToDisplay] =
     useState<string>();
 
-  const imagePath = () =>
-    defaultImageName?.includes("http")
-      ? defaultImageName
-      : `${serverURL}/${defaultImageName}`;
-  
-      const handleImageChange = useCallback(
+  const defaultImagePath = useMemo(
+    () =>
+      defaultImageName?.includes("http")
+        ? defaultImageName
+        : `${serverURL}/${defaultImageName}`,
+    [defaultImageName]
+  );
+
+  const handleImageChange = useCallback(
     (setFormValue: Function, file?: File) => {
       setFormValue(file);
 
@@ -72,7 +75,9 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
         <CardMedia
           component="img"
           alt="Preview"
-          src={selectedImageToDisplay ? selectedImageToDisplay : imagePath()}
+          src={
+            selectedImageToDisplay ? selectedImageToDisplay : defaultImagePath
+          }
           sx={style.img}
         />
       )}

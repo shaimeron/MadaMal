@@ -16,9 +16,13 @@ import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { handleLoginHeaders, parseJwt } from "../utils";
-import { LoginFormData, defaultFormValues, schema } from "./formUtils";
-import { LoginFormBody } from "./loginFormBody";
+import {
+  LoginFormData,
+  defaultFormValues,
+  schema,
+} from "../loginFormBody/formUtils";
+import { LoginFormBody } from "../loginFormBody";
+import { handleLoginHeaders, parseJwt } from "@/utils/login";
 
 const theme = createTheme({
   direction: "rtl",
@@ -30,7 +34,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!!storeUserId) {
+    if (storeUserId) {
       alert("התחברת כבר");
       navigate("/");
     }

@@ -36,4 +36,4 @@ const reportsSchema = new Schema<IReport>({
   },
 });
 
-export const reportsModel = model<IReport>("reports", reportsSchema);
+export const ReportsModel = model<IReport>("reports", reportsSchema);

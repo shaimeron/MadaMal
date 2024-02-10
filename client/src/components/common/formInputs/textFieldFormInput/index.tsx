@@ -16,16 +16,13 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
   isMultiline = false,
   type = "text",
   isDisabled = false,
-  labelOverride
+  labelOverride,
 }) => {
   return (
     <Controller
       name={formData.fieldName}
       control={control}
-      render={({
-        field: { name, onChange, value },
-        fieldState: { error },
-      }) => (
+      render={({ field: { name, onChange, value }, fieldState: { error } }) => (
         <TextField
           variant="outlined"
           margin="dense"
@@ -34,7 +31,7 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
           maxRows={4}
           multiline={isMultiline}
           sx={formData.sxStyle}
-          label={ labelOverride || formData.label }
+          label={labelOverride || formData.label}
           name={name}
           disabled={isDisabled}
           value={value ?? ""}

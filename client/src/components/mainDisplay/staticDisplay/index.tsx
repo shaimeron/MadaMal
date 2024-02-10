@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
 import { style } from "./style";
-import { Navbar } from "../navbar";
+import { NavbarContainer } from "../navbar";
 import { AddReportDialog } from "@@/addReport";
 
 export const StaticDisplay: FC = () => {
@@ -12,7 +12,7 @@ export const StaticDisplay: FC = () => {
 
       <Grid container direction="column">
         <Grid item>
-          <Navbar />
+          <NavbarContainer />
         </Grid>
         <Grid item sx={style.pageContainer}>
           <Container maxWidth="sm">

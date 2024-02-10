@@ -2,7 +2,7 @@ import { api, serverURL } from "@/api";
 import { useAppSelector } from "@/hooks/store";
 import { IReport } from "@/models";
 import { selectReportsofLoggedUser } from "@/store/reports";
-import { selectUserProfileData, upadteUser } from "@/store/user";
+import { selectUser, upadteUser } from "@/store/user";
 import { uploadImage } from "@/utils/files";
 import { ReportsList } from "@@/common/reports";
 import {
@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { style } from "./style";
 
 export const UserPage: React.FC = () => {
-  const userData = useAppSelector(selectUserProfileData);
+  const userData = useAppSelector(selectUser);
   const allReports: IReport[] = useAppSelector(selectReportsofLoggedUser);
   const dispatch = useDispatch();
 
@@ -36,7 +36,7 @@ export const UserPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { email, fullname, imageUrl } = userData;
-      if (!!userData.email) {
+      if (userData.email) {
         setValue(EUserFields.EMAIL, email);
         setValue(EUserFields.FULL_NAME, fullname);
         setValue(EUserFields.DEFAULT_IMAGE_NAME, imageUrl);
@@ -44,7 +44,7 @@ export const UserPage: React.FC = () => {
     };
 
     fetchData();
-  }, [userData]);
+  }, [setValue, userData]);
 
   const handleValidFormData = async (formData: UpdateUserProfileFormData) => {
     const { fullname, imageFile } = formData;

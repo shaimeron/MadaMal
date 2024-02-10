@@ -4,7 +4,7 @@ import {
   defaultFormValues,
   registrUserSchema,
 } from "@@/common/userForm/formUtils";
-import { UserFormBody } from "@@/common/userForm/userFormBody";
+import { UserFormBody } from "@@/common/userForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Container, Snackbar, Typography } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";

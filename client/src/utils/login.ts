@@ -1,17 +1,11 @@
 import { LoginDecodedData, api } from "@/api/api";
 
 export const ACCESSS_TOKEN = "accessToken";
-export const REFRESH_TOKEN = "refreshToken";
+const REFRESH_TOKEN = "refreshToken";
 export const googleApi = {
   clientId:
     "544789251553-0qii4frjud6uu674obslmdp6n9uaou08.apps.googleusercontent.com",
 };
-
-interface FormValues {
-  fullname: string;
-  password: string;
-  email?: string;
-}
 
 export const parseJwt = (token: string) => {
   try {
@@ -30,7 +24,7 @@ export const handleLoginHeaders = (data: LoginDecodedData) => {
 export const refreshAccessToken = async () => {
   try {
     const response = await api.auth.refresh();
-    
+
     return response.data.accessToken;
   } catch (error) {
     console.error("Error refreshing access token:", error);
@@ -45,7 +39,7 @@ export const handleLogout = () => {
   api.auth.logout();
 };
 
-export const getUserId = () => {
+export const getUserIdFromLocalStorage = () => {
   try {
     const accessToken = localStorage.getItem("accessToken") ?? "";
     const decodedAccessToken = parseJwt(accessToken);
