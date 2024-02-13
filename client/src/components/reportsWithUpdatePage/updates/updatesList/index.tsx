@@ -7,13 +7,20 @@ import { style } from "./style";
 import { UpdateDisplay } from "../updateDisplay";
 import { AddUpdateToReport } from "../addUpdateToReport";
 import { ChangeUpdateDisplay } from "../changeUpdateDisplay";
+import { useQuery } from "@tanstack/react-query";
+import { REFETCH_INTERVAL, api } from "@/api";
 
 interface IUpdatesListProps {
-  updates: IReportItem[];
   reportId: string;
 }
-export const UpdatesList: FC<IUpdatesListProps> = ({ updates, reportId }) => {
+export const UpdatesList: FC<IUpdatesListProps> = ({ reportId }) => {
   const userId: string = useAppSelector(selectUserId);
+  const updates: IReportItem[] | undefined = useQuery({
+    queryKey: [`updates In Report ${reportId}`],
+    queryFn: async () => await api.report.getUpdatesById(reportId),
+    refetchInterval: REFETCH_INTERVAL,
+  }).data;
+
   const [updateIdToChange, setUpdateIdToChange] = useState<string>();
 
   const openChangeUpdateDisplay = useCallback(

@@ -2,15 +2,18 @@ import { Request, Response } from "express";
 import {
   IReport,
   IReportDTO,
+  IReportForDisplay,
+  IReportItem,
   IUpdateInReportDTO,
   ReportsModel,
 } from "../models/reports";
 import { deleteImage } from "../common/imageHandler";
 import { UsersModel } from "../models/users";
+import mongoose from "mongoose";
 
 export class ReportsController {
   async getAll(req: Request, res: Response) {
-    const reports: IReport[] = await ReportsModel.aggregate([
+    const reports: IReportForDisplay[] = await ReportsModel.aggregate([
       {
         $lookup: {
           from: UsersModel.collection.name,
@@ -22,8 +25,16 @@ export class ReportsController {
       {
         $set: {
           ownerName: { $arrayElemAt: ["$ownerName.fullname", 0] },
+          updatesCount: {
+            $cond: {
+              if: { $isArray: "$updates" },
+              then: { $size: "$updates" },
+              else: "0",
+            },
+          },
         },
       },
+      { $unset: ["updates"] },
     ]);
 
     res.send(reports);
@@ -32,6 +43,62 @@ export class ReportsController {
   async getById(req: Request, res: Response) {
     const report = await ReportsModel.findById(req.params.id);
     res.send(report);
+  }
+
+  async getUpdatesByReportId(req: Request, res: Response) {
+    const updates: IReportItem[] = (
+      await ReportsModel.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(req.params.reportId),
+          },
+        },
+        {
+          $lookup: {
+            from: UsersModel.collection.name,
+            localField: "updates.ownerId",
+            foreignField: "_id",
+            as: "updatesOwner",
+          },
+        },
+        {
+          $set: {
+            updates: {
+              $map: {
+                input: "$updates",
+                in: {
+                  $mergeObjects: [
+                    "$$this",
+                    {
+                      ownerName: {
+                        $arrayElemAt: [
+                          "$updatesOwner.fullname",
+                          {
+                            $indexOfArray: [
+                              "$updatesOwner.id",
+                              "$$this.ownerId",
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        { $unset: "updatesOwner" },
+        {
+          $project: {
+            updates: 1,
+            _id: 0,
+          },
+        },
+      ])
+    )[0]?.updates;
+
+    res.send(updates);
   }
 
   async createReport(req: Request, res: Response) {

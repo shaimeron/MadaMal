@@ -109,8 +109,8 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
           startIcon={<Update />}
           onClick={displayUpdates}
         >
-          {report.updates.length
-            ? `${report.updates.length} עדכונים`
+          {report.updatesCount
+            ? `${report.updatesCount} עדכונים`
             : "אין עדכונים"}
         </Button>
       </CardActions>

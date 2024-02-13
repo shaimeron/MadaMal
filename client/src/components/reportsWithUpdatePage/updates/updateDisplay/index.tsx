@@ -69,7 +69,7 @@ export const UpdateDisplay: FC<IUpdateDisplayProps> = ({
       <CardHeader
         sx={style.cardHeader}
         action={HeadersAction}
-        title={update.ownerId}
+        title={update.ownerName}
         subheader={dateDisplay}
       />
 

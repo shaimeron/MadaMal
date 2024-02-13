@@ -125,6 +125,33 @@ router.delete("/:id", reportsController.deleteById.bind(reportsController));
 
 /**
  * @swagger
+ * /reports/updates/{reportId}:
+ *   get:
+ *     summary: Retrieve all updates in report by its ID.
+ *     description: Fetches all updates from a specific report by the report unique identifier.
+ *     tags:
+ *       - Reports
+ *     parameters:
+ *       - in: path
+ *         name: reportId
+ *         required: true
+ *         type: string
+ *         description: Unique identifier of the report to retrieve.
+ *     responses:
+ *       200:
+ *         description: report updates details.
+ *       404:
+ *         description: Report not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get(
+  "/update/:reportId",
+  reportsController.getUpdatesByReportId.bind(reportsController)
+);
+
+/**
+ * @swagger
  * /reports/update:
  *   post:
  *     summary: Add an update to a report.

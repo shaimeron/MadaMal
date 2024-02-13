@@ -13,6 +13,10 @@ export interface IReport extends IReportItem {
   imageName: string;
 }
 
+export interface IReportForDisplay extends Omit<IReportItem, "updates"> {
+  updatesCount: number;
+}
+
 const reportItemSchema = new Schema<IReportItem>({
   data: {
     type: String,
