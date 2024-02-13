@@ -1,14 +1,16 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { AuthResquest } from "../common";
-import userModel from "../models/user_model";
 import { getImageUrl } from "../routes/utils";
+import { UsersModel } from "../models/users";
 export class UsersController {
   async getById(req: Request, res: Response) {
-    const report = await userModel.findById(req.params.id).select('-password -__v -refreshTokens').lean();
+    const report = await UsersModel.findById(req.params.id)
+      .select("-password -__v -refreshTokens")
+      .lean();
     res.send({
       ...report,
-      imageUrl: getImageUrl(report.imageUrl)
+      imageUrl: getImageUrl(report.imageUrl),
     });
   }
 
@@ -21,7 +23,7 @@ export class UsersController {
     }
 
     // Fields to update, ensuring email is not updated
-    let updateFields: any = {};
+    const updateFields: any = {};
     if (password) {
       const salt = await bcrypt.genSalt(10);
       updateFields.password = await bcrypt.hash(password, salt);
@@ -31,7 +33,11 @@ export class UsersController {
 
     try {
       // Ensure user is updating their own details
-      const updatedUser = await userModel.findByIdAndUpdate(userId, updateFields, { new: true });
+      const updatedUser = await UsersModel.findByIdAndUpdate(
+        userId,
+        updateFields,
+        { new: true }
+      );
 
       if (!updatedUser) {
         return res.status(404).send("User not found.");
@@ -48,5 +54,4 @@ export class UsersController {
       return res.status(500).send("An error occurred while updating the user.");
     }
   }
-
 }
