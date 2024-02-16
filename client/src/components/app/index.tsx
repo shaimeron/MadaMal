@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useGetAllReports } from "../../hooks/report";
 import { ChatContainer } from "../chat";
-import { LoginPage } from "@@/loginScreen/loginPage";
+import { LoginPage } from "../loginScreen/loginPage";
 import { SignUpPage } from "../registerScreen";
 import { AllReporsPage } from "../allReports";
 import { StaticDisplay } from "../mainDisplay";
