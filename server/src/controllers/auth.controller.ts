@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser, UsersModel } from "../models/users/user_model";
+import { IUser, UsersModel } from "../models/users/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
