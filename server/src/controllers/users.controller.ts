@@ -5,13 +5,17 @@ import { getImageUrl } from "../routes/utils";
 import { UsersModel } from "../models/users";
 export class UsersController {
   async getById(req: Request, res: Response) {
-    const report = await UsersModel.findById(req.params.id)
-      .select("-password -__v -refreshTokens")
-      .lean();
-    res.send({
-      ...report,
-      imageUrl: getImageUrl(report.imageUrl),
-    });
+    try {
+      const report = await UsersModel.findById(req.params.id)
+        .select("-password -__v -refreshTokens")
+        .lean();
+      res.send({
+        ...report,
+        imageUrl: getImageUrl(report.imageUrl),
+      });
+    } catch (e) {
+      res.sendStatus(500);
+    }
   }
 
   async updateUser(req: AuthResquest, res: Response) {
