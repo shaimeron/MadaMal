@@ -31,6 +31,7 @@ export const TextFieldFormInput: FC<ITextFieldFormInputProps> = ({
           maxRows={4}
           multiline={isMultiline}
           sx={formData.sxStyle}
+          placeholder={formData.placeholder ?? ""}
           label={labelOverride || formData.label}
           name={name}
           disabled={isDisabled}
