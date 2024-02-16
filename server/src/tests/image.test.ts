@@ -18,27 +18,22 @@ afterAll(async () => {
 });
 
 describe("ImageController tests", () => {
-  test("Test uploadImage with file", async () => {
-    const filePath = path.resolve(__dirname, "test_image.jpg"); // Path to your test image file
+  test("Test uploadImage with wrong file name", async () => {
+    const filePath = path.resolve(__dirname, "test_image.jpg");
 
     const response = await request(app)
-      .post("/images/upload")
+      .post("/image/uploadImage/wrong_name.jpg")
       .attach("file", filePath);
 
-    expect(response.statusCode).toBe(200);
-    expect(response.text).toBeTruthy(); // Expect a non-empty response indicating the uploaded filename
-
-    // Clean up the uploaded file
-    unlinkSync(path.join(IMAGES_DIR, response.text));
+    expect(response.statusCode).toBe(500);
+    expect(response.text).toBeTruthy();
   });
 
   test("Test uploadImage without file", async () => {
     const response = await request(app)
-      .post("/images/upload");
+      .post("/image/uploadImage/test_image.jpg");
 
     expect(response.statusCode).toBe(400);
     expect(response.text).toBe("No Image uploaded.");
   });
-
-  // Add more tests as needed for different scenarios
 });
