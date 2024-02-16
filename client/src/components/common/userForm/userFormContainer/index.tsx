@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useUserForm } from "./hooks";
@@ -14,6 +15,7 @@ export const UserFormContainer: React.FC = () => {
     submitText,
     titleText,
     isUpdateForm,
+    isButtonLoading,
   } = useUserForm();
 
   const { handleSubmit, control, reset } = useForm<UserFormData>({
@@ -49,16 +51,18 @@ export const UserFormContainer: React.FC = () => {
         }}
       ></div>
       <UserFormBody control={control} isUpdateForm={isUpdateForm} />
-      <Button
+      <LoadingButton
+        loading={isButtonLoading}
         type="submit"
         fullWidth
         variant="contained"
+        role="progressbar"
         color="primary"
         onClick={handleSubmit(handleValidFormData, handleWrongFormData)}
         style={{ marginTop: "20px" }}
       >
-        {submitText}
-      </Button>
+        <span>{submitText}</span>
+      </LoadingButton>
     </>
   );
 };

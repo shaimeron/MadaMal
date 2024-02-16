@@ -20,10 +20,18 @@ import {
 } from "../formUtils";
 import { useAddDialog } from "./hooks/useAddDialog";
 import { AddReportFormBody } from "../addReportFormBody";
+import { LoadingButton } from "@mui/lab";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);
-  const { getReportForForm, handeSave, titleText, submitText } = useAddDialog();
+  const {
+    getReportForForm,
+    handeSave,
+    handleWrongFormData,
+    titleText,
+    submitText,
+    isButtonLoading,
+  } = useAddDialog();
   const dispatch = useDispatch();
 
   const { handleSubmit, control, reset } = useForm<AddReportFormData>({
@@ -54,12 +62,12 @@ export const AddReportDialog: FC = () => {
 
   const onSubmit = useCallback(
     async (form: FieldValues): Promise<void> => {
-      await handeSave(
+      const isSaved = await handeSave(
         form[EAddReportFields.DATA],
         form[EAddReportFields.IMAGE],
         form[EAddReportFields.DEFAULT_IMAGE_NAME]
       );
-      handleClose();
+      isSaved && handleClose();
     },
     [handeSave, handleClose]
   );
@@ -71,7 +79,7 @@ export const AddReportDialog: FC = () => {
       fullWidth
       PaperProps={{
         component: "form",
-        onSubmit: handleSubmit(onSubmit),
+        onSubmit: handleSubmit(onSubmit, handleWrongFormData),
       }}
     >
       <DialogTitle>{titleText}</DialogTitle>
@@ -79,12 +87,23 @@ export const AddReportDialog: FC = () => {
         <AddReportFormBody control={control} />
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="error" onClick={handleClose}>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={handleClose}
+          disabled={isButtonLoading}
+        >
           בטל
         </Button>
-        <Button variant="contained" color="success" type="submit">
-          {submitText}
-        </Button>
+        <LoadingButton
+          loading={isButtonLoading}
+          role="progressbar"
+          variant="contained"
+          color="success"
+          type="submit"
+        >
+          <span>{submitText}</span>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

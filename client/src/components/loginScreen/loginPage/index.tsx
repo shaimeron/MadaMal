@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/hooks/store";
 import { selectUserId } from "@/store/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Link, Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ import {
 import { LoginFormBody } from "../loginFormBody";
 import { toast } from "react-toastify";
 import { useHandleLogin } from "./hooks";
+import { LoadingButton } from "@mui/lab";
 
 export const LoginPage: React.FC = () => {
   const storeUserId = useAppSelector(selectUserId);
@@ -31,6 +32,7 @@ export const LoginPage: React.FC = () => {
     handleGoogleLoginFailure,
     handleGoogleLoginSuccess,
     handleValidFormData,
+    isButtonLoading,
   } = useHandleLogin();
 
   const { handleSubmit, control } = useForm<LoginFormData>({
@@ -58,7 +60,9 @@ export const LoginPage: React.FC = () => {
         onError={handleGoogleLoginFailure}
       />
 
-      <Button
+      <LoadingButton
+        loading={isButtonLoading}
+        role="progressbar"
         type="submit"
         fullWidth
         variant="contained"
@@ -66,8 +70,8 @@ export const LoginPage: React.FC = () => {
         onClick={handleSubmit(handleValidFormData, handleWrongFormData)}
         style={{ marginTop: "20px" }}
       >
-        שלח
-      </Button>
+        <span>שלח</span>
+      </LoadingButton>
     </>
   );
 };

@@ -7,6 +7,7 @@ import { LoginFormData } from "../../loginFormBody/formUtils";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { upadteUser } from "@/store/user";
+import { useState } from "react";
 
 interface IUseHandleLogin {
   handleValidFormData: (formData: LoginFormData) => Promise<void>;
@@ -14,9 +15,12 @@ interface IUseHandleLogin {
   handleGoogleLoginSuccess: (
     credentialResponse: CredentialResponse
   ) => Promise<void>;
+  isButtonLoading: boolean;
 }
 
 export const useHandleLogin = (): IUseHandleLogin => {
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,18 +40,24 @@ export const useHandleLogin = (): IUseHandleLogin => {
       handleLoginHeaders(data);
       toast.success("התחברת בהצלחה!");
       dispatch(upadteUser({ userId }));
+      setIsButtonLoading(false);
       navigate("/");
     } catch (error: any) {
       toast.error("שגיאה בפרטי ההתחברות נא לנסות שוב");
+      setIsButtonLoading(false);
     }
   };
 
   const handleValidFormData = async (formData: LoginFormData) => {
+    setIsButtonLoading(true);
+
     const { email, password } = formData;
     try {
       const response = await api.auth.login({ email, password });
       onLoginSucsses(response.data);
     } catch (error: any) {
+      setIsButtonLoading(false);
+
       toast.error(
         error.response.status === 401
           ? "פרטי ההתחברות שהזנת שגויים"
@@ -72,6 +82,7 @@ export const useHandleLogin = (): IUseHandleLogin => {
   };
 
   return {
+    isButtonLoading,
     handleGoogleLoginFailure,
     handleGoogleLoginSuccess,
     handleValidFormData,

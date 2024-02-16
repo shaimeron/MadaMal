@@ -8,7 +8,8 @@ import {
   EAddReportFields,
   defaultFormValues,
 } from "@@/addReport/formUtils";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 type TGetReportForFormRes = Promise<AddReportFormData>;
 interface IUseAddDialog {
@@ -17,12 +18,15 @@ interface IUseAddDialog {
     data: string,
     image: any,
     imageFileName?: string
-  ) => Promise<void>;
+  ) => Promise<boolean>;
+  handleWrongFormData: () => void;
   titleText: string;
   submitText: string;
+  isButtonLoading: boolean;
 }
 
 export const useAddDialog = (): IUseAddDialog => {
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
   const selectedReportId: string | undefined = useAppSelector(
     selectReportDialogSelectedId
   );
@@ -45,25 +49,44 @@ export const useAddDialog = (): IUseAddDialog => {
       data: string,
       imageFile?: File,
       imageFileName?: string
-    ): Promise<void> => {
+    ): Promise<boolean> => {
+      setIsButtonLoading(true);
       const dto: IReportDTO = {
         data,
       };
+      try {
+        if (imageFile) {
+          const image = new FormData();
+          image.append("image", imageFile);
 
-      if (imageFile) {
-        const image = new FormData();
-        image.append("image", imageFile);
+          const imageName = await api.image.uploadImage(image, imageFileName);
+          dto.imageName = imageName;
+        }
 
-        const imageName = await api.image.uploadImage(image, imageFileName);
-        dto.imageName = imageName;
+        if (selectedReportId) {
+          await api.report.updateReport({ ...dto, _id: selectedReportId });
+          toast.success("הדיווח עודכן בהצלחה");
+        } else {
+          await api.report.addReport({ ...dto, ownerId: userId });
+          toast.success("הדיווח נוצר בהצלחה");
+        }
+
+        setIsButtonLoading(false);
+        return true;
+      } catch (error) {
+        toast.error(
+          `אירעה שגיאה ${selectedReportId ? "בעדכון" : "ביצירת"} הדיווח `
+        );
+        setIsButtonLoading(false);
+        return false;
       }
-
-      await (selectedReportId
-        ? api.report.updateReport({ ...dto, _id: selectedReportId })
-        : api.report.addReport({ ...dto, ownerId: userId }));
     },
     [selectedReportId, userId]
   );
+
+  const handleWrongFormData = (): void => {
+    toast.error("נא למלא פרטים תקינים");
+  };
 
   const titleText = useMemo(
     () => (selectedReportId ? "עדכן דיווח" : "צור דיווח חדש"),
@@ -77,8 +100,10 @@ export const useAddDialog = (): IUseAddDialog => {
 
   return {
     handeSave,
+    handleWrongFormData,
     getReportForForm,
     titleText,
     submitText,
+    isButtonLoading,
   };
 };
