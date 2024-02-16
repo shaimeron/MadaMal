@@ -17,10 +17,7 @@ export const ReportsWithUpdatePage: FC = () => {
   ) : (
     <>
       <ReportDisplay report={selectedReport} isWithUpdateDisplayClick={false} />
-      <UpdatesList
-        updates={selectedReport.updates}
-        reportId={selectedReport._id}
-      />
+      <UpdatesList reportId={selectedReport._id} />
     </>
   );
 };

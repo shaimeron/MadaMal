@@ -2,7 +2,7 @@ import request from "supertest";
 import initApp from "../app";
 import mongoose from "mongoose";
 import { Express } from "express";
-import User from "../models/user_model";
+import { UsersModel } from "../models/users";
 
 let app: Express;
 let userId: string;
@@ -10,7 +10,7 @@ let userId: string;
 beforeAll(async () => {
   app = await initApp();
   console.log("beforeAll");
-  await User.deleteMany({});
+  await UsersModel.deleteMany({});
 });
 
 afterAll(async () => {
@@ -20,17 +20,15 @@ afterAll(async () => {
 describe("UsersController tests", () => {
   test("Test getById", async () => {
     // First, create a user
-    const user = await User.create({
+    const user = await UsersModel.create({
       email: "testUser@example.com",
       password: "password",
       fullname: "Test User",
-      imageUrl: "https://example.com/avatar.jpg"
+      imageUrl: "https://example.com/avatar.jpg",
     });
     userId = user._id;
 
-    const response = await request(app)
-      .get(`/users/${userId}`)
-      .send();
+    const response = await request(app).get(`/users/${userId}`).send();
 
     expect(response.statusCode).toBe(200);
     // Add assertions for the response body as needed
@@ -40,7 +38,7 @@ describe("UsersController tests", () => {
     const updatedData = {
       password: "newpassword",
       fullname: "Updated Name",
-      imageUrl: "https://example.com/newavatar.jpg"
+      imageUrl: "https://example.com/newavatar.jpg",
     };
 
     const response = await request(app)

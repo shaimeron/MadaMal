@@ -84,10 +84,10 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
         action={HeadersAction}
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+            {report.ownerName[0]}
           </Avatar>
         }
-        title={report.ownerId}
+        title={report.ownerName}
         subheader={dateDisplay}
       />
       <CardContent>
@@ -109,8 +109,8 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
           startIcon={<Update />}
           onClick={displayUpdates}
         >
-          {report.updates.length
-            ? `${report.updates.length} עדכונים`
+          {report.updatesCount
+            ? `${report.updatesCount} עדכונים`
             : "אין עדכונים"}
         </Button>
       </CardActions>

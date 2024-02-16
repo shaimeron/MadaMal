@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import {
   IReport,
   IReportDTO,
+  IReportItem,
   IUpdateInReportDTO,
   UserDto,
   UserLoginDeatils,
@@ -9,6 +10,8 @@ import {
 } from "@/models";
 import { CredentialResponse } from "@react-oauth/google";
 import { ACCESSS_TOKEN, refreshAccessToken } from "@/utils/login";
+
+export const REFETCH_INTERVAL = 3000;
 
 export const serverURL =
   import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
@@ -86,6 +89,8 @@ export const api = {
       await axiosInstance.post(`/reports`, reportDTO),
     updateReport: async (reportDTO: IReportDTO): Promise<void> =>
       await axiosInstance.put(`/reports`, reportDTO),
+    getUpdatesById: async (reportId: string): Promise<IReportItem[]> =>
+      (await axiosInstance.get(`/reports/update/${reportId}`)).data,
     addUpdateToReport: async (updateDTO: IUpdateInReportDTO): Promise<void> =>
       await axiosInstance.post(`/reports/update`, updateDTO),
     changeUpdateInReport: async (

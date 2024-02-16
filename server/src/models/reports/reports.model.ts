@@ -1,14 +1,20 @@
-import { Schema, model } from "mongoose";
+import { ObjectId, Schema, model } from "mongoose";
+import { UsersModel } from "../users";
 
 export interface IReportItem {
   creationDate: Date;
-  ownerId: string;
+  ownerId: ObjectId;
   data: string;
+  ownerName?: string;
 }
 
 export interface IReport extends IReportItem {
   updates: IReportItem[];
   imageName: string;
+}
+
+export interface IReportForDisplay extends Omit<IReportItem, "updates"> {
+  updatesCount: number;
 }
 
 const reportItemSchema = new Schema<IReportItem>({
@@ -17,7 +23,8 @@ const reportItemSchema = new Schema<IReportItem>({
     required: true,
   },
   ownerId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: UsersModel.collection.name,
   },
   creationDate: {
     type: Date,

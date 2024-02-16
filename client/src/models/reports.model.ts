@@ -4,16 +4,11 @@ export interface IReportItem {
   ownerId: string;
   data: string;
   imageName?: string;
+  ownerName: string;
 }
 
 export interface IReport extends IReportItem {
-  updates: IReportItem[];
-}
-
-export interface IReportItemDTO {
-  _id?: string;
-  ownerId?: string;
-  data?: string;
+  updatesCount: number;
 }
 
 export interface IReportItemDTO {
