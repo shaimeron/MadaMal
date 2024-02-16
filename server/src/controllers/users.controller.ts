@@ -1,17 +1,14 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { AuthResquest } from "../common";
-import { getImageUrl } from "../routes/utils";
 import { UsersModel } from "../models/users";
+
 export class UsersController {
   async getById(req: Request, res: Response) {
     const report = await UsersModel.findById(req.params.id)
       .select("-password -__v -refreshTokens")
       .lean();
-    res.send({
-      ...report,
-      imageUrl: getImageUrl(report.imageUrl),
-    });
+    res.send(report);
   }
 
   async updateUser(req: AuthResquest, res: Response) {

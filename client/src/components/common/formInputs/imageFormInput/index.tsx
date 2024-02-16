@@ -19,10 +19,7 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
     useState<string>();
 
   const defaultImagePath = useMemo(
-    () =>
-      defaultImageName?.includes("http")
-        ? defaultImageName
-        : `${serverURL}/${defaultImageName}`,
+    () => `${serverURL}/${defaultImageName}`,
     [defaultImageName]
   );
 
