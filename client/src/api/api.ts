@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { ACCESSS_TOKEN, refreshAccessToken } from "../components/Login/utils";
 import {
   IReport,
   IReportDTO,
@@ -10,6 +9,7 @@ import {
   UserRegister,
 } from "@/models";
 import { CredentialResponse } from "@react-oauth/google";
+import { ACCESSS_TOKEN, refreshAccessToken } from "@/utils/login";
 
 export const REFETCH_INTERVAL = 3000;
 

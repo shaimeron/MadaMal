@@ -1,28 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import socketIOClient from "socket.io-client";
-import { serverURL } from "@/api";
 import {
-  Button,
   Divider,
   List,
   ListItem,
   ListItemText,
-  TextField,
   Typography,
 } from "@mui/material";
-import { userSlice } from "@/store/user";
+import { AddMessage } from "../addMessage";
+import { IMessage, socket } from "../socketUtils";
 
-const socket = socketIOClient(serverURL);
-
-interface IMessage {
-  username: string;
-  message: string;
-}
-
-export const Chat: React.FC = () => {
-  const [message, setMessage] = useState<string>("");
+export const ChatContainer: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [username] = useState<string>(userSlice.name);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -50,33 +38,9 @@ export const Chat: React.FC = () => {
     };
   }, []);
 
-  const sendMessage = (): void => {
-    if (message && username) {
-      const data: IMessage = { username, message };
-      socket.emit("chat message", data);
-      setMessage("");
-    }
-  };
-
   return (
     <div>
-      <TextField
-        label="Type a message"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={sendMessage}
-        style={{ marginTop: "10px" }}
-      >
-        Send
-      </Button>
+      <AddMessage />
       <br />
       <br />
       <List

@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Control, useWatch } from "react-hook-form";
-import { ImageFormInput, TextFieldFormInput } from "@@/common/formInputs";
+import { Control } from "react-hook-form";
+import { TextFieldFormInput } from "@@/common/formInputs";
 import { ELoginFields, loginFormDataObject } from "./formUtils";
 
 interface Props {
