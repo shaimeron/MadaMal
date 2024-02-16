@@ -30,20 +30,14 @@ export const userFormDataObject: Record<EUserFields, IFormFieldInputData> = {
   },
 };
 
-const commonUserSchema = {
+export const userSchema = z.object({
   [EUserFields.EMAIL]: z.string().email("כתובת המייל לא חוקית"),
   [EUserFields.FULL_NAME]: z.string().min(3, "נא להזין שם מלא"),
+  [EUserFields.PASSWORD]: z
+    .string()
+    .min(3, "נא להזין סיסמה באורך שלושה תווים לפחות"),
   [EUserFields.IMAGE]: z.instanceof(File).optional(),
   [EUserFields.DEFAULT_IMAGE_NAME]: z.string().optional(),
-};
-
-export const registrUserSchema = z.object({
-  ...commonUserSchema,
-  [EUserFields.PASSWORD]: z.string().min(3, "נא להזין סיסמה באורך שלושה תווים לפחות"),
-});
-
-export const updateUserProfileSchema = z.object({
-  ...commonUserSchema,
 });
 
 export const defaultFormValues = {
@@ -52,5 +46,4 @@ export const defaultFormValues = {
   [EUserFields.PASSWORD]: "",
   [EUserFields.DEFAULT_IMAGE_NAME]: undefined,
 };
-export type RegistrUserFormData = z.infer<typeof registrUserSchema>;
-export type UpdateUserProfileFormData = z.infer<typeof updateUserProfileSchema>;
+export type UserFormData = z.infer<typeof userSchema>;

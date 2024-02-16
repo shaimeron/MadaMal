@@ -1,24 +1,20 @@
+import { IFormFieldInputData } from "@/models/form";
 import { z } from "zod";
-import { IFormFieldInputData } from "../../../models/form";
 
 export enum ELoginFields {
   EMAIL = "email",
   PASSWORD = "password",
 }
 
-export const loginFormDataObject: Record<
-ELoginFields,
-  IFormFieldInputData
-> = {
-
-    [ELoginFields.EMAIL]: {
-        fieldName: ELoginFields.EMAIL,
-        label: 'כתובת מייל'
-    },
-    [ELoginFields.PASSWORD]: {
-        fieldName: ELoginFields.PASSWORD,
-        label: 'סיסמה'
-    }
+export const loginFormDataObject: Record<ELoginFields, IFormFieldInputData> = {
+  [ELoginFields.EMAIL]: {
+    fieldName: ELoginFields.EMAIL,
+    label: "כתובת מייל",
+  },
+  [ELoginFields.PASSWORD]: {
+    fieldName: ELoginFields.PASSWORD,
+    label: "סיסמה",
+  },
 };
 
 export const schema = z.object({

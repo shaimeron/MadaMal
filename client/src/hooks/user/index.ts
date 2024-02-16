@@ -1,0 +1,1 @@
+export { useGetUserData } from "./useInitUserData";

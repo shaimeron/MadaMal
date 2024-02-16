@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { ACCESSS_TOKEN, refreshAccessToken } from "../components/Login/utils";
 import {
   IReport,
   IReportDTO,
@@ -9,6 +8,7 @@ import {
   UserRegister,
 } from "@/models";
 import { CredentialResponse } from "@react-oauth/google";
+import { ACCESSS_TOKEN, refreshAccessToken } from "@/utils/login";
 
 export const serverURL =
   import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
@@ -128,7 +128,9 @@ export const api = {
     getById: async (userId: string): Promise<UserDto> =>
       (await axiosInstance.get(`/users/${userId}`)).data,
 
-    update: async (details: Partial<UserDto | UserLoginDeatils>): Promise<UserDto> =>
+    update: async (
+      details: Partial<UserDto | UserLoginDeatils>
+    ): Promise<UserDto> =>
       (await axiosInstance.put(`/users/update`, details)).data,
   },
 };

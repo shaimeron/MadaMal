@@ -1,41 +1,25 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
+import { StoreUser } from "@/models";
 
 // Define a type for the slice state
 interface UserState {
-  userId: string;
-  email: string;
-  fullname: string;
-  imageUrl: string;
+  userData: StoreUser;
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
-  userId: "",
-  email: "",
-  fullname: "",
-  imageUrl: "",
+  userData: { userId: "", email: "", fullname: "", imageUrl: "" },
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      const { userId, email, fullname, imageUrl } = action.payload;
-
+    upadteUser: (state, action: PayloadAction<Partial<StoreUser>>) => {
       return {
         ...state,
-        userId,
-        email,
-        fullname,
-        imageUrl,
-      };
-    },
-    upadteUser: (state, action: PayloadAction<Partial<UserState>>) => {
-      return {
-        ...state,
-        ...action.payload,
+        userData: { ...state.userData, ...action.payload },
       };
     },
     logout: () => {
@@ -46,16 +30,22 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser } = userSlice.actions;
-export const { upadteUser } = userSlice.actions;
-export const { logout } = userSlice.actions;
+export const { upadteUser, logout } = userSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const selectUserId = (state: RootState) => state.user.userId;
-export const selectUserProfileData = (state: RootState) => {
-  const { email, fullname, imageUrl } = state.user;
+export const selectUser = (state: RootState): StoreUser => state.user.userData;
 
-  return { email, fullname, imageUrl };
-};
+export const selectUserId = createSelector(
+  selectUser,
+  (user: StoreUser): string => user.userId
+);
+
+export const selectIsUserLoggedIn = createSelector(
+  selectUserId,
+  (userId: string): boolean => !!userId
+);
+export const selectUserName = createSelector(
+  selectUser,
+  (user: StoreUser): string => user.fullname
+);
 
 export default userSlice.reducer;

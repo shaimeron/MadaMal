@@ -34,16 +34,14 @@ describe("ReportsController tests", () => {
   });
 
   test("Test getAll", async () => {
-    const response = await request(app)
-      .get("/reports");
+    const response = await request(app).get("/reports");
 
     expect(response.statusCode).toBe(200);
     // Add assertions for the response body as needed
   });
 
   test("Test getById", async () => {
-    const response = await request(app)
-      .get(`/reports/${reportId}`);
+    const response = await request(app).get(`/reports/${reportId}`);
 
     expect(response.statusCode).toBe(200);
     // Add assertions for the response body as needed

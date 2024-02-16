@@ -2,36 +2,36 @@ import { Request, Response } from "express";
 import {
   IReportDTO,
   IUpdateInReportDTO,
-  reportsModel,
+  ReportsModel,
 } from "../models/reports";
 import { deleteImage } from "../common/imageHandler";
 
 export class ReportsController {
   async getAll(req: Request, res: Response) {
-    const reports = await reportsModel.find();
+    const reports = await ReportsModel.find();
     res.send(reports);
   }
 
   async getById(req: Request, res: Response) {
-    const report = await reportsModel.findById(req.params.id);
+    const report = await ReportsModel.findById(req.params.id);
     res.send(report);
   }
 
   async createReport(req: Request, res: Response) {
     const reportDto: IReportDTO = req.body;
-    const obj = await reportsModel.create(reportDto);
+    const obj = await ReportsModel.create(reportDto);
     res.status(201).send(obj);
   }
 
   async updateReport(req: Request, res: Response) {
     const { _id, ...restOfDTO }: IReportDTO = req.body;
-    const obj = await reportsModel.updateOne({ _id }, restOfDTO);
+    const obj = await ReportsModel.updateOne({ _id }, restOfDTO);
     res.status(201).send(obj);
   }
 
   async deleteById(req: Request, res: Response) {
     const _id: string = req.params.id;
-    const report = await reportsModel.findById(_id);
+    const report = await ReportsModel.findById(_id);
     const obj = await report.deleteOne();
     if (report.imageName) deleteImage(report.imageName);
 
@@ -43,7 +43,7 @@ export class ReportsController {
   async addUpdateToReport(req: Request, res: Response) {
     const { reportId, ...updateBody }: IUpdateInReportDTO = req.body;
 
-    await reportsModel.updateOne(
+    await ReportsModel.updateOne(
       { _id: reportId },
       { $push: { updates: updateBody } }
     );
@@ -52,7 +52,7 @@ export class ReportsController {
 
   async changeUpdateInReport(req: Request, res: Response) {
     const { reportId, _id, data }: IUpdateInReportDTO = req.body;
-    const obj = await reportsModel.updateOne(
+    const obj = await ReportsModel.updateOne(
       { _id: reportId, updates: { $elemMatch: { _id } } },
       { $set: { "updates.$.data": data } }
     );
@@ -65,7 +65,7 @@ export class ReportsController {
 
   async deleteUpdateFromReport(req: Request, res: Response) {
     const { reportId, updateId } = req.params;
-    const obj = await reportsModel.updateOne(
+    const obj = await ReportsModel.updateOne(
       { _id: reportId },
       {
         $pull: {

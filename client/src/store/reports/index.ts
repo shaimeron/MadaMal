@@ -27,7 +27,6 @@ export const reportsSlice = createSlice({
 
 export const { setReports } = reportsSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectAllReports = (state: RootState) => state.reports.reports;
 export const selectReportsofLoggedUser = createSelector(
   [selectAllReports, selectUserId],
