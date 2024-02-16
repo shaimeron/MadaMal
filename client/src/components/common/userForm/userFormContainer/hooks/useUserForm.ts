@@ -2,7 +2,7 @@ import { api } from "@/api";
 import { useAppSelector } from "@/hooks/store";
 import { UserRegister, UserUpdateDto } from "@/models";
 import { selectUser, upadteUser } from "@/store/user";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { EUserFields, defaultFormValues, UserFormData } from "../../formUtils";
 import { toast } from "react-toastify";
 import { uploadImage } from "@/utils/files";
@@ -16,9 +16,11 @@ interface IUseUserForm {
   titleText: string;
   submitText: string;
   isUpdateForm: boolean;
+  isButtonLoading: boolean;
 }
 
 export const useUserForm = (): IUseUserForm => {
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
   const userData = useAppSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,18 +93,20 @@ export const useUserForm = (): IUseUserForm => {
 
   const handleValidFormData = async (formData: UserFormData): Promise<void> => {
     const imageFile = formData[EUserFields.IMAGE];
-
+    setIsButtonLoading(true);
     try {
       let serverFileName = "";
       if (imageFile) {
         serverFileName = await uploadImage(imageFile);
       }
 
-      isUpdateForm
+      await (isUpdateForm
         ? finishUpdateLogic(formData[EUserFields.FULL_NAME], serverFileName)
-        : finishRegisterLogic(formData, serverFileName);
+        : finishRegisterLogic(formData, serverFileName));
     } catch (error: any) {
       toast.error("אירעה שגיאה בשמירת התמונה בשרת, אנא נסה שנית");
+    } finally {
+      setIsButtonLoading(false);
     }
   };
 
@@ -127,5 +131,6 @@ export const useUserForm = (): IUseUserForm => {
     titleText,
     submitText,
     isUpdateForm,
+    isButtonLoading,
   };
 };

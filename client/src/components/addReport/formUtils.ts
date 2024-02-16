@@ -26,9 +26,7 @@ export const addReportFormDataObject: Record<
 export const schema = z.object({
   [EAddReportFields.IMAGE]: z.instanceof(File).optional(),
   [EAddReportFields.DEFAULT_IMAGE_NAME]: z.string().optional(),
-  [EAddReportFields.DATA]: z.string({
-    required_error: "חובה למלא את טקסט הדיווח",
-  }),
+  [EAddReportFields.DATA]: z.string().min(1, "חובה למלא את טקסט הדיווח"),
 });
 
 export const defaultFormValues = {
