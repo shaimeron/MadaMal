@@ -12,7 +12,7 @@ import {
 import { FC, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { style } from "./style";
-import { WeatherDisplay } from "../../../Weather";
+import { WeatherDisplay } from "../../../weather";
 import { LoginButton } from "../loginButton";
 import { LogoutButton } from "../logoutButton";
 
