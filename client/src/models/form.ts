@@ -6,6 +6,7 @@ export interface IFormFieldInputData {
   label?: string;
   sxStyle?: SxProps<Theme>;
   fieldName: string;
+  placeholder?: string;
 }
 
 export interface IFormFieldInput {
