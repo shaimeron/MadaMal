@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import reportsRoute from "./routes/reports.route";
 import usersRoute from "./routes/users.route";
-import authRoute from "./routes/auth_route";
+import authRoute from "./routes/auth.route";
 import imageRoute from "./routes/image.route";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
