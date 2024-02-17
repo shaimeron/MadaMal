@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { Divider, Grid, List } from "@mui/material";
 import { AddMessage } from "../addMessage";
 import { IMessage, socket } from "../socketUtils";
+import { ChatListItem } from "../chatListItem";
 
 export const ChatContainer: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -39,45 +34,32 @@ export const ChatContainer: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <AddMessage />
-      <br />
-      <br />
-      <List
-        style={{
-          maxHeight: 400,
-          overflow: "auto",
-          backgroundColor: "#f0f0f0",
-          padding: "10px",
-          borderRadius: "10px",
-        }}
-      >
-        {messages.map((msg, index) => (
-          <React.Fragment key={index}>
-            <ListItem alignItems="flex-start">
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    {msg.username}
-                  </Typography>
-                }
-                secondary={
-                  <Typography variant="body2" style={{ color: "#555" }}>
-                    {msg.message}
-                  </Typography>
-                }
-              />
-            </ListItem>
-            {index < messages.length - 1 && (
-              <Divider variant="inset" component="li" />
-            )}
-          </React.Fragment>
-        ))}
-        <div ref={messagesEndRef} />
-      </List>
-    </div>
+    <Grid container direction="column">
+      <Grid item>
+        <AddMessage />
+      </Grid>
+
+      <Grid item sx={{ paddingTop: "25px" }}>
+        <List
+          style={{
+            maxHeight: 400,
+            overflow: "auto",
+            backgroundColor: "#f0f0f0",
+            padding: "10px",
+            borderRadius: "10px",
+          }}
+        >
+          {messages.map((msg, index) => (
+            <div key={index}>
+              <ChatListItem message={msg} />
+              {index < messages.length - 1 && (
+                <Divider variant="inset" component="li" />
+              )}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </List>
+      </Grid>
+    </Grid>
   );
 };

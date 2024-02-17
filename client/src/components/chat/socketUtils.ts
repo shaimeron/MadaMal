@@ -11,4 +11,6 @@ export interface IMessagesDTO {
 export interface IMessage {
   username: string;
   message: string;
+  timestamp: Date;
+  _id: string;
 }
