@@ -1,7 +1,10 @@
 import { Server } from "socket.io";
-import { messageModel } from "./models/messages/messages.model";
 import https from "https";
 import http from "http";
+import { SocketIOController } from "./controllers";
+import { IMessageForClient } from "./models/messages";
+
+const socketIOController = new SocketIOController();
 
 export const startSocketIO = (server: http.Server | https.Server) => {
   const socketIO = new Server(server, {
@@ -13,30 +16,23 @@ export const startSocketIO = (server: http.Server | https.Server) => {
 
   socketIO.on("connection", (socket) => {
     console.log("New client connected");
-    socket.on("request chat history", () => {
-      messageModel
-        .find()
-        .sort({ timestamp: 1 })
-        .limit(50)
-        .exec()
-        .then((messages) => {
-          socket.emit("chat history", messages);
-        })
-        .catch((err) => {
-          console.error("Error fetching chat history:", err);
-        });
+    socket.on("request chat history", async () => {
+      try {
+        const messages: IMessageForClient[] =
+          await socketIOController.getChetHistory();
+        socket.emit("chat history", messages);
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
     });
-    socket.on("chat message", (data) => {
-      const newMessage = new messageModel({
-        username: data.username,
-        message: data.message,
-      });
-      newMessage.save();
-      socketIO.emit("chat message", data);
+    socket.on("chat message", async (data) => {
+      const messageToReturn: IMessageForClient =
+        await socketIOController.newMessage(data);
+      socketIO.emit("chat message", messageToReturn);
     });
 
     socket.on("disconnect", () => {
-      console.log("Client disconnected");
+      socketIOController.onDisconnect();
     });
   });
 };

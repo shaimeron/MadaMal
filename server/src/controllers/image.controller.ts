@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { IMAGES_DIR, deleteImage } from "../common/imageHandler";
+import { deleteImage } from "../common/imageHandler";
 
 export class ImageController {
   uploadImage = (req: Request, res: Response) => {
-
     if (!req.file) {
       return res.status(400).send("No Image uploaded.");
     }
