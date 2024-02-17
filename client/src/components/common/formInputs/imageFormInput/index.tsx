@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { serverURL } from "@/api";
+import { imageURL } from "@/api";
 import { IFormFieldInput } from "@/models/form";
 import { Box, CardMedia, TextField } from "@mui/material";
 import { FC, useCallback, useMemo, useState } from "react";
@@ -19,7 +19,7 @@ export const ImageFormInput: FC<IImageFormInputProps> = ({
     useState<string>();
 
   const defaultImagePath = useMemo(
-    () => `${serverURL}/${defaultImageName}`,
+    () => `${imageURL}/${defaultImageName}`,
     [defaultImageName]
   );
 
