@@ -77,65 +77,77 @@ axiosInstance.interceptors.response.use(
 
 // TODO - ADD HERE GOOGLE LOGIN
 
+const apiUrls = {
+  report: `/api/reports`,
+  update: `/api/reports/update`,
+  image: `/api/image`,
+  auth: `/api/auth`,
+  user: `/api/users`,
+};
+
 export const api = {
   report: {
     getAll: async (): Promise<IReport[]> =>
-      (await axiosInstance.get("/reports/all")).data,
+      (await axiosInstance.get(`${apiUrls.report}/all`)).data,
     getById: async (reportId: string): Promise<IReport> =>
-      (await axiosInstance.get(`/reports/${reportId}`)).data,
+      (await axiosInstance.get(`${apiUrls.report}/${reportId}`)).data,
     deleteReport: async (reportId: string): Promise<void> =>
-      await axiosInstance.delete(`/reports/${reportId}`),
+      await axiosInstance.delete(`${apiUrls.report}/${reportId}`),
     addReport: async (reportDTO: IReportDTO): Promise<void> =>
-      await axiosInstance.post(`/reports`, reportDTO),
+      await axiosInstance.post(`${apiUrls.report}`, reportDTO),
     updateReport: async (reportDTO: IReportDTO): Promise<void> =>
-      await axiosInstance.put(`/reports`, reportDTO),
+      await axiosInstance.put(`${apiUrls.report}`, reportDTO),
     getUpdatesById: async (reportId: string): Promise<IReportItem[]> =>
-      (await axiosInstance.get(`/reports/update/${reportId}`)).data,
+      (await axiosInstance.get(`${apiUrls.update}/${reportId}`)).data,
     addUpdateToReport: async (updateDTO: IUpdateInReportDTO): Promise<void> =>
-      await axiosInstance.post(`/reports/update`, updateDTO),
+      await axiosInstance.post(`${apiUrls.update}`, updateDTO),
     changeUpdateInReport: async (
       updateDTO: IUpdateInReportDTO
-    ): Promise<void> => await axiosInstance.put(`/reports/update`, updateDTO),
+    ): Promise<void> => await axiosInstance.put(`${apiUrls.update}`, updateDTO),
     deleteUpdateFromReport: async (
       reportId: string,
       updateId: string
     ): Promise<void> =>
-      await axiosInstance.delete(`/reports/update/${reportId}/${updateId}`),
+      await axiosInstance.delete(`${apiUrls.update}/${reportId}/${updateId}`),
   },
   image: {
     uploadImage: async (image: FormData, imageName?: string): Promise<string> =>
-      (await axiosInstance.post(`/image/uploadImage/${imageName ?? ""}`, image))
-        .data,
+      (
+        await axiosInstance.post(
+          `${apiUrls.image}/uploadImage/${imageName ?? ""}`,
+          image
+        )
+      ).data,
   },
   auth: {
     register: async (
       data: UserRegister
     ): Promise<AxiosResponse<UserRegister>> =>
-      await axiosInstance.post(`auth/register`, data),
+      await axiosInstance.post(`${apiUrls.auth}/register`, data),
 
     login: async (
       details: UserLoginDeatils
     ): Promise<AxiosResponse<LoginDecodedData>> =>
-      await axiosInstance.post(`auth/login`, details),
+      await axiosInstance.post(`${apiUrls.auth}/login`, details),
 
     googleLogin: async (
       credentials: CredentialResponse
     ): Promise<AxiosResponse<LoginDecodedData>> =>
-      await axiosInstance.post(`auth/google`, credentials),
+      await axiosInstance.post(`${apiUrls.auth}/google`, credentials),
 
     logout: async (): Promise<AxiosResponse<void>> =>
-      await axiosInstance.post(`auth/logout`),
+      await axiosInstance.get(`${apiUrls.auth}/logout`),
 
     refresh: async (): Promise<AxiosResponse<LoginDecodedData>> =>
-      await axiosInstance.post(`auth/refresh`),
+      await axiosInstance.post(`${apiUrls.auth}/refresh`),
   },
   user: {
     getById: async (userId: string): Promise<UserDto> =>
-      (await axiosInstance.get(`/users/${userId}`)).data,
+      (await axiosInstance.get(`${apiUrls.user}/${userId}`)).data,
 
     update: async (
       details: Partial<UserDto | UserLoginDeatils>
     ): Promise<UserDto> =>
-      (await axiosInstance.put(`/users/update`, details)).data,
+      (await axiosInstance.put(`${apiUrls.user}/update`, details)).data,
   },
 };
