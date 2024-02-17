@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { selectUserId } from "@/store/user";
 import { useAppSelector } from "@/hooks/store";
-import { IMessage, socket } from "../socketUtils";
+import { IMessagesDTO, socket } from "../socketUtils";
 
 export const AddMessage: React.FC = () => {
   const [message, setMessage] = useState<string>("");
@@ -10,7 +10,7 @@ export const AddMessage: React.FC = () => {
 
   const sendMessage = (): void => {
     if (message) {
-      const data: IMessage = { username: userId, message };
+      const data: IMessagesDTO = { userId, message };
       socket.emit("chat message", data);
       setMessage("");
     }
