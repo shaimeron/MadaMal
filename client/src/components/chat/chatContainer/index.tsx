@@ -34,7 +34,7 @@ export const ChatContainer: React.FC = () => {
   }, []);
 
   return (
-    <Grid display="flex" direction="column" spacing={2}>
+    <Grid container direction="column">
       <Grid item>
         <AddMessage />
       </Grid>
@@ -50,12 +50,12 @@ export const ChatContainer: React.FC = () => {
           }}
         >
           {messages.map((msg, index) => (
-            <>
+            <div key={index}>
               <ChatListItem message={msg} />
               {index < messages.length - 1 && (
                 <Divider variant="inset" component="li" />
               )}
-            </>
+            </div>
           ))}
           <div ref={messagesEndRef} />
         </List>
