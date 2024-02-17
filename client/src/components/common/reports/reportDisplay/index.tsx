@@ -15,7 +15,7 @@ import { red } from "@mui/material/colors";
 import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
 import { style } from "./style";
 import swal from "sweetalert";
-import { api, serverURL } from "@/api";
+import { api, imageURL } from "@/api";
 import { useDispatch } from "react-redux";
 import { openUpdate } from "@/store/addReport";
 import { useNavigate } from "react-router-dom";
@@ -98,7 +98,7 @@ export const ReportDisplay: FC<IReportDisplayProps> = ({
           <CardMedia
             component="img"
             height="194"
-            src={`${serverURL}/${report.imageName}`}
+            src={`${imageURL}/${report.imageName}`}
           />
         )}
       </CardContent>

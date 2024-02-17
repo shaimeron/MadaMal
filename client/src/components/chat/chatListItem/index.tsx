@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { ListItem, ListItemText, Typography } from "@mui/material";
+import { Box, ListItem, ListItemText, Typography } from "@mui/material";
 import { IMessage } from "../socketUtils";
 import { dateFormater } from "@/utils/date";
 
@@ -17,9 +17,20 @@ export const ChatListItem: React.FC<IChatListItemProps> = ({ message }) => {
     <ListItem alignItems="flex-start" id={message._id}>
       <ListItemText
         primary={
-          <Typography variant="body2" style={{ fontWeight: "bold" }}>
-            {message.username} - {dateDisplay}
-          </Typography>
+          <Box display="flex" flexDirection="row">
+            <Typography variant="body2" style={{ fontWeight: "bold" }}>
+              {message.username}
+            </Typography>
+            <Typography
+              variant="body2"
+              style={{ fontWeight: "bold", padding: "0px 5px" }}
+            >
+              -
+            </Typography>
+            <Typography variant="body2" style={{ fontWeight: "bold" }}>
+              {dateDisplay}
+            </Typography>
+          </Box>
         }
         secondary={
           <Typography variant="subtitle1" style={{ color: "#555" }}>
