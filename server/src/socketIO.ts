@@ -8,6 +8,7 @@ const socketIOController = new SocketIOController();
 
 export const startSocketIO = (server: http.Server | https.Server) => {
   const socketIO = new Server(server, {
+    path: "/api/socket.io/",
     cors: {
       origin: "*", // Replace with your client app's URL
       methods: ["GET", "POST"],

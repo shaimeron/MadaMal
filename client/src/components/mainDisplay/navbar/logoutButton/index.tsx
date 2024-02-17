@@ -21,7 +21,7 @@ export const LogoutButton: FC = () => {
   return (
     <>
       {userName && (
-        <ListItemButton onClick={handleLogoutClick}>
+        <ListItemButton sx={{ direction: "ltr" }} onClick={handleLogoutClick}>
           <ListItemText primary={"התנתק"} />
         </ListItemButton>
       )}
