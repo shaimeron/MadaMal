@@ -1,6 +1,6 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "..";
-import { StoreUser } from "@/models";
+import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {RootState} from "..";
+import {StoreUser} from "@/models";
 
 // Define a type for the slice state
 interface UserState {

@@ -1,8 +1,8 @@
-import { FC, useMemo } from "react";
-import { ListItem, List, Box } from "@mui/material";
-import { IReport } from "@/models";
-import { ReportDisplay } from "../reportDisplay";
-import { style } from "./style";
+import {FC, useMemo} from "react";
+import {Box, List, ListItem} from "@mui/material";
+import {IReport} from "@/models";
+import {ReportDisplay} from "../reportDisplay";
+import {style} from "./style";
 
 interface IReportsListProps {
   reports: IReport[];

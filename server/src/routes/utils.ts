@@ -1,6 +1,6 @@
 import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
-import { IMAGES_DIR } from "../common/imageHandler";
+import {v4 as uuidv4} from "uuid";
+import {IMAGES_DIR} from "../common/imageHandler";
 import path from "path";
 import swaggerJSDoc from "swagger-jsdoc";
 

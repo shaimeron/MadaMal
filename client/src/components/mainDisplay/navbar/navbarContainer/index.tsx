@@ -1,20 +1,10 @@
-import {
-  AppBar,
-  Box,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { FC, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { style } from "./style";
-import { WeatherDisplay } from "../../../weather";
-import { LoginButton } from "../loginButton";
-import { LogoutButton } from "../logoutButton";
+import {AppBar, Box, Grid, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography,} from "@mui/material";
+import {FC, useMemo} from "react";
+import {useNavigate} from "react-router-dom";
+import {style} from "./style";
+import {WeatherDisplay} from "../../../weather";
+import {LoginButton} from "../loginButton";
+import {LogoutButton} from "../logoutButton";
 
 interface INavItem {
   link: string;

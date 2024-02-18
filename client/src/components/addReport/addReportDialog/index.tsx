@@ -1,26 +1,14 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import { useCallback, useEffect } from "react";
-import { FC } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "@/hooks/store";
-import { selectReportDialogStatus, closeDialog } from "@/store/addReport";
-import {
-  AddReportFormData,
-  EAddReportFields,
-  defaultFormValues,
-  schema,
-} from "../formUtils";
-import { useAddDialog } from "./hooks/useAddDialog";
-import { AddReportFormBody } from "../addReportFormBody";
-import { LoadingButton } from "@mui/lab";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle,} from "@mui/material";
+import {FC, useCallback, useEffect} from "react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {FieldValues, useForm} from "react-hook-form";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "@/hooks/store";
+import {closeDialog, selectReportDialogStatus} from "@/store/addReport";
+import {AddReportFormData, defaultFormValues, EAddReportFields, schema,} from "../formUtils";
+import {useAddDialog} from "./hooks/useAddDialog";
+import {AddReportFormBody} from "../addReportFormBody";
+import {LoadingButton} from "@mui/lab";
 
 export const AddReportDialog: FC = () => {
   const isOpen: boolean = useAppSelector(selectReportDialogStatus);

@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { IUser, UsersModel } from "../models/users/user.model";
+import {Request, Response} from "express";
+import {IUser, UsersModel} from "../models/users/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { OAuth2Client } from "google-auth-library";
-import { Document } from "mongoose";
+import {OAuth2Client} from "google-auth-library";
+import {Document} from "mongoose";
 
 const client = new OAuth2Client();
 const googleSignin = async (req: Request, res: Response) => {

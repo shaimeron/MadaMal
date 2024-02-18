@@ -1,15 +1,7 @@
-import axios, { AxiosResponse } from "axios";
-import {
-  IReport,
-  IReportDTO,
-  IReportItem,
-  IUpdateInReportDTO,
-  UserDto,
-  UserLoginDeatils,
-  UserRegister,
-} from "@/models";
-import { CredentialResponse } from "@react-oauth/google";
-import { ACCESSS_TOKEN, refreshAccessToken } from "@/utils/login";
+import axios, {AxiosResponse} from "axios";
+import {IReport, IReportDTO, IReportItem, IUpdateInReportDTO, UserDto, UserLoginDeatils, UserRegister,} from "@/models";
+import {CredentialResponse} from "@react-oauth/google";
+import {ACCESSS_TOKEN, refreshAccessToken} from "@/utils/login";
 
 export const REFETCH_INTERVAL = 3000;
 

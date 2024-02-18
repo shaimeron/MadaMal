@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { Control, useWatch } from "react-hook-form";
-import { ImageFormInput, TextFieldFormInput } from "@@/common/formInputs";
-import { EAddReportFields, addReportFormDataObject } from "../formUtils";
+import {FC} from "react";
+import {Control, useWatch} from "react-hook-form";
+import {ImageFormInput, TextFieldFormInput} from "@@/common/formInputs";
+import {addReportFormDataObject, EAddReportFields} from "../formUtils";
 
 interface IAddReportFormBodyProps {
   control: Control<any>;

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Box, ListItem, ListItemText, Typography } from "@mui/material";
-import { IMessage } from "../socketUtils";
-import { dateFormater } from "@/utils/date";
+import React, {useMemo} from "react";
+import {Box, ListItem, ListItemText, Typography} from "@mui/material";
+import {IMessage} from "../socketUtils";
+import {dateFormater} from "@/utils/date";
 
 interface IChatListItemProps {
   message: IMessage;

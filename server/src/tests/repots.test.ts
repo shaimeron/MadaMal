@@ -1,9 +1,8 @@
 import request from "supertest";
 import initApp from "../app";
 import mongoose from "mongoose";
-import { Express } from "express";
-import { ReportsModel } from "../models/reports"; // Make sure to import your ReportsModel interface
-import { IReportDTO, IUpdateInReportDTO } from "../models/reports"; // Import your DTO interfaces
+import {Express} from "express";
+import {IReportDTO, ReportsModel} from "../models/reports"; // Import your DTO interfaces // Make sure to import your ReportsModel interface
 
 let app: Express;
 let reportId: string;

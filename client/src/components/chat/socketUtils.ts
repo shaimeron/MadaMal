@@ -1,4 +1,4 @@
-import { serverURL } from "@/api";
+import {serverURL} from "@/api";
 import socketIOClient from "socket.io-client";
 
 export const socket = socketIOClient(serverURL, {

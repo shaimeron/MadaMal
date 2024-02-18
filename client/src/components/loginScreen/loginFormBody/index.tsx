@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { Control } from "react-hook-form";
-import { TextFieldFormInput } from "@@/common/formInputs";
-import { ELoginFields, loginFormDataObject } from "./formUtils";
+import {FC} from "react";
+import {Control} from "react-hook-form";
+import {TextFieldFormInput} from "@@/common/formInputs";
+import {ELoginFields, loginFormDataObject} from "./formUtils";
 
 interface Props {
   control: Control<any>;
