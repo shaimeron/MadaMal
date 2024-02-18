@@ -57,6 +57,13 @@ describe("ReportsController tests", () => {
     // Add assertions for the response body as needed
   });
 
+  test("Test getById", async () => {
+    const response = await request(app).get(`/reports/${reportId}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body._id).toBe(reportId);
+  });
+
 
   // Add tests for other methods like updateReport, deleteById, addUpdateToReport, changeUpdateInReport, and deleteUpdateFromReport
 });
