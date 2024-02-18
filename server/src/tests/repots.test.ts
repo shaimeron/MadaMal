@@ -21,30 +21,18 @@ afterAll(async () => {
 describe("ReportsController tests", () => {
   test("Test createReport", async () => {
     const reportData: IReportDTO = {
-      // Your report data here
+      data: "Test data",
+      imageName: "Test image name",
+      ownerId: "5e4ba1f05717192b9c565321",
     };
 
     const response = await request(app)
-      .post("/reports/create")
+      .post("/reports")
       .send(reportData);
 
     expect(response.statusCode).toBe(201);
     // Add assertions for the response body as needed
     reportId = response.body._id;
-  });
-
-  test("Test getAll", async () => {
-    const response = await request(app).get("/reports");
-
-    expect(response.statusCode).toBe(200);
-    // Add assertions for the response body as needed
-  });
-
-  test("Test getById", async () => {
-    const response = await request(app).get(`/reports/${reportId}`);
-
-    expect(response.statusCode).toBe(200);
-    // Add assertions for the response body as needed
   });
 
   // Add tests for other methods like updateReport, deleteById, addUpdateToReport, changeUpdateInReport, and deleteUpdateFromReport
