@@ -64,6 +64,10 @@ describe("ReportsController tests", () => {
     expect(response.body._id).toBe(reportId);
   });
 
+  test("Test deleteById", async () => {
+    const response = await request(app).delete(`/reports/${reportId}`);
 
+    expect(response.statusCode).toBe(200);
+  });
   // Add tests for other methods like updateReport, deleteById, addUpdateToReport, changeUpdateInReport, and deleteUpdateFromReport
 });
