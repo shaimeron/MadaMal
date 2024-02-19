@@ -22,7 +22,7 @@ describe("ImageController tests", () => {
     const filePath = path.resolve(__dirname, "test_image.jpg");
 
     const response = await request(app)
-      .post("/image/uploadImage/wrong_name.jpg")
+      .post("/api/image/uploadImage/wrong_name.jpg")
       .attach("file", filePath);
 
     expect(response.statusCode).toBe(500);
@@ -31,7 +31,7 @@ describe("ImageController tests", () => {
 
   test("Test uploadImage without file", async () => {
     const response = await request(app)
-      .post("/image/uploadImage/test_image.jpg");
+      .post("/api/image/uploadImage/test_image.jpg");
 
     expect(response.statusCode).toBe(400);
     expect(response.text).toBe("No Image uploaded.");
