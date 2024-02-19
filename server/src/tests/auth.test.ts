@@ -53,5 +53,14 @@ describe("Auth tests", () => {
 
   jest.setTimeout(10000);
 
+  test("Test access after timeout of token", async () => {
+    await new Promise((resolve) => setTimeout(() => resolve("done"), 5000));
+
+    const response = await request(app)
+      .get("/api/student")
+      .set("Authorization", "JWT " + accessToken);
+    expect(response.statusCode).not.toBe(200);
+  });
+
 
 });
