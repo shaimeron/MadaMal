@@ -31,7 +31,7 @@ describe("ImageController tests", () => {
 
   test("Test uploadImage without file", async () => {
     const response = await request(app)
-      .post("/image/uploadImage/test_image.jpg");
+      .post("/api/image/uploadImage/test_image.jpg");
 
     expect(response.statusCode).toBe(400);
     expect(response.text).toBe("No Image uploaded.");
