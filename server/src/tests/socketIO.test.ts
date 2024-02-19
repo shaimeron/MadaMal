@@ -18,5 +18,10 @@ test("Test createMessage", async () => {
      });
 });
 
-
+test("Test chatHistory", async () => {
+     const socketIOController = new SocketIOController();
+     socketIOController.getChetHistory().then((response) => {
+            expect(response[0].message).toEqual(message);
+     });
+});
 });
