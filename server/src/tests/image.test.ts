@@ -22,7 +22,7 @@ describe("ImageController tests", () => {
     const filePath = path.resolve(__dirname, "test_image.jpg");
 
     const response = await request(app)
-      .post("/image/uploadImage/wrong_name.jpg")
+      .post("/api/image/uploadImage/wrong_name.jpg")
       .attach("file", filePath);
 
     expect(response.statusCode).toBe(500);
