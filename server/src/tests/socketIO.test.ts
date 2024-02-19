@@ -11,5 +11,12 @@ beforeAll(async () => {
 });
 
 describe("SocketIO tests", () => {
+test("Test createMessage", async () => {
+     const socketIOController = new SocketIOController();
+     socketIOController.newMessage({message, userId: "123"}).then((response) => {
+            expect(response.message).toEqual(message);
+     });
+});
+
 
 });
