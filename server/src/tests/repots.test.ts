@@ -11,10 +11,10 @@ let reportId: string;
 beforeAll(async () => {
   app = await initApp();
   console.log("beforeAll");
-  await ReportsModel.deleteMany({});
 });
 
 afterAll(async () => {
+  await ReportsModel.deleteMany({ownerId: "5e4ba1f05717192b9c565321"});
   await mongoose.connection.close();
 });
 
@@ -27,11 +27,10 @@ describe("ReportsController tests", () => {
     };
 
     const response = await request(app)
-      .post("/reports")
+      .post(`/api/reports`)
       .send(reportData);
 
     expect(response.statusCode).toBe(201);
-    // Add assertions for the response body as needed
     reportId = response.body._id;
   });
 
@@ -44,30 +43,28 @@ describe("ReportsController tests", () => {
     };
 
     const response = await request(app)
-      .put("/reports")
+      .put("/api/reports")
       .send(reportData);
 
     expect(response.statusCode).toBe(201);
   });
 
   test("Test getAll", async () => {
-    const response = await request(app).get("/reports/all");
+    const response = await request(app).get("/api/reports/all");
 
     expect(response.statusCode).toBe(200);
-    // Add assertions for the response body as needed
   });
 
   test("Test getById", async () => {
-    const response = await request(app).get(`/reports/${reportId}`);
+    const response = await request(app).get(`/api/reports/${reportId}`);
 
     expect(response.statusCode).toBe(200);
     expect(response.body._id).toBe(reportId);
   });
 
   test("Test deleteById", async () => {
-    const response = await request(app).delete(`/reports/${reportId}`);
+    const response = await request(app).delete(`/api/reports/${reportId}`);
 
     expect(response.statusCode).toBe(200);
   });
-  // Add tests for other methods like updateReport, deleteById, addUpdateToReport, changeUpdateInReport, and deleteUpdateFromReport
 });
