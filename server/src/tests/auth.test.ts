@@ -31,5 +31,10 @@ describe("Auth tests", () => {
     expect(response.statusCode).toBe(201);
   });
 
+  test("Test Register exist email", async () => {
+    const response = await request(app).post("/api/auth/register").send(user);
+    expect(response.statusCode).toBe(406);
+  });
+
 
 });
