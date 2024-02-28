@@ -22,11 +22,12 @@ const imageController = new ImageController();
  *         required: false
  *         type: string
  *         description: The previus image file name of the report.
- *       - in: formData
- *         name: image
- *         type: file
- *         required: true
- *         description: The image file to upload.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           example:
+ *             file: IMAGE FILE
  *     responses:
  *       200:
  *         description: Image uploaded successfully.
