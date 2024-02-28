@@ -59,6 +59,8 @@ router.get(
  *         description: User details retrieved successfully.
  *       401:
  *         description: Unauthorized. Token is missing or invalid.
+ *       403:
+ *          description: User ID not found in request
  *       404:
  *         description: User not found.
  *       500:
