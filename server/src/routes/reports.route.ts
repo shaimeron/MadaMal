@@ -6,7 +6,7 @@ const reportsController = new ReportsController();
 
 /**
  * @swagger
- * /reports/all:
+ * api/reports/all:
  *   get:
  *     summary: Retrieve all reports.
  *     description: Fetches a list of all reports in the system.
@@ -22,7 +22,7 @@ router.get("/all", reportsController.getAll.bind(reportsController));
 
 /**
  * @swagger
- * /reports/{id}:
+ * api/reports/{id}:
  *   get:
  *     summary: Retrieve a report by its ID.
  *     description: Fetches a specific report by its unique identifier.
@@ -46,7 +46,7 @@ router.get("/:id", reportsController.getById.bind(reportsController));
 
 /**
  * @swagger
- * /reports/:
+ * api/reports/:
  *   post:
  *     summary: Create a new report.
  *     description: Adds a new report to the system.
@@ -73,7 +73,7 @@ router.post("/", reportsController.createReport.bind(reportsController));
 
 /**
  * @swagger
- * /reports/:
+ * api/reports/:
  *   put:
  *     summary: Update an existing report.
  *     description: Updates an existing report in the system.
@@ -101,7 +101,7 @@ router.put("/", reportsController.updateReport.bind(reportsController));
 
 /**
  * @swagger
- * /reports/{id}:
+ * api/reports/{id}:
  *   delete:
  *     summary: Delete a report.
  *     description: Deletes a report from the system by its ID.
@@ -125,7 +125,7 @@ router.delete("/:id", reportsController.deleteById.bind(reportsController));
 
 /**
  * @swagger
- * /reports/updates/{reportId}:
+ * api/reports/updates/{reportId}:
  *   get:
  *     summary: Retrieve all updates in report by its ID.
  *     description: Fetches all updates from a specific report by the report unique identifier.
@@ -152,7 +152,7 @@ router.get(
 
 /**
  * @swagger
- * /reports/update:
+ * api/reports/update:
  *   post:
  *     summary: Add an update to a report.
  *     description: Adds a new update to a report.
@@ -182,7 +182,7 @@ router.post(
 
 /**
  * @swagger
- * /reports/update/{reportId}/{updateId}:
+ * api/reports/update/{reportId}/{updateId}:
  *   delete:
  *     summary: Delete an update from a report.
  *     description: Deletes an update from a report by its ID.
@@ -214,7 +214,7 @@ router.delete(
 
 /**
  * @swagger
- * /reports/update:
+ * api/reports/update:
  *   put:
  *     summary: Update an existing report update.
  *     description: Updates an existing report update in the system.

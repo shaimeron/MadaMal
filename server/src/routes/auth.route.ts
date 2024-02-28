@@ -4,7 +4,7 @@ import authController from "../controllers/auth.controller";
 
 /**
  * @swagger
- * /auth/register:
+ * api/auth/register:
  *   post:
  *     summary: Register a new user.
  *     description: Creates a new user account.
@@ -32,7 +32,7 @@ router.post("/google", authController.googleSignin);
 
 /**
  * @swagger
- * /auth/login:
+ * api/auth/login:
  *   post:
  *     summary: Login.
  *     description: Logs a user into the system.
@@ -57,7 +57,7 @@ router.post("/login", authController.login);
 
 /**
  * @swagger
- * /auth/logout:
+ * api/auth/logout:
  *   get:
  *     summary: Logout.
  *     description: Logs a user out of the system.
@@ -73,7 +73,7 @@ router.get("/logout", authController.logout);
 
 /**
  * @swagger
- * /auth/refresh:
+ * api/auth/refresh:
  *   get:
  *     summary: Refresh token.
  *     description: Refreshes a user's token.
