@@ -88,7 +88,7 @@ router.post("/", reportsController.createReport.bind(reportsController));
  *             data: This is a report.
  *             imageName: image.jpeg.
  *     responses:
- *       200:
+ *       201:
  *         description: Report updated successfully.
  *       400:
  *         description: Invalid input, object invalid.
@@ -200,7 +200,7 @@ router.post(
  *         type: string
  *         description: Unique identifier of the update to delete.
  *     responses:
- *       200:
+ *       201:
  *         description: Report update deleted successfully.
  *       404:
  *         description: Report update not found.
