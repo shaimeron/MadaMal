@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { IFormFieldInputData } from "@/models/form";
+import {z} from "zod";
+import {IFormFieldInputData} from "@/models/form";
 
 export enum EAddUpdateFields {
   DATA = "data",

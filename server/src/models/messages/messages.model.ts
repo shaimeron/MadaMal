@@ -1,5 +1,5 @@
-import mongoose, { ObjectId, Schema } from "mongoose";
-import { UsersModel } from "../users";
+import mongoose, {ObjectId, Schema} from "mongoose";
+import {UsersModel} from "../users";
 
 export interface IMessage {
   _id?: ObjectId;

@@ -1,11 +1,11 @@
-import { useAppSelector } from "@/hooks/store";
-import { IReport } from "@/models";
-import { selectReportsofLoggedUser } from "@/store/reports";
-import { ReportsList } from "@@/common/reports";
-import { Grid } from "@mui/material";
+import {useAppSelector} from "@/hooks/store";
+import {IReport} from "@/models";
+import {selectReportsofLoggedUser} from "@/store/reports";
+import {ReportsList} from "@@/common/reports";
+import {Grid} from "@mui/material";
 import React from "react";
-import { style } from "./style";
-import { UserFormContainer } from "@@/common/userForm";
+import {style} from "./style";
+import {UserFormContainer} from "@@/common/userForm";
 
 export const UserPage: React.FC = () => {
   const allReports: IReport[] = useAppSelector(selectReportsofLoggedUser);

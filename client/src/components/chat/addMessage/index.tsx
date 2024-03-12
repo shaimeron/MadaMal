@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Button, TextField } from "@mui/material";
-import { selectUserId } from "@/store/user";
-import { useAppSelector } from "@/hooks/store";
-import { IMessagesDTO, socket } from "../socketUtils";
+import React, {useState} from "react";
+import {Button, TextField} from "@mui/material";
+import {selectUserId} from "@/store/user";
+import {useAppSelector} from "@/hooks/store";
+import {IMessagesDTO, socket} from "../socketUtils";
 
 export const AddMessage: React.FC = () => {
   const [message, setMessage] = useState<string>("");

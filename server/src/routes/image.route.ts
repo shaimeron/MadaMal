@@ -1,6 +1,6 @@
-import express, { Router } from "express";
-import { ImageController } from "../controllers";
-import { uploadImage } from "./utils";
+import express, {Router} from "express";
+import {ImageController} from "../controllers";
+import {uploadImage} from "./utils";
 
 const router: Router = express.Router();
 

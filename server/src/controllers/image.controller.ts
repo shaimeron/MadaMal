@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { deleteImage } from "../common/imageHandler";
+import {Request, Response} from "express";
+import {deleteImage} from "../common/imageHandler";
 
 export class ImageController {
   uploadImage = (req: Request, res: Response) => {

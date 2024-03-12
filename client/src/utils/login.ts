@@ -1,4 +1,4 @@
-import { LoginDecodedData, api } from "@/api/api";
+import {api, LoginDecodedData} from "@/api/api";
 
 export const ACCESSS_TOKEN = "accessToken";
 const REFRESH_TOKEN = "refreshToken";

@@ -1,8 +1,8 @@
-import { Server } from "socket.io";
+import {Server} from "socket.io";
 import https from "https";
 import http from "http";
-import { SocketIOController } from "./controllers";
-import { IMessageForClient } from "./models/messages";
+import {SocketIOController} from "./controllers";
+import {IMessageForClient} from "./models/messages";
 
 const socketIOController = new SocketIOController();
 

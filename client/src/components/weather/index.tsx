@@ -1,4 +1,4 @@
-import {useState, useEffect, FC} from 'react';
+import {FC, useEffect, useState} from 'react';
 
 export const WeatherDisplay: FC = () => {
     const [temperature, setTemperature] = useState(null);
