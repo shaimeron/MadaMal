@@ -1,7 +1,13 @@
-import {Request, Response} from "express";
-import {IReportDTO, IReportForDisplay, IReportItem, IUpdateInReportDTO, ReportsModel,} from "../models/reports";
-import {deleteImage} from "../common/imageHandler";
-import {UsersModel} from "../models/users";
+import { Request, Response } from "express";
+import {
+  IReportDTO,
+  IReportForDisplay,
+  IReportItem,
+  IUpdateInReportDTO,
+  ReportsModel,
+} from "../models/reports";
+import { deleteImage } from "../common/imageHandler";
+import { UsersModel } from "../models/users";
 import mongoose from "mongoose";
 
 export class ReportsController {

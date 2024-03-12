@@ -1,11 +1,11 @@
-import {api} from "@/api";
-import {selectUserId, upadteUser} from "@/store/user";
-import {gapi} from "gapi-script";
-import {useCallback, useEffect} from "react";
-import {useDispatch} from "react-redux";
-import {useAppSelector} from "../store";
-import {getUserIdFromLocalStorage, googleApi} from "@/utils/login";
-import {StoreUser} from "@/models";
+import { api } from "@/api";
+import { selectUserId, upadteUser } from "@/store/user";
+import { gapi } from "gapi-script";
+import { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../store";
+import { getUserIdFromLocalStorage, googleApi } from "@/utils/login";
+import { StoreUser } from "@/models";
 
 const initGoogle = (): void =>
   gapi.client.init({

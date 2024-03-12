@@ -1,8 +1,10 @@
 import request from "supertest";
 import initApp from "../app";
 import mongoose from "mongoose";
-import {Express} from "express";
+import { Express } from "express";
+import { unlinkSync } from "fs";
 import path from "path";
+import { IMAGES_DIR } from "../common/imageHandler";
 
 let app: Express;
 

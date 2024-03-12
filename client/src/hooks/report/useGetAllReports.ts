@@ -1,8 +1,8 @@
-import {api, REFETCH_INTERVAL} from "@/api";
-import {setReports} from "@/store/reports";
-import {useDispatch} from "react-redux";
-import {useQuery} from "@tanstack/react-query";
-import {IReport} from "@/models";
+import { REFETCH_INTERVAL, api } from "@/api";
+import { setReports } from "@/store/reports";
+import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { IReport } from "@/models";
 
 export const useGetAllReports = async () => {
   const dispatch = useDispatch();

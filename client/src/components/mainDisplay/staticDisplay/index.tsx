@@ -1,9 +1,9 @@
-import {Container, Grid} from "@mui/material";
-import {FC} from "react";
-import {Outlet} from "react-router-dom";
-import {style} from "./style";
-import {NavbarContainer} from "../navbar";
-import {AddReportDialog} from "@@/addReport";
+import { Container, Grid } from "@mui/material";
+import { FC } from "react";
+import { Outlet } from "react-router-dom";
+import { style } from "./style";
+import { NavbarContainer } from "../navbar";
+import { AddReportDialog } from "@@/addReport";
 
 export const StaticDisplay: FC = () => {
   return (

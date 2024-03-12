@@ -1,14 +1,14 @@
-import {FC, useCallback, useState} from "react";
-import {List, ListItem} from "@mui/material";
-import {useAppSelector} from "@/hooks/store";
-import {IReportItem} from "@/models";
-import {selectUserId} from "@/store/user";
-import {style} from "./style";
-import {UpdateDisplay} from "../updateDisplay";
-import {AddUpdateToReport} from "../addUpdateToReport";
-import {ChangeUpdateDisplay} from "../changeUpdateDisplay";
-import {useQuery} from "@tanstack/react-query";
-import {api, REFETCH_INTERVAL} from "@/api";
+import { FC, useCallback, useState } from "react";
+import { List, ListItem } from "@mui/material";
+import { useAppSelector } from "@/hooks/store";
+import { IReportItem } from "@/models";
+import { selectUserId } from "@/store/user";
+import { style } from "./style";
+import { UpdateDisplay } from "../updateDisplay";
+import { AddUpdateToReport } from "../addUpdateToReport";
+import { ChangeUpdateDisplay } from "../changeUpdateDisplay";
+import { useQuery } from "@tanstack/react-query";
+import { REFETCH_INTERVAL, api } from "@/api";
 
 interface IUpdatesListProps {
   reportId: string;

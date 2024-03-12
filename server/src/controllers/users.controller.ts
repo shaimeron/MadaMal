@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import {Request, Response} from "express";
-import {AuthResquest} from "../common";
-import {UsersModel} from "../models/users";
+import { Request, Response } from "express";
+import { AuthResquest } from "../common";
+import { UsersModel } from "../models/users";
 
 export class UsersController {
   async getById(req: Request, res: Response) {

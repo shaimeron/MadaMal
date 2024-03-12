@@ -1,4 +1,4 @@
-import {styleType} from "@/models";
+import { styleType } from "@/models";
 
 export const style: styleType = {
   boxContainer: {

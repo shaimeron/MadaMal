@@ -1,8 +1,8 @@
-import {ListItemButton, ListItemText} from "@mui/material";
-import {FC, useCallback} from "react";
-import {useNavigate} from "react-router-dom";
-import {selectUserName} from "@/store/user";
-import {useAppSelector} from "@/hooks/store";
+import { ListItemButton, ListItemText } from "@mui/material";
+import { FC, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { selectUserName } from "@/store/user";
+import { useAppSelector } from "@/hooks/store";
 
 export const LoginButton: FC = () => {
   const navigate = useNavigate();

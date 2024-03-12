@@ -1,7 +1,7 @@
-import {createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "..";
-import {IReport} from "@/models";
-import {selectUserId} from "../user";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "..";
+import { IReport } from "@/models";
+import { selectUserId } from "../user";
 
 // Define a type for the slice state
 interface ReportsState {

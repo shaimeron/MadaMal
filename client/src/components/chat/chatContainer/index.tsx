@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Divider, Grid, List} from "@mui/material";
-import {AddMessage} from "../addMessage";
-import {IMessage, socket} from "../socketUtils";
-import {ChatListItem} from "../chatListItem";
+import React, { useState, useEffect, useRef } from "react";
+import { Divider, Grid, List } from "@mui/material";
+import { AddMessage } from "../addMessage";
+import { IMessage, socket } from "../socketUtils";
+import { ChatListItem } from "../chatListItem";
 
 export const ChatContainer: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);

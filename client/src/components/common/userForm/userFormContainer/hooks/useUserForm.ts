@@ -1,13 +1,13 @@
-import {api} from "@/api";
-import {useAppSelector} from "@/hooks/store";
-import {UserRegister, UserUpdateDto} from "@/models";
-import {selectUser, upadteUser} from "@/store/user";
-import {useCallback, useMemo, useState} from "react";
-import {defaultFormValues, EUserFields, UserFormData} from "../../formUtils";
-import {toast} from "react-toastify";
-import {uploadImage} from "@/utils/files";
-import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import { api } from "@/api";
+import { useAppSelector } from "@/hooks/store";
+import { UserRegister, UserUpdateDto } from "@/models";
+import { selectUser, upadteUser } from "@/store/user";
+import { useCallback, useMemo, useState } from "react";
+import { EUserFields, defaultFormValues, UserFormData } from "../../formUtils";
+import { toast } from "react-toastify";
+import { uploadImage } from "@/utils/files";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface IUseUserForm {
   handleValidFormData: (formData: UserFormData) => Promise<void>;
