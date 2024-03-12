@@ -1,11 +1,17 @@
-import {FC, useCallback, useMemo} from "react";
-import {Card, CardContent, CardHeader, IconButton, Typography,} from "@mui/material";
-import {Delete, ModeEditOutline} from "@mui/icons-material";
-import {IReportItem} from "@/models";
+import { FC, useCallback, useMemo } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import { Delete, ModeEditOutline } from "@mui/icons-material";
+import { IReportItem } from "@/models";
 import swal from "sweetalert";
-import {api} from "@/api";
-import {style} from "./style";
-import {dateFormater} from "@/utils/date";
+import { api } from "@/api";
+import { style } from "./style";
+import { dateFormater } from "@/utils/date";
 
 interface IUpdateDisplayProps {
   reportId: string;

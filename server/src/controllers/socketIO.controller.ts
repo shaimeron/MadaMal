@@ -1,6 +1,11 @@
-import {PipelineStage} from "mongoose";
-import {IMessage, IMessageForClient, IMessagesDTO, MessageModel,} from "../models/messages";
-import {UsersModel} from "../models/users";
+import { PipelineStage } from "mongoose";
+import {
+  IMessage,
+  IMessageForClient,
+  IMessagesDTO,
+  MessageModel,
+} from "../models/messages";
+import { UsersModel } from "../models/users";
 
 const messageUserNameAggregation: PipelineStage[] = [
   {

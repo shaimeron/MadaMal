@@ -1,5 +1,5 @@
-import {model, ObjectId, Schema} from "mongoose";
-import {UsersModel} from "../users";
+import { ObjectId, Schema, model } from "mongoose";
+import { UsersModel } from "../users";
 
 export interface IReportItem {
   creationDate: Date;

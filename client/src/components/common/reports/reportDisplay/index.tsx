@@ -1,28 +1,27 @@
-import {FC, useCallback, useMemo} from "react";
+import { FC, useCallback, useMemo } from "react";
 import {
-    Avatar,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardHeader,
-    CardMedia,
-    IconButton,
-    Typography,
+  Avatar,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  IconButton,
+  Typography,
 } from "@mui/material";
-import {IReport} from "@/models";
-import {red} from "@mui/material/colors";
-import {Delete, ModeEditOutline, Update} from "@mui/icons-material";
-import {style} from "./style";
+import { IReport } from "@/models";
+import { red } from "@mui/material/colors";
+import { Update, ModeEditOutline, Delete } from "@mui/icons-material";
+import { style } from "./style";
 import swal from "sweetalert";
-import {api, imageURL} from "@/api";
-import {useDispatch} from "react-redux";
-import {openUpdate} from "@/store/addReport";
-import {useNavigate} from "react-router-dom";
-import {dateFormater} from "@/utils/date";
-import {useAppSelector} from "@/hooks/store";
-import {selectUserId} from "@/store/user";
-
+import { api, imageURL } from "@/api";
+import { useDispatch } from "react-redux";
+import { openUpdate } from "@/store/addReport";
+import { useNavigate } from "react-router-dom";
+import { dateFormater } from "@/utils/date";
+import { useAppSelector } from "@/hooks/store";
+import { selectUserId } from "@/store/user";
 interface IReportDisplayProps {
   report: IReport;
   isWithUpdateDisplayClick?: boolean;

@@ -1,8 +1,8 @@
 import request from "supertest";
 import initApp from "../app";
 import mongoose from "mongoose";
-import {Express} from "express";
-import {UsersModel} from "../models/users/user.model";
+import { Express } from "express";
+import { UsersModel } from "../models/users/user.model";
 
 let app: Express;
 const user = {

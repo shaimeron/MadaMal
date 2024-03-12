@@ -1,13 +1,13 @@
-import {api} from "@/api";
-import {LoginDecodedData} from "@/api/api";
-import {handleLoginHeaders, parseJwt} from "@/utils/login";
-import {CredentialResponse} from "@react-oauth/google";
-import {useNavigate} from "react-router-dom";
-import {LoginFormData} from "../../loginFormBody/formUtils";
-import {toast} from "react-toastify";
-import {useDispatch} from "react-redux";
-import {upadteUser} from "@/store/user";
-import {useState} from "react";
+import { api } from "@/api";
+import { LoginDecodedData } from "@/api/api";
+import { parseJwt, handleLoginHeaders } from "@/utils/login";
+import { CredentialResponse } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import { LoginFormData } from "../../loginFormBody/formUtils";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { upadteUser } from "@/store/user";
+import { useState } from "react";
 
 interface IUseHandleLogin {
   handleValidFormData: (formData: LoginFormData) => Promise<void>;

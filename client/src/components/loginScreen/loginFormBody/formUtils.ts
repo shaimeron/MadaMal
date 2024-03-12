@@ -1,5 +1,5 @@
-import {IFormFieldInputData} from "@/models/form";
-import {z} from "zod";
+import { IFormFieldInputData } from "@/models/form";
+import { z } from "zod";
 
 export enum ELoginFields {
   EMAIL = "email",

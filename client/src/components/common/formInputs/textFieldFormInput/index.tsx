@@ -1,7 +1,7 @@
-import {TextField} from "@mui/material";
-import {FC} from "react";
-import {Controller} from "react-hook-form";
-import {IFormFieldInput} from "@/models/form";
+import { TextField } from "@mui/material";
+import { FC } from "react";
+import { Controller } from "react-hook-form";
+import { IFormFieldInput } from "@/models/form";
 
 interface ITextFieldFormInputProps extends IFormFieldInput {
   isMultiline?: boolean;

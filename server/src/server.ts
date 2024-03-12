@@ -2,7 +2,7 @@ import initApp from "./app";
 import https from "https";
 import http from "http";
 import fs from "fs";
-import {startSocketIO} from "./socketIO";
+import { startSocketIO } from "./socketIO";
 
 initApp().then((app) => {
   let server: http.Server | https.Server;
