@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /auth/register:
+ * api/auth/register:
  *   post:
  *     summary: Register a new user.
  *     description: Creates a new user account.
@@ -25,6 +25,8 @@ const router = express.Router();
  *               imageUrl: https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png
  *       400:
  *         description: Bad request. User details are invalid.
+ *       406:
+ *         description: Email is already exists
  *       500:
  *         description: Internal server error.
  */
@@ -33,7 +35,7 @@ router.post("/google", authController.googleSignin);
 
 /**
  * @swagger
- * /auth/login:
+ * api/auth/login:
  *   post:
  *     summary: Login.
  *     description: Logs a user into the system.
@@ -58,7 +60,7 @@ router.post("/login", authController.login);
 
 /**
  * @swagger
- * /auth/logout:
+ * api/auth/logout:
  *   get:
  *     summary: Logout.
  *     description: Logs a user out of the system.
@@ -74,7 +76,7 @@ router.get("/logout", authController.logout);
 
 /**
  * @swagger
- * /auth/refresh:
+ * api/auth/refresh:
  *   get:
  *     summary: Refresh token.
  *     description: Refreshes a user's token.
@@ -83,6 +85,8 @@ router.get("/logout", authController.logout);
  *     responses:
  *       200:
  *         description: Token refreshed successfully.
+ *       401:
+ *          description: Refresh token is null
  *       500:
  *         description: Internal server error.
  */

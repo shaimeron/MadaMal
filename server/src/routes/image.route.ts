@@ -8,7 +8,7 @@ const imageController = new ImageController();
 
 /**
  * @swagger
- * /image/uploadImage/{userId}:
+ * api/image/uploadImage/{userId}:
  *   post:
  *     summary: Uploads an image to server.
  *     description: upload an image file to the server and if fileName received so delete the file. The image file should be sent as form data. the response is the name of the created file
@@ -22,11 +22,12 @@ const imageController = new ImageController();
  *         required: false
  *         type: string
  *         description: The previus image file name of the report.
- *       - in: formData
- *         name: image
- *         type: file
- *         required: true
- *         description: The image file to upload.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           example:
+ *             file: IMAGE FILE
  *     responses:
  *       200:
  *         description: Image uploaded successfully.

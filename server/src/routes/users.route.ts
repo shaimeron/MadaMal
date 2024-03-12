@@ -8,7 +8,7 @@ const usersController = new UsersController();
 
 /**
  * @swagger
- * /users/{id}:
+ * api/users/{id}:
  *   get:
  *     summary: Retrieve a user by their ID.
  *     description: Fetches a specific user's details by their unique identifier. Requires authentication.
@@ -40,7 +40,7 @@ router.get(
 
 /**
  * @swagger
- * /users/update:
+ * api/users/update:
  *   get:
  *     summary: Retrieve a user to update.
  *     description: Upates user details.
@@ -59,6 +59,8 @@ router.get(
  *         description: User details retrieved successfully.
  *       401:
  *         description: Unauthorized. Token is missing or invalid.
+ *       403:
+ *          description: User ID not found in request
  *       404:
  *         description: User not found.
  *       500:
