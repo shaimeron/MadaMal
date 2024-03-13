@@ -13,38 +13,38 @@ import mongoose from "mongoose";
 export class ReportsController {
   async getAll(req: Request, res: Response) {
     try {
-    const reports: IReportForDisplay[] = await ReportsModel.aggregate([
-      {
-        $lookup: {
-          from: UsersModel.collection.name,
-          localField: "ownerId",
-          foreignField: "_id",
-          as: "ownerName",
+      const reports: IReportForDisplay[] = await ReportsModel.aggregate([
+        {
+          $lookup: {
+            from: UsersModel.collection.name,
+            localField: "ownerId",
+            foreignField: "_id",
+            as: "ownerName",
+          },
         },
-      },
-      {
-        $set: {
-          ownerName: { $arrayElemAt: ["$ownerName.fullname", 0] },
-          updatesCount: {
-            $cond: {
-              if: { $isArray: "$updates" },
-              then: { $size: "$updates" },
-              else: "0",
+        {
+          $set: {
+            ownerName: { $arrayElemAt: ["$ownerName.fullname", 0] },
+            updatesCount: {
+              $cond: {
+                if: { $isArray: "$updates" },
+                then: { $size: "$updates" },
+                else: "0",
+              },
             },
           },
         },
-      },
-      { $unset: ["updates"] },
-    ]);
+        { $unset: ["updates"] },
+        { $sort: { creationDate: -1 } },
+      ]);
 
-    res.send(reports);
+      res.send(reports);
     } catch (e) {
       res.sendStatus(500);
     }
   }
 
   async getById(req: Request, res: Response) {
-
     try {
       const report = await ReportsModel.findById(req.params.id);
       res.send(report);
@@ -55,61 +55,65 @@ export class ReportsController {
 
   async getUpdatesByReportId(req: Request, res: Response) {
     try {
-    const updates: IReportItem[] = (
-      await ReportsModel.aggregate([
-        {
-          $match: {
-            _id: new mongoose.Types.ObjectId(req.params.reportId),
+      const updates: IReportItem[] = (
+        await ReportsModel.aggregate([
+          {
+            $match: {
+              _id: new mongoose.Types.ObjectId(req.params.reportId),
+            },
           },
-        },
-        {
-          $lookup: {
-            from: UsersModel.collection.name,
-            localField: "updates.ownerId",
-            foreignField: "_id",
-            as: "updatesOwner",
+          {
+            $lookup: {
+              from: UsersModel.collection.name,
+              localField: "updates.ownerId",
+              foreignField: "_id",
+              as: "updatesOwner",
+            },
           },
-        },
-        {
-          $set: {
-            updates: {
-              $map: {
-                input: "$updates",
-                in: {
-                  $mergeObjects: [
-                    "$$this",
-                    {
-                      ownerName: {
-                        $arrayElemAt: [
-                          "$updatesOwner.fullname",
-                          {
-                            $indexOfArray: [
-                              "$updatesOwner.id",
-                              "$$this.ownerId",
-                            ],
-                          },
-                        ],
+          {
+            $set: {
+              updates: {
+                $map: {
+                  input: "$updates",
+                  in: {
+                    $mergeObjects: [
+                      "$$this",
+                      {
+                        ownerName: {
+                          $arrayElemAt: [
+                            "$updatesOwner.fullname",
+                            {
+                              $indexOfArray: [
+                                "$updatesOwner.id",
+                                "$$this.ownerId",
+                              ],
+                            },
+                          ],
+                        },
                       },
-                    },
-                  ],
+                    ],
+                  },
                 },
               },
             },
           },
-        },
-        { $unset: "updatesOwner" },
-        {
-          $project: {
-            updates: 1,
-            _id: 0,
+          { $unset: "updatesOwner" },
+          {
+            $project: {
+              updates: 1,
+              _id: 0,
+            },
           },
-        },
-      ])
-    )[0]?.updates;
+        ])
+      )[0]?.updates;
 
-    res.send(updates);
+      updates.sort(
+        (a, b) => b.creationDate.getDate() - a.creationDate.getDate()
+      );
+
+      res.send(updates);
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 
@@ -119,7 +123,7 @@ export class ReportsController {
       const obj = await ReportsModel.create(reportDto);
       res.status(201).send(obj);
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 
@@ -129,7 +133,7 @@ export class ReportsController {
       const obj = await ReportsModel.updateOne({ _id }, restOfDTO);
       res.status(201).send(obj);
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 
@@ -144,7 +148,7 @@ export class ReportsController {
         `${obj.deletedCount ? "" : "failed to "}delete report by id: ${_id}`
       );
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 
@@ -158,7 +162,7 @@ export class ReportsController {
       );
       res.send(`added update to report ${reportId}`);
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 
@@ -175,7 +179,7 @@ export class ReportsController {
         }change update ${_id} in report ${reportId}`
       );
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 
@@ -192,7 +196,7 @@ export class ReportsController {
       );
       res.status(201).send(obj);
     } catch (e) {
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   }
 }
