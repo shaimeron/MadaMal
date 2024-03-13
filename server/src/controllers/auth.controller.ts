@@ -11,6 +11,7 @@ const googleSignin = async (req: Request, res: Response) => {
     const ticket = await client.verifyIdToken({
       idToken: req.body.credential,
       audience: process.env.GOOGLE_CLIENT_ID,
+      maxExpiry: 30000,
     });
     const payload = ticket.getPayload();
     const { email, given_name, family_name, picture } = payload;
